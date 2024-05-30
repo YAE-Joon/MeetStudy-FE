@@ -5,6 +5,9 @@ import { SessionProvider } from "next-auth/react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+import StyledComponentsRegistry from "@/lib/styled-components/registry";
+import Container from "@/component/styled-components/Container";
+
 interface Props {
   children?: React.ReactNode;
 }
@@ -13,7 +16,8 @@ export const NextProvider = ({ children }: Props) => {
   return (
     <>
       <SessionProvider>
-        {children}
+        <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
+
         <ToastContainer
           autoClose={1000}
           pauseOnFocusLoss={false}
@@ -28,7 +32,7 @@ export const NextLayout = ({ children }: Props) => {
   return (
     <div className="layout">
       <Navbar />
-      {children}
+      <Container>{children}</Container>
     </div>
   );
 };
