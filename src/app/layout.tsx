@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import "./globals.css";
+import "../styles/globals.css";
+import { NextLayout, NextProvider } from "./providers";
 // google font에서 가져와서 적용함
 // next/font/google 에서 미리 정의된 모듈.
 const inter = Inter({ subsets: ["latin"] });
@@ -19,7 +20,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <NextProvider>
+          <NextLayout>{children}</NextLayout>
+        </NextProvider>
+      </body>
     </html>
   );
 }
