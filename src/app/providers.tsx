@@ -6,7 +6,6 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import StyledComponentsRegistry from "@/lib/styled-components/registry";
-import Container from "@/component/styled-components/Container";
 
 interface Props {
   children?: React.ReactNode;
@@ -32,7 +31,7 @@ export const NextLayout = ({ children }: Props) => {
   return (
     <div className="layout">
       <Navbar />
-      <Container>{children}</Container>
+      {children}
     </div>
   );
 };

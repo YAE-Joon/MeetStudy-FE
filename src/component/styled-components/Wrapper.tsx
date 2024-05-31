@@ -2,9 +2,10 @@
 
 import React from "react";
 import styled from "styled-components";
-
+import DesignTokenVarNames from "@/lib/designToken/designTokens";
 /** Styled */
 
+const mobileWidth = DesignTokenVarNames.boxSizes.width.containerMaxMobile;
 export const StyledWrapper = styled.main`
   display: flex;
   flex-direction: column;
@@ -15,14 +16,14 @@ export const StyledWrapper = styled.main`
 
   min-height: 100vh;
   max-width: 100%;
-  width: var(--box-sizes-width-wrapper-max);
+  width: var(${DesignTokenVarNames.boxSizes.width.wrapperMax});
 
   background-color: var(--colors-simple-whitebg);
 
-  @media only screen and (max-width: 600px) {
+  @media only screen and (${mobileWidth}) {
     grid-template-columns: 1fr;
     margin-bottom: 120px;
-    min-width: var(--box-sizes-width-wrapper-min-mobile);
+    min-width: var(${DesignTokenVarNames.boxSizes.width.wrapperMinMobile});
     text-align: center;
   }
 `;

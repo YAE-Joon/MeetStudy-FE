@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "../styles/globals.css";
 import { NextLayout, NextProvider } from "./providers";
-import setTokenintoStyle from "@/lib/designToken/initializeTokens";
+// import setTokenintoStyle from "@/lib/designToken/initializeTokens";
+import { settingTokenIntoHTML } from "@/lib/designToken/designTokens";
 
 // google font에서 가져와서 적용함
 // next/font/google 에서 미리 정의된 모듈.
@@ -20,8 +21,6 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const settingTokenIntoHTML = setTokenintoStyle();
-
   return (
     <html lang="en">
       <head>
