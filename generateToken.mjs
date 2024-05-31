@@ -8,7 +8,6 @@ export function jsonToTypescript(jsonObj, rootName) {
   const interfaces = [];
   const objects = [];
   const summary = `/**\n * css 변수 이름을 담고 있는 객체입니다.\n */\n`;
-  const exportCommand = `export default ${toCamelCase(rootName)};`;
 
   function toCamelCase(str) {
     return str.replace(/-([a-z])/g, (g) => g[1].toUpperCase());
@@ -58,7 +57,21 @@ export function jsonToTypescript(jsonObj, rootName) {
   const lastObjectIndex = objects.length - 1;
   objects[lastObjectIndex] = summary + objects[lastObjectIndex];
 
-  return [...interfaces, ...objects, exportCommand].join("\n\n");
+  // 미디어 쿼리용 값 세팅
+  const except = `export const DesignTokenExcept = {
+    media: {
+      mobile : "${600}px"
+    }
+  }`;
+
+  const packingExport = `const dt = {${toCamelCase(
+    rootName
+  )}, DesignTokenExcept}`;
+  const exportDefault = `export default dt`;
+
+  return [...interfaces, ...objects, except, packingExport, exportDefault].join(
+    "\n\n"
+  );
 }
 
 /**

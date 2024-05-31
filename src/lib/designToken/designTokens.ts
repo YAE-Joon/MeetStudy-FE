@@ -63,12 +63,17 @@ interface Starndard {
   borderRadius: string;
 }
 
+interface FontFamily {
+  fontFamily: string;
+}
+
 interface DesignTokenVarNames {
   colors: Colors;
   fontSize: FontSize;
   boxSizes: BoxSizes;
   spacing: Spacing;
   starndard: Starndard;
+  fontFamily: FontFamily;
 }
 
 const simple: Simple = {
@@ -136,6 +141,10 @@ const starndard: Starndard = {
   borderRadius: "--starndard-border-radius",
 };
 
+const fontFamily: FontFamily = {
+  fontFamily: "--font-family-fontFamily",
+};
+
 /**
  * css 변수 이름을 담고 있는 객체입니다.
  */
@@ -145,9 +154,18 @@ const DesignTokenVarNames: DesignTokenVarNames = {
   boxSizes: boxSizes,
   spacing: spacing,
   starndard: starndard,
+  fontFamily: fontFamily,
 };
 
-export default DesignTokenVarNames;
+export const DesignTokenExcept = {
+    media: {
+      mobile : "600px"
+    }
+  }
+
+const dt = {DesignTokenVarNames, DesignTokenExcept}
+
+export default dt
 
 
   /*
@@ -186,6 +204,7 @@ export default DesignTokenVarNames;
 --spacing-margin:0;
 --spacing-gap:0;
 --starndard-border-radius:5px;
+--font-family-font-family:Noto Sans KR;
   }
   `
   

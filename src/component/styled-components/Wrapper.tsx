@@ -2,10 +2,13 @@
 
 import React from "react";
 import styled from "styled-components";
-import DesignTokenVarNames from "@/lib/designToken/designTokens";
+import dt from "@/lib/designToken/designTokens";
+
+const DesignTokenVarNames = dt.DesignTokenVarNames;
+const mobileWidth = dt.DesignTokenExcept.media.mobile;
+
 /** Styled */
 
-const mobileWidth = DesignTokenVarNames.boxSizes.width.containerMaxMobile;
 export const StyledWrapper = styled.main`
   display: flex;
   flex-direction: column;
@@ -20,7 +23,7 @@ export const StyledWrapper = styled.main`
 
   background-color: var(--colors-simple-whitebg);
 
-  @media only screen and (${mobileWidth}) {
+  @media only screen and (max-width: ${mobileWidth}) {
     grid-template-columns: 1fr;
     margin-bottom: 120px;
     min-width: var(${DesignTokenVarNames.boxSizes.width.wrapperMinMobile});

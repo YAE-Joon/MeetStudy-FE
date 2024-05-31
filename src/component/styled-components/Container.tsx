@@ -2,16 +2,22 @@
 
 import React from "react";
 import styled from "styled-components";
-import DesignTokenVarNames from "@/lib/designToken/designTokens";
+import dt from "@/lib/designToken/designTokens";
+import {
+  StyledComponentsProps,
+  StyledProps,
+} from "@/component/styled-components/styledProps";
+const DesignTokenVarNames = dt.DesignTokenVarNames;
+const mobileWidth = dt.DesignTokenExcept.media.mobile;
 /** Styled */
 
-interface StyledContainerProps {
-  $bgColor: string | null;
+interface StyledContainerProps extends StyledProps {
   $minWidth: string | null;
+  $gap: string | null;
 }
 
-const mobileWidth = DesignTokenVarNames.boxSizes.width.containerMaxMobile;
-export const StyledContainer = styled.div<StyledContainerProps>`
+//const mobileWidth = DesignTokenVarNames.media.mobileWidth;
+const StyledContainer = styled.div<StyledContainerProps>`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -27,7 +33,6 @@ export const StyledContainer = styled.div<StyledContainerProps>`
     }}
   );
 
-  min-height: 100vh;
   //색상을 prop으로 받지 않는다면 기본 색상(배경 흰색)으로 설정됨
   background-color: var(
     ${({ $bgColor }) => {
@@ -37,7 +42,20 @@ export const StyledContainer = styled.div<StyledContainerProps>`
     }}
   );
 
-  @media only screen and (${mobileWidth}) {
+  ${({ $gap }) =>
+    $gap &&
+    `
+    gap: ${$gap};
+  `}
+
+  ${({ $padding }) =>
+    $padding &&
+    `
+    padding: ${$padding};
+  `}
+
+
+  @media only screen and (max-width: ${mobileWidth}) {
     grid-template-columns: 1fr;
     margin-bottom: 120px;
     min-width: var(${DesignTokenVarNames.boxSizes.width.containerMinMobile});
@@ -47,10 +65,9 @@ export const StyledContainer = styled.div<StyledContainerProps>`
 `;
 
 /** Component  */
-interface ContainerProps {
-  children: React.ReactNode;
-  color?: string | null;
+interface ContainerProps extends StyledComponentsProps {
   minWidth?: string | null;
+  gap?: string | null;
 }
 
 /**
@@ -58,16 +75,21 @@ interface ContainerProps {
  * @param param0 { children, color, maxWidth} 색상/최소 너비 설정이 필요할 때 color 라는 이름으로 props로 내려보낼 수 있음.
  * @returns  flex, 중앙 정렬 및 양쪽 여백을 균등하게 맞추는 div
  */
-const Container: React.FC<ContainerProps> = ({
+export const Container: React.FC<ContainerProps> = ({
   children,
   color = null,
   minWidth = null,
+  gap = null,
+  padding = null,
 }) => {
   return (
-    <StyledContainer $bgColor={color} $minWidth={minWidth}>
+    <StyledContainer
+      $bgColor={color}
+      $minWidth={minWidth}
+      $gap={gap}
+      $padding={padding}
+    >
       {children}
     </StyledContainer>
   );
 };
-
-export default Container;

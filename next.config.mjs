@@ -15,9 +15,13 @@ const nextConfig = {
     if (isServer) {
       if (!process.env.TS_FILE_GENERATED) {
         process.env.TS_FILE_GENERATED = "true";
-
-        const jsonFilePath = path.join(process.cwd(), "public", "token.json");
-        const tsFilePath = path.join(
+        // window, mac 방어용 수정 코드 (join->resolve)
+        const jsonFilePath = path.resolve(
+          process.cwd(),
+          "public",
+          "token.json"
+        );
+        const tsFilePath = path.resolve(
           process.cwd(),
           "src",
           "lib",

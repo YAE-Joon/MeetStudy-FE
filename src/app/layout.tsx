@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Noto_Sans_KR } from "next/font/google";
 import "../styles/globals.css";
 import { NextLayout, NextProvider } from "./providers";
 // import setTokenintoStyle from "@/lib/designToken/initializeTokens";
@@ -7,7 +7,11 @@ import { settingTokenIntoHTML } from "@/lib/designToken/designTokens";
 
 // google font에서 가져와서 적용함
 // next/font/google 에서 미리 정의된 모듈.
-const inter = Inter({ subsets: ["latin"] });
+const noto_kr = Noto_Sans_KR({
+  subsets: ["latin"],
+  weight: ["100", "400", "700", "900"],
+  variable: "--notoSans",
+});
 // 메타데이터 설정
 export const metadata: Metadata = {
   title: "밋스터디",
@@ -26,7 +30,7 @@ export default function RootLayout({
       <head>
         <style>{settingTokenIntoHTML}</style>
       </head>
-      <body className={inter.className}>
+      <body className={noto_kr.className}>
         <NextProvider>
           <NextLayout>{children}</NextLayout>
         </NextProvider>
