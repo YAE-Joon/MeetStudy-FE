@@ -20,3 +20,11 @@ YJ : Flowchart | UI Wireframe
 // dev
 npm run dev
 ```
+
+# Ref
+
+## Image sources
+
+### landing
+
+- <a href="https://pixabay.com/ko//?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=8356214">Pixabay</a>로부터 입수된 <a href="https://pixabay.com/ko/users/elf-moondance-19728901/?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=8356214">Moondance</a>님의 이미지 입니다.
