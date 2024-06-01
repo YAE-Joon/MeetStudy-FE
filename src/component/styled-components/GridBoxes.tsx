@@ -26,8 +26,12 @@ const Styled_ul = styled.ul<StyledUIProps>`
   list-style-type: none;
 
   @media only screen and (max-width: ${mobileWidth}) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
     grid-template-columns: 1fr;
-    margin-bottom: 120px;
+
     min-width: var(${DesignTokenVarNames.boxSizes.width.containerMinMobile});
 
     text-align: center;

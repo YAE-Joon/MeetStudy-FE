@@ -57,7 +57,6 @@ const StyledContainer = styled.div<StyledContainerProps>`
 
   @media only screen and (max-width: ${mobileWidth}) {
     grid-template-columns: 1fr;
-    margin-bottom: 120px;
     min-width: var(${DesignTokenVarNames.boxSizes.width.containerMinMobile});
 
     text-align: center;

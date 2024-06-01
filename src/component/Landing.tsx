@@ -20,6 +20,8 @@ import {
 import { GridBox_ul } from "@/component/styled-components/GridBoxes";
 import { Li_card } from "@/component/styled-components/Card";
 
+const mobileWidth = dt.DesignTokenExcept.media.mobile;
+
 const TextPart = styled.section`
   display: flex;
   flex-direction: column;
@@ -28,6 +30,14 @@ const TextPart = styled.section`
 
   width: 100%;
   height: 100%;
+  @media only screen and (max-width: ${mobileWidth}) {
+    /* position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center; */
+    //color: white;
+  }
 `;
 
 const dummy_list = {
@@ -41,7 +51,11 @@ export const FirstSection = () => {
   return (
     <FlexBox_H_2>
       <TextPart>
-        <Title htype={1} content={"온라인에서도 함께 공부해요, 밋스터디"} />
+        <Title
+          htype={1}
+          content={"온라인에서도 함께 공부해요, 밋스터디"}
+          align="left"
+        />
         <Description content={"온라인 스터디 공간"} />
         <GridBox_ul>
           <PrimaryButton content={"스터디 합류하기"} href={"/"} />
@@ -53,7 +67,9 @@ export const FirstSection = () => {
           <Image
             src={section_01_img}
             alt="컴퓨터로 공부하는 이미지"
+            priority={true}
             fill={true}
+            sizes={`(max-width: ${mobileWidth}) 50vw, (max-width: 1200px) 50vw, 33vw`}
           />
         </ImageWrapper>
       </ImageContainer>
@@ -73,7 +89,7 @@ export const SecondSection = () => {
       </TextPart>
       <FlexBox_H_ul>
         {Object.entries(dummy_list).map(([icon, text], idx) => (
-          <Li_card key={idx} image={icon} content={text} />
+          <Li_card key={idx} emoji={icon} content={text} />
         ))}
       </FlexBox_H_ul>
     </FlexBox_v_2>

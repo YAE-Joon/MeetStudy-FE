@@ -14,14 +14,15 @@ import {
 const DesignTokenVarNames = dt.DesignTokenVarNames;
 const mobileWidth = dt.DesignTokenExcept.media.mobile;
 
-interface StyledTextProps extends StyledComponentsProps {
-  fontSize?: string | null;
+interface StyledTextProps extends StyledProps {
+  $align?: string;
 }
 
 interface TextProps {
   content: string;
   color?: string;
   fontSize?: keyof FontSizeOptions;
+  align?: "center" | "left";
   htype?: 1 | 2 | 3 | 4 | 5 | 6;
 }
 
@@ -29,7 +30,7 @@ interface TextProps {
 
 /// Title ///
 
-const StyledTitle = styled.h1<StyledProps>`
+const StyledTitle = styled.h1<StyledTextProps>`
   font-size: var(
     ${({ $fontSize }) => {
       return $fontSize ? $fontSize : DesignTokenVarNames.fontSize.web.large;
@@ -42,6 +43,9 @@ const StyledTitle = styled.h1<StyledProps>`
   );
 
   padding: 1rem 1rem 1rem 1rem;
+  text-align: ${({ $align }) => {
+    return $align ? $align : "center";
+  }};
   overflow-wrap: break-word;
   word-break: keep-all;
 
@@ -54,13 +58,13 @@ const StyledTitle = styled.h1<StyledProps>`
 
 const StyledDesc = styled.p<StyledTextProps>`
   font-size: var(
-    ${({ fontSize }) => {
-      return fontSize ? fontSize : DesignTokenVarNames.fontSize.web.small;
+    ${({ $fontSize }) => {
+      return $fontSize ? $fontSize : DesignTokenVarNames.fontSize.web.small;
     }}
   );
   color: var(
-    ${({ color }) => {
-      return color ? color : DesignTokenVarNames.colors.simple.blackbasic;
+    ${({ $color }) => {
+      return $color ? $color : DesignTokenVarNames.colors.simple.blackbasic;
     }}
   );
 
@@ -73,6 +77,26 @@ const StyledDesc = styled.p<StyledTextProps>`
   }
 `;
 
+const StyledSpan = styled.span<StyledTextProps>`
+  font-size: var(
+    ${({ $fontSize }) => {
+      return $fontSize ? $fontSize : DesignTokenVarNames.fontSize.web.small;
+    }}
+  );
+  color: var(
+    ${({ $color }) => {
+      return $color ? $color : DesignTokenVarNames.colors.simple.blackbasic;
+    }}
+  );
+
+  padding: 2rem 1rem 2rem 1rem;
+  overflow-wrap: break-word;
+  word-break: keep-all;
+
+  @media only screen and (max-width: ${mobileWidth}) {
+    font-size: var(${DesignTokenVarNames.fontSize.mobile.small});
+  }
+`;
 /** components  */
 
 /// Title ///
@@ -92,10 +116,11 @@ export const Title: React.FC<TextProps> = ({
   color = null,
   fontSize = null,
   htype = 1,
+  align = "center",
 }) => {
   const Tag = `h${htype}` as keyof JSX.IntrinsicElements; // htype에 따른 태그 결정
   return (
-    <StyledTitle as={Tag} $color={color} $fontSize={fontSize}>
+    <StyledTitle as={Tag} $color={color} $fontSize={fontSize} $align={align}>
       {content}
     </StyledTitle>
   );
@@ -107,7 +132,7 @@ export const Title: React.FC<TextProps> = ({
  * @param param0
  * @param param0.content : (필수) 글 내용(텍스트)
  * @param param0.color: (선택) 글자 색상 | (기본): 검은색
- * @param param0.fontSize: (선택) 제목 크기 | (기본): small | (xlarge, large, medium, small, xsmall 중 하나)
+ * @param param0.fontSize: (선택) 글자 크기 | (기본): small | (xlarge, large, medium, small, xsmall 중 하나)
  * @returns
  */
 export const Description: React.FC<TextProps> = ({
@@ -115,10 +140,33 @@ export const Description: React.FC<TextProps> = ({
   color = null,
   fontSize = null,
   htype = null,
+  align = "center",
 }) => {
   return (
-    <StyledDesc color={color} fontSize={fontSize}>
+    <StyledDesc $color={color} $fontSize={fontSize} $align={align}>
       {content}
     </StyledDesc>
+  );
+};
+
+/// span ///
+/**
+ * 짧은 내용을 서술 혹은 강조하는 span 태그용 컴포넌트
+ * @param param0
+ * @param param0.content : (필수) 글 내용(텍스트)
+ * @param param0.color: (선택) 글자 색상 | (기본): 검은색
+ * @param param0.fontSize: (선택) 글자 크기 | (기본): small | (xlarge, large, medium, small, xsmall 중 하나)
+ * @returns
+ */
+export const Span: React.FC<TextProps> = ({
+  content,
+  color = null,
+  fontSize = null,
+  align = "center",
+}) => {
+  return (
+    <StyledSpan $color={color} $fontSize={fontSize} $align={align}>
+      {content}
+    </StyledSpan>
   );
 };

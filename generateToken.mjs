@@ -108,7 +108,7 @@ function jsonToCssVars(jsonObj) {
  */
 export function setTokenintoStyle(jsonData) {
   const cssVars = jsonToCssVars(jsonData);
-  console.log("👩‍💻 cssVars를 체크합니다. ", cssVars);
+  //console.log("👩‍💻 cssVars를 체크합니다. ", cssVars);
   const cssRootContents = `
   /*
   * HTML의 style에 설정하기 위한 문자열입니다. 서버가 시작될 시 자동으로 세팅됩니다. 

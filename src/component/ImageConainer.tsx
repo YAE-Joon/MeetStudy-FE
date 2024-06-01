@@ -5,6 +5,8 @@ import {
   StyledComponentsProps,
   StyledProps,
 } from "@/component/styled-components/styledProps";
+import dt from "@/lib/designToken/designTokens";
+const mobileWidth = dt.DesignTokenExcept.media.mobile;
 
 /** styled */
 interface StyledDiv extends StyledProps {
@@ -29,6 +31,12 @@ const StyledImageContainer = styled.div<StyledProps>`
   height: 100%;
 
   overflow: hidden;
+
+  @media only screen and (max-width: ${mobileWidth}) {
+    width: 100%;
+    height: auto;
+    display: none;
+  }
 `;
 
 /** components */

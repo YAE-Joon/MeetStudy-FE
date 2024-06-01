@@ -7,12 +7,14 @@ import {
 } from "@/component/styled-components/styledProps";
 
 import dt from "@/lib/designToken/designTokens";
+import { Span } from "@/component/styled-components/TextBoxes";
 const mobileWidth = dt.DesignTokenExcept.media.mobile;
 
 interface Styled_li_card_props extends StyledProps {}
 
 interface li_cardProps extends StyledComponentsProps {
-  image: string;
+  image?: string;
+  emoji?: string;
   content: string;
   key?: string | Number;
 }
@@ -40,11 +42,12 @@ const Styled_li = styled.li`
     min-width: 45%;
   }
 `;
-export const Li_card: React.FC<li_cardProps> = ({ image, content }) => {
+export const Li_card: React.FC<li_cardProps> = ({ image, emoji, content }) => {
   return (
     <Styled_li>
-      <div>{image}</div>
-      <div>{content}</div>
+      {image && <Span content={image} />}
+      {emoji && <Span content={emoji} />}
+      <Span content={content} />
     </Styled_li>
   );
 };

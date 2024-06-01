@@ -17,6 +17,8 @@ export const FlexBox_H_2 = styled.div`
   @media only screen and (max-width: ${mobileWidth}) {
     flex-direction: column;
     align-items: center;
+
+    position: relative;
   }
 
   > div,

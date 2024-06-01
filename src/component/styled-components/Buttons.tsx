@@ -11,6 +11,7 @@ import {
 
 /** common */
 const DesignTokenVarNames = dt.DesignTokenVarNames;
+const mobileWidth = dt.DesignTokenExcept.media.mobile;
 
 interface StyledButtonProps extends StyledProps {
   $color: string | null;
@@ -57,6 +58,10 @@ const StyledButton = styled.button<StyledButtonProps>`
       }}
     );
   }
+
+  @media only screen and (max-width: ${mobileWidth}) {
+    width: 50%;
+  }
 `;
 
 const StyledLink = styled(Link)<StyledButtonProps>`
@@ -85,6 +90,10 @@ const StyledLink = styled(Link)<StyledButtonProps>`
         return $secondaryColor ? $secondaryColor : $bgColor;
       }}
     );
+  }
+
+  @media only screen and (max-width: ${mobileWidth}) {
+    width: 50%;
   }
 `;
 
