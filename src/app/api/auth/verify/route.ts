@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getOtp, deleteOtp } from "../../../../lib/otpStore";
+import { saveOtp, getOtp, deleteOtp } from "../../../../lib/otpStore";
 
 export async function POST(req: NextRequest) {
   const { email, otp } = await req.json();
@@ -11,6 +11,10 @@ export async function POST(req: NextRequest) {
     );
   }
 
+  // OTP를 먼저 저장합니다.
+  saveOtp(email, otp);
+
+  // 인증 요청을 처리합니다.
   const storedOtp = getOtp(email);
 
   if (storedOtp !== otp) {
@@ -21,8 +25,6 @@ export async function POST(req: NextRequest) {
   }
 
   deleteOtp(email); // 인증 번호 사용 후 삭제
-
-  // 인증 성공 처리 로직을 여기에 추가하세요 (예: 사용자 상태 업데이트)
 
   return NextResponse.json(
     { message: "이메일 인증에 성공했습니다." },

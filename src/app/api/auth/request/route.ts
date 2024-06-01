@@ -13,17 +13,16 @@ export async function POST(req: NextRequest) {
   }
 
   const otp = Math.floor(100000 + Math.random() * 900000).toString(); // 6자리 OTP 생성
-  saveOtp(email, otp);
 
   try {
     await sendOtpEmail(email, otp);
+    saveOtp(email, otp); // OTP 전송 이후에 저장합니다.
 
     return NextResponse.json(
       { message: "인증 번호가 전송되었습니다." },
       { status: 200 }
     );
   } catch (error) {
-    console.error(error);
     return NextResponse.json(
       { message: "이메일 전송에 실패했습니다." },
       { status: 500 }
