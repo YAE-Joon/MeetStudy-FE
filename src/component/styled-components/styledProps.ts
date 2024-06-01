@@ -15,6 +15,8 @@ export interface StyledProps {
 
   // padding
   $padding?: string | null;
+
+  $isBold?: boolean;
 }
 
 /**

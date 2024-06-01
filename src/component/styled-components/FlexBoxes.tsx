@@ -2,8 +2,10 @@
 
 import styled from "styled-components";
 import dt from "@/lib/designToken/designTokens";
+import { StyledProps } from "@/component/styled-components/styledProps";
 const mobileWidth = dt.DesignTokenExcept.media.mobile;
 
+interface Styled_ul extends StyledProps {}
 export const FlexBox_H_2 = styled.div`
   display: flex;
   flex-wrap: wrap;
@@ -36,7 +38,7 @@ export const FlexBox_v_2 = styled.div`
   align-items: center;
   padding: 0 1rem;
 
-  gap: 5rem;
+  gap: 2rem;
 
   @media only screen and (max-width: ${mobileWidth}) {
     flex-direction: column;
@@ -50,12 +52,12 @@ export const FlexBox_v_2 = styled.div`
   }
 `;
 
-export const FlexBox_H_ul = styled.ul`
+export const FlexBox_H_ul = styled.ul<Styled_ul>`
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
   justify-content: space-between;
-  align-items: center;
+  align-items: stretch;
 
   padding-bottom: 2vh;
 
@@ -65,7 +67,7 @@ export const FlexBox_H_ul = styled.ul`
 
   @media only screen and (max-width: ${mobileWidth}) {
     flex-direction: column;
-    align-items: center;
+    align-items: stretch;
   }
 
   > div,
