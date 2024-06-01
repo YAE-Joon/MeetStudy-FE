@@ -6,8 +6,9 @@ import {
   ForthSectionLanding,
   SecondSectionLanding,
   ThirdSectionLanding,
-} from "@/component/pages/landing/Landing";
+} from "@/component/landingPage/Landing";
 import { OuterContainer } from "@/component/styled-components/Container";
+import Link from "next/link";
 
 const LandingPage = () => {
   const firstSectionRef = useRef(null);
@@ -21,6 +22,7 @@ const LandingPage = () => {
 
   return (
     <OuterContainer>
+      <Link href={"/main"}>[개발중/임시 링크] 메인(로그인 후)로 이동</Link>
       <FirstSectionLanding
         ref={firstSectionRef}
         mover={() => scrollToNext(secondSectionRef)}

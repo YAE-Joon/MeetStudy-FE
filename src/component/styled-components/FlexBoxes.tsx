@@ -9,11 +9,15 @@ interface Styled_ul extends StyledProps {}
 
 interface StyledFlexProps {
   type?: "center" | "space-between";
+  direction?: "right" | "left";
 }
 export const FlexBoxH = styled.div<StyledFlexProps>`
   display: flex;
   flex-wrap: wrap;
-  flex-direction: row;
+  flex-direction: ${({ direction }) => {
+    console.log(" direction?", direction);
+    return direction === "right" ? "row-reverse" : "row";
+  }};
   justify-content: ${({ type }) => type || "space-between"};
 
   align-items: center;
@@ -30,17 +34,18 @@ export const FlexBoxH = styled.div<StyledFlexProps>`
     position: relative;
   }
 
-  > div,
+  /* > div,
   > section {
     flex: 1 1 45%;
     min-width: 45%;
-  }
+  } */
 `;
 
 export const FlexBoxV = styled.div<StyledFlexProps>`
   display: flex;
   flex-wrap: wrap;
-  flex-direction: column;
+  flex-direction: ${({ direction }) =>
+    direction === "right" ? "row-reverse" : "column"};
   justify-content: ${({ type }) => type || "space-between"};
   align-items: center;
   padding: 0 1rem;
@@ -53,11 +58,11 @@ export const FlexBoxV = styled.div<StyledFlexProps>`
     align-items: center;
   }
 
-  > div,
+  /* > div,
   > section {
     flex: 1 1 45%;
     min-width: 45%;
-  }
+  } */
 `;
 
 export const FlexBox_H_ul = styled.ul<Styled_ul>`

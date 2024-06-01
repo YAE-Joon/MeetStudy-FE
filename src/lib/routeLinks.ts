@@ -4,6 +4,8 @@ const routeLinks = {
   main: "/user",
   login: "",
   signUp: "users/login",
+
+  myAccountSetting: "main/myAccount",
 };
 
 export default routeLinks;
