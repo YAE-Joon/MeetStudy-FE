@@ -179,7 +179,7 @@ export default dt
     --colors-simple-primary:#52C233;
 --colors-simple-secondary:#008BFB;
 --colors-simple-primarydeeper:#2B8213;
---colors-simple-annotations:#008BFB;
+--colors-simple-annotations:#F6BE2C;
 --colors-simple-tertiarygray:#ECECEC;
 --colors-simple-tertiarylightgray:#C9EFBE;
 --colors-simple-whitebg:#F9F9F9;

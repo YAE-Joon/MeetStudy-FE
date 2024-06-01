@@ -12,6 +12,7 @@ export interface StyledProps {
   $fontSize?: string | null;
 
   //너비와 높이
+  $height?: string | null;
 
   // padding
   $padding?: string | null;

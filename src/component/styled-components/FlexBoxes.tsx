@@ -6,15 +6,22 @@ import { StyledProps } from "@/component/styled-components/styledProps";
 const mobileWidth = dt.DesignTokenExcept.media.mobile;
 
 interface Styled_ul extends StyledProps {}
-export const FlexBox_H_2 = styled.div`
+
+interface StyledFlexProps {
+  type?: "center" | "space-between";
+}
+export const FlexBoxH = styled.div<StyledFlexProps>`
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: ${({ type }) => type || "space-between"};
+
   align-items: center;
   padding: 0 1rem;
 
   gap: 0.5rem;
+
+  height: 100%;
 
   @media only screen and (max-width: ${mobileWidth}) {
     flex-direction: column;
@@ -30,15 +37,16 @@ export const FlexBox_H_2 = styled.div`
   }
 `;
 
-export const FlexBox_v_2 = styled.div`
+export const FlexBoxV = styled.div<StyledFlexProps>`
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: ${({ type }) => type || "space-between"};
   align-items: center;
   padding: 0 1rem;
 
-  gap: 2rem;
+  gap: 5rem;
+  height: 100%;
 
   @media only screen and (max-width: ${mobileWidth}) {
     flex-direction: column;
