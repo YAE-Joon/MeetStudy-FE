@@ -12,8 +12,9 @@ const mobileWidth = dt.DesignTokenExcept.media.mobile;
 /** Styled */
 
 interface StyledContainerProps extends StyledProps {
-  $minWidth: string | null;
-  $gap: string | null;
+  $minWidth?: string | null;
+  $gap?: string | null;
+  as?: keyof JSX.IntrinsicElements; // for as prop
 }
 
 //const mobileWidth = DesignTokenVarNames.media.mobileWidth;
@@ -77,6 +78,7 @@ interface ContainerProps extends StyledComponentsProps {
   gap?: string | null;
   height?: string | null;
   bgColor?: string | null;
+  as?: keyof JSX.IntrinsicElements;
 }
 
 // /**
@@ -115,6 +117,7 @@ export const Container = forwardRef<HTMLDivElement, ContainerProps>(
   (
     {
       children,
+      as = "div",
       bgColor = null,
       minWidth = null,
       gap = null,
@@ -126,6 +129,7 @@ export const Container = forwardRef<HTMLDivElement, ContainerProps>(
     return (
       <StyledContainer
         ref={ref}
+        as={as}
         $bgColor={bgColor}
         $minWidth={minWidth}
         $gap={gap}
@@ -138,8 +142,22 @@ export const Container = forwardRef<HTMLDivElement, ContainerProps>(
   }
 );
 
-export const OuterContainer = styled.div`
+// outer container
+
+const StyledOuterContainer = styled.div<StyledContainerProps>`
   scroll-snap-type: y mandatory;
   height: 100vh;
   //overflow-y: scroll;
+  min-height: 100vh;
+  flex: 1; /** footer를 밀어내기 위해서 */
 `;
+export const OuterContainer: React.FC<ContainerProps> = ({
+  children,
+  as = "div",
+  minWidth = null,
+  gap = null,
+  height = null,
+  bgColor = null,
+}) => {
+  return <StyledOuterContainer as={as}>{children}</StyledOuterContainer>;
+};
