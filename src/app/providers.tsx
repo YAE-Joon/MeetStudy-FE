@@ -6,6 +6,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import StyledComponentsRegistry from "@/lib/styled-components/registry";
+import Footer from "@/component/Footer";
 
 interface Props {
   children?: React.ReactNode;
@@ -32,6 +33,7 @@ export const NextLayout = ({ children }: Props) => {
     <div className="layout">
       <Navbar />
       {children}
+      <Footer />
     </div>
   );
 };

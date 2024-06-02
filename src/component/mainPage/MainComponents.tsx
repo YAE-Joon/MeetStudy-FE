@@ -20,7 +20,7 @@ import {
   SettingSection,
   MySettingUl,
   FlexBar,
-} from "@/app/main/mainSubComponents";
+} from "@/component/mainPage/mainSubComponents";
 import Link from "next/link";
 import routeLinks from "@/lib/routeLinks";
 

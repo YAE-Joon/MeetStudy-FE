@@ -5,7 +5,7 @@ const routeLinks = {
   login: "",
   signUp: "users/login",
 
-  myAccountSetting: "main/myAccount",
+  myAccountSetting: "myAccount",
 };
 
 export default routeLinks;

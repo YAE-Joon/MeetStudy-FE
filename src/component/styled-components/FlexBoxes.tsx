@@ -15,7 +15,6 @@ export const FlexBoxH = styled.div<StyledFlexProps>`
   display: flex;
   flex-wrap: wrap;
   flex-direction: ${({ direction }) => {
-    console.log(" direction?", direction);
     return direction === "right" ? "row-reverse" : "row";
   }};
   justify-content: ${({ type }) => type || "space-between"};

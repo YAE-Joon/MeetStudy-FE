@@ -22,7 +22,6 @@ const LandingPage = () => {
 
   return (
     <OuterContainer>
-      <Link href={"/main"}>[개발중/임시 링크] 메인(로그인 후)로 이동</Link>
       <FirstSectionLanding
         ref={firstSectionRef}
         mover={() => scrollToNext(secondSectionRef)}

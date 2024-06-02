@@ -27,7 +27,7 @@
 }
 
 .layout {
-  @apply py-[52px];
+  @apply pt-[52px]; /*footer 를 추가하며 py 에서 pt로 수정*/
 }
 
 .infowindow {

@@ -27,7 +27,6 @@ export const StyledWrapper = styled.section<StyledWrapper>`
   //색상을 prop으로 받지 않는다면 기본 색상(배경 흰색)으로 설정됨
   background-color: var(
     ${({ $bgColor }) => {
-      console.log("?전달받았나요 ? $bgColor", $bgColor);
       return $bgColor ? $bgColor : tokens.colors.simple.whitebg;
     }}
   );
