@@ -1,8 +1,9 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useSearchParams } from "next/navigation";
+import { fetchWithCommonHeaders } from "@/lib/fetchWithCommonHeaders";
 
 const interestsOptions = [
   "이름1",
@@ -15,72 +16,57 @@ const interestsOptions = [
   "이름8",
 ];
 
+interface SignupForm {
+  password: string;
+  confirmPassword: string;
+  name: string;
+  nickname: string;
+  interests: string[];
+}
+
 const SignupPage = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const initialEmail = searchParams.get("email") || "";
 
-  const [form, setForm] = useState({
-    email: initialEmail,
+  const [form, setForm] = useState<SignupForm>({
     password: "",
-    confirmPassword: "", // 비밀번호 확인 필드 추가
+    confirmPassword: "",
     name: "",
     nickname: "",
-    interests: [] as string[], // 관심분야 필드 추가
+    interests: [],
   });
   const [status, setStatus] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (initialEmail) {
-      setForm((prevForm) => ({ ...prevForm, email: initialEmail }));
-    }
-  }, [initialEmail]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
 
-    if (type === "checkbox") {
-      if (checked) {
-        setForm((prevForm) => ({
-          ...prevForm,
-          interests: [...prevForm.interests, value],
-        }));
+    setForm((prevForm) => {
+      let interests = prevForm.interests;
+      if (type === "checkbox") {
+        interests = checked
+          ? [...prevForm.interests, value]
+          : prevForm.interests.filter((interest) => interest !== value);
       } else {
-        setForm((prevForm) => ({
-          ...prevForm,
-          interests: prevForm.interests.filter(
-            (interest) => interest !== value
-          ),
-        }));
+        return { ...prevForm, [name]: value };
       }
-    } else {
-      setForm((prevForm) => ({ ...prevForm, [name]: value }));
-    }
+
+      return { ...prevForm, interests };
+    });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // 비밀번호와 비밀번호 확인 필드가 일치하는지 확인
     if (form.password !== form.confirmPassword) {
       setStatus("비밀번호가 일치하지 않습니다.");
       return;
     }
 
-    // 회원가입 요청 로직 추가
     try {
-      const response = await fetch("/api/signup", {
+      const response = await fetchWithCommonHeaders("/api/signup", {
         method: "POST",
-        body: JSON.stringify({
-          email: form.email,
-          password: form.password,
-          name: form.name,
-          nickname: form.nickname,
-          interests: form.interests,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-        },
+        body: JSON.stringify({ ...form, email: initialEmail }),
       });
 
       const data = await response.json();
@@ -90,7 +76,7 @@ const SignupPage = () => {
       }
 
       setStatus("회원가입에 성공했습니다.");
-      router.push("/login"); // 회원가입 성공 후 로그인 페이지로 리디렉션
+      router.push("/login");
     } catch (error) {
       console.error("회원가입 실패:", error);
       setStatus("회원가입에 실패했습니다.");
@@ -117,12 +103,12 @@ const SignupPage = () => {
               type="email"
               id="email"
               name="email"
-              value={form.email}
+              value={initialEmail}
               onChange={handleChange}
               className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
               placeholder="이메일 주소를 입력하세요"
               required
-              disabled
+              readOnly
             />
           </div>
           <div className="flex flex-col gap-3">
