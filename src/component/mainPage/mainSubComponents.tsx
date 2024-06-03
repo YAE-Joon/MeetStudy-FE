@@ -76,5 +76,5 @@ export const FlexBar = styled.nav`
   margin: 0;
   padding: 0 1rem 0 0;
 
-  background-color: var(${tokens.colors.simple.tertiarygray});
+  background-color: var(${tokens.colors.simple.whitebg});
 `;

@@ -20,7 +20,7 @@ interface StyledTextProps extends StyledProps {
 interface TextProps {
   content: string;
   color?: string;
-  fontSize?: keyof FontSizeOptions;
+  fontSize?: string; //token에서 지정되어 전달될 예정
   align?: "center" | "left";
   htype?: 1 | 2 | 3 | 4 | 5 | 6;
   isAuthor?: boolean;

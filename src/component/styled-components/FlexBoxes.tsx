@@ -64,27 +64,36 @@ export const FlexBoxV = styled.div<StyledFlexProps>`
   } */
 `;
 
-export const FlexBox_H_ul = styled.ul<Styled_ul>`
+// ul - flex - basic
+export const StyledUl = styled.ul<Styled_ul>`
   display: flex;
   flex-wrap: wrap;
-  flex-direction: row;
   justify-content: space-between;
   align-items: stretch;
-
-  padding-bottom: 2vh;
-
-  gap: 0.5rem;
-
   list-style-type: none;
 
   @media only screen and (max-width: ${mobileWidth}) {
     flex-direction: column;
     align-items: stretch;
   }
+`;
+// landing에 사용했음, landing에 specific하게 수정 필요
+export const FlexBox_H_ul = styled(StyledUl)`
+  flex-direction: row;
+  padding-bottom: 2vh;
+  gap: 0.5rem;
 
   > div,
   > section {
     flex: 1 1 45%;
     min-width: 45%;
   }
+`;
+
+export const FlexBoxUlV = styled.ul<Styled_ul>`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  flex-direction: column;
 `;

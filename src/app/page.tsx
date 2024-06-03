@@ -18,7 +18,7 @@ const tokens = dt.DesignTokenVarNames;
 export default function Main() {
   return (
     <OuterContainer>
-      <MainNavBar />
+      <MainNavBar mode={"mypage"} />
       <Container bgColor={`var(${tokens.colors.simple.primary})`}>
         <FirstSectionMain />
       </Container>

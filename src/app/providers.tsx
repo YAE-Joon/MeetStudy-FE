@@ -7,6 +7,8 @@ import "react-toastify/dist/ReactToastify.css";
 
 import StyledComponentsRegistry from "@/lib/styled-components/registry";
 import Footer from "@/component/Footer";
+import { useRouter } from "next/router";
+import { useTransition } from "react";
 
 interface Props {
   children?: React.ReactNode;

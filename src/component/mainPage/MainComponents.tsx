@@ -4,6 +4,7 @@ import routeLinks from "@/lib/routeLinks";
 
 import styled from "styled-components";
 import { IoMdSettings } from "react-icons/io";
+import { RiUserFill } from "react-icons/ri";
 
 import Wrapper from "@/component/styled-components/Wrapper";
 import { FlexBoxH, FlexBoxV } from "@/component/styled-components/FlexBoxes";
@@ -35,19 +36,34 @@ export const FirstSectionMain = () => {
 };
 
 // 구현 완료
-export const MainNavBar = () => {
+export const MainNavBar = ({ mode }: { mode?: string }) => {
   return (
     <FlexBar>
       <SettingSection>
         <MySettingUl>
-          <li>
-            <IoMdSettings
-              style={{ color: `var(${tokens.colors.simple.primary})` }}
-            />
-          </li>
-          <li>
-            <Link href={routeLinks.myAccountSetting}>계정 관리</Link>
-          </li>
+          {mode === "mypage" ? (
+            <>
+              <li>
+                <IoMdSettings
+                  style={{ color: `var(${tokens.colors.simple.primary})` }}
+                />
+              </li>
+              <li>
+                <Link href={routeLinks.myAccountSetting}>계정 관리</Link>
+              </li>
+            </>
+          ) : (
+            <>
+              <li>
+                <RiUserFill
+                  style={{ color: `var(${tokens.colors.simple.primary})` }}
+                />
+              </li>
+              <li>
+                <Link href={routeLinks.main}>메인으로</Link>
+              </li>
+            </>
+          )}
         </MySettingUl>
       </SettingSection>
     </FlexBar>

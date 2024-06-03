@@ -15,10 +15,10 @@ import {
 import { ImageContainer, ImageWrapper } from "@/component/ImageConainer";
 import { Description, Title } from "@/component/styled-components/TextBoxes";
 import {
-  MovingButton,
   PrimaryButton,
   SecondaryButton,
-} from "@/component/styled-components/Buttons";
+  MovingButton,
+} from "@/component/styled-components/Button/Buttons";
 import { GridBox_ul } from "@/component/styled-components/GridBoxes";
 import { Li_card } from "@/component/styled-components/Card";
 const tokens = dt.DesignTokenVarNames;
