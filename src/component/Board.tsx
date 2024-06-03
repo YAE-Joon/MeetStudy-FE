@@ -48,8 +48,8 @@ const Board: React.FC<Props> = ({ title, posts, popularPosts, categories }) => {
       </header>
       <div className="flex-1 grid grid-cols-[3fr_1fr] gap-6 p-6">
         <div className="space-y-4">
-          <div className="flex w-full items-stretch justify-between">
-            <div className="w-4/5 bg-white dark:bg-gray-900 rounded-lg shadow p-4 flex items-center">
+          <div className="w-full ">
+            <div className="bg-white dark:bg-gray-900 rounded-lg shadow p-4 flex items-center">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-6 w-6 mr-2 text-gray-500 dark:text-gray-400"
@@ -64,21 +64,21 @@ const Board: React.FC<Props> = ({ title, posts, popularPosts, categories }) => {
                   d="M10 17l5-5m0 0l-5-5m5 5h-12"
                 />
               </svg>
-              <input
-                type="text"
-                placeholder="검색어를 입력하세요."
-                className="bg-transparent border-b border-gray-300 dark:border-gray-600 focus:outline-none placeholder-gray-500 dark:placeholder-gray-400 w-full py-2"
-                value={searchQuery}
-                onChange={handleSearchInputChange}
-              />
-            </div>
-            <div className="bg-white dark:bg-gray-950 rounded-lg shadow p-4">
-              <button
-                className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
-                onClick={handleNewPostClick}
-              >
-                게시글 작성
-              </button>
+              <div className="w-full flex">
+                <input
+                  type="text"
+                  placeholder="검색어를 입력하세요."
+                  className="mr-5 bg-transparent border-b border-gray-300 dark:border-gray-600 focus:outline-none placeholder-gray-500 dark:placeholder-gray-400 w-full py-2"
+                  value={searchQuery}
+                  onChange={handleSearchInputChange}
+                />
+                <button
+                  className="w-[10em] bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
+                  onClick={handleNewPostClick}
+                >
+                  게시글 작성
+                </button>
+              </div>
             </div>
           </div>
           {filteredPosts.map((post, index) => (
