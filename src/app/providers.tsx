@@ -4,6 +4,8 @@ import Navbar from "@/component/Navbar";
 import { SessionProvider } from "next-auth/react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Provider } from "react-redux";
+import store from "../redux/store"; // Redux store를 가져옵니다.
 
 import StyledComponentsRegistry from "@/lib/styled-components/registry";
 
@@ -29,9 +31,11 @@ export const NextProvider = ({ children }: Props) => {
 
 export const NextLayout = ({ children }: Props) => {
   return (
-    <div className="layout">
-      <Navbar />
-      {children}
-    </div>
+    <Provider store={store}>
+      <div className="layout">
+        <Navbar />
+        {children}
+      </div>
+    </Provider>
   );
 };
