@@ -6,9 +6,12 @@ import {
   ForthSectionLanding,
   SecondSectionLanding,
   ThirdSectionLanding,
-} from "@/component/pages/landing/Landing";
+} from "./Landing";
 import { OuterContainer } from "@/component/styled-components/Container";
 
+/**
+ * scroll 관련 동적 움직임을 위해 client component로 묶어 export합니다.
+ */
 const LandingPage = () => {
   const firstSectionRef = useRef(null);
   const secondSectionRef = useRef(null);

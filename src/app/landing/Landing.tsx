@@ -5,8 +5,7 @@ import Image from "next/image";
 import styled from "styled-components";
 import dt from "@/lib/designToken/designTokens";
 import routeLinks from "@/lib/routeLinks";
-import section_01_img from "../../../../public/images/1. landing-01.png";
-
+import section_01_img from "../../../public/images/1. landing-01.png";
 import { Container } from "@/component/styled-components/Container";
 import {
   FlexBoxV,
@@ -16,10 +15,10 @@ import {
 import { ImageContainer, ImageWrapper } from "@/component/ImageConainer";
 import { Description, Title } from "@/component/styled-components/TextBoxes";
 import {
-  MovingButton,
   PrimaryButton,
   SecondaryButton,
-} from "@/component/styled-components/Buttons";
+  MovingButton,
+} from "@/component/styled-components/Button/Buttons";
 import { GridBox_ul } from "@/component/styled-components/GridBoxes";
 import { Li_card } from "@/component/styled-components/Card";
 const tokens = dt.DesignTokenVarNames;
@@ -32,15 +31,6 @@ const TextPart = styled.section`
   align-items: left;
 
   width: 100%;
-  // height: 100%;
-  @media only screen and (max-width: ${mobileWidth}) {
-    /* position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center; */
-    //color: white;
-  }
 `;
 
 const dummy_list_sect2 = {
@@ -69,6 +59,26 @@ interface LandingProps {
   mover: () => void;
 }
 
+const ExtendedFlexBoxH = styled(FlexBoxH)`
+  > div,
+  > section {
+    flex: 1 1 45%;
+    min-width: 45%;
+  }
+`;
+
+const ExtendedFlexBoxV = styled(FlexBoxV)`
+  > div,
+  > section {
+    flex: 1 1 45%;
+    min-width: 45%;
+  }
+`;
+
+const LandingDesc = styled(Description)`
+  padding: 1rem;
+`;
+
 /** Components */
 // 사진과 타이틀
 export const FirstSectionLanding = React.forwardRef<
@@ -77,21 +87,21 @@ export const FirstSectionLanding = React.forwardRef<
 >(({ mover }, ref) => {
   return (
     <Container
-      color={tokens.colors.simple.secondary}
+      bgColor={tokens.colors.simple.secondary}
       padding={"2rem 0 2rem 0"}
       gap={"3px"}
       height={"100vh"}
       ref={ref}
     >
-      <FlexBoxV>
-        <FlexBoxH>
+      <ExtendedFlexBoxV>
+        <ExtendedFlexBoxH>
           <TextPart>
             <Title
               htype={1}
               content={"온라인에서도 함께 공부해요, 밋스터디"}
               align="left"
             />
-            <Description content={"온라인 스터디 공간"} align="left" />
+            <LandingDesc content={"온라인 스터디 공간"} align="left" />
             <GridBox_ul>
               <PrimaryButton content={"스터디 합류하기"} href={"/"} />
               <SecondaryButton
@@ -112,9 +122,9 @@ export const FirstSectionLanding = React.forwardRef<
               />
             </ImageWrapper>
           </ImageContainer>
-        </FlexBoxH>
+        </ExtendedFlexBoxH>
         <MovingButton onClick={mover} content={"down"} type={"primary"} />
-      </FlexBoxV>
+      </ExtendedFlexBoxV>
     </Container>
   );
 });
@@ -125,7 +135,7 @@ export const SecondSectionLanding = React.forwardRef<
 >(({ mover }, ref) => {
   return (
     <Container
-      color={tokens.colors.simple.whitebg}
+      bgColor={tokens.colors.simple.whitebg}
       padding={"2rem 0 2rem 0"}
       gap={"3px"}
       height={"100vh"}
@@ -154,7 +164,7 @@ export const ThirdSectionLanding = React.forwardRef<
 >(({ mover }, ref) => {
   return (
     <Container
-      color={tokens.colors.simple.tertiarygray}
+      bgColor={tokens.colors.simple.tertiarygray}
       padding={"2rem 0 2rem 0"}
       gap={"3px"}
       height={"100vh"}
@@ -197,7 +207,7 @@ export const ForthSectionLanding = React.forwardRef<
 >(({ mover }, ref) => {
   return (
     <Container
-      color={tokens.colors.simple.whitebg}
+      bgColor={tokens.colors.simple.whitebg}
       padding={"2rem 0 2rem 0"}
       gap={"3px"}
       height={"100vh"}
