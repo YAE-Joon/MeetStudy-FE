@@ -4,11 +4,6 @@ import { ChangeEvent, useState, useEffect } from "react";
 import { MyaccountProps, UserProfile } from "@/lib/types";
 import getAPIendPoint from "@/lib/settingUrl";
 
-import {
-  FristSectionContainer,
-  FirstSectionUl,
-  ButtonWrapper,
-} from "@/app/myAccount/myAccountClientComponents";
 import { PrimaryButton } from "@/component/styled-components/Button/Buttons";
 import {
   BasicInput,
@@ -19,6 +14,10 @@ import {
   BasicLabel,
   BasicSelect,
 } from "@/component/styled-components/Forms";
+
+import StyledAccounts from "@/app/myAccount/myAccountClientComponents";
+const { FristSectionContainer, FirstSectionUl, ButtonWrapper, DeleteThisUser } =
+  StyledAccounts;
 
 const categoryList = ["국어", "영어", "수학", "과학", "사회", "정보와컴퓨터"];
 
@@ -34,6 +33,11 @@ const EditSections: React.FC<MyaccountProps> = ({ UserProfile }) => {
   /////// handlers //////////
   const handleEditClick = () => {
     setIsEditing((prv) => !prv);
+  };
+
+  // 나중에 구현
+  const handleDeleteUser = () => {
+    alert("정말 탈퇴하시겠습니까? / 이후 구현 예정");
   };
 
   const updateUserInfo = async (editedData: UserProfile) => {
@@ -142,6 +146,9 @@ const EditSections: React.FC<MyaccountProps> = ({ UserProfile }) => {
             <ButtonWrapper>
               <PrimaryButton onClick={handleEditClick} content={"수정하기"} />
             </ButtonWrapper>
+            <div>
+              <DeleteThisUser onClick={handleDeleteUser} content={"탈퇴하기"} />
+            </div>
           </>
         ) : (
           <>

@@ -51,6 +51,7 @@ export const FlexBoxV = styled.div<StyledFlexProps>`
   height: 100%;
 
   @media only screen and (max-width: ${mobileWidth}) {
+    width: 100%;
     flex-direction: column;
     align-items: center;
   }

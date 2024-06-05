@@ -8,10 +8,10 @@ import dt from "@/lib/designToken/designTokens";
 import { Container } from "@/component/styled-components/Container";
 import Wrapper from "@/component/styled-components/Wrapper";
 import { Title } from "@/component/styled-components/TextBoxes";
-import {
-  PageWrapper,
-  TitleWrapper,
-} from "@/app/myAccount/myAccountClientComponents";
+import StyledAccounts from "@/app/myAccount/myAccountClientComponents";
+
+const { PartContainerV, PageWrapper, TitleWrapper } = StyledAccounts;
+
 import EditSections from "./MyAccount";
 
 const tokens = dt.DesignTokenVarNames;
@@ -36,18 +36,22 @@ export const Myaccount = () => {
       height={"100vh"}
       bgColor={tokens.colors.simple.whitebg}
       as="section"
+      padding={"2rem 0 2rem 0"}
+      gap={"2px"}
     >
-      <TitleWrapper>
-        <Title
-          content={"내 정보 수정하기"}
-          fontSize={tokens.fontSize.web.large}
-          color={tokens.colors.simple.blackbasic}
-          htype={2}
-        />
-      </TitleWrapper>
-      <PageWrapper>
-        <EditSections UserProfile={userProfileData} />
-      </PageWrapper>
+      <PartContainerV>
+        <TitleWrapper>
+          <Title
+            content={"내 정보 수정하기"}
+            fontSize={tokens.fontSize.web.large}
+            color={tokens.colors.simple.blackbasic}
+            htype={2}
+          />
+        </TitleWrapper>
+        <PageWrapper>
+          <EditSections UserProfile={userProfileData} />
+        </PageWrapper>
+      </PartContainerV>
     </Container>
   );
 };
