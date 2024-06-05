@@ -24,6 +24,8 @@ export const StyledWrapper = styled.section<StyledWrapper>`
   width: 100%;
   min-width: var(${tokens.boxSizes.width.wrapperMax});
 
+  padding: 1.5rem;
+
   //색상을 prop으로 받지 않는다면 기본 색상(배경 흰색)으로 설정됨
   background-color: var(
     ${({ $bgColor }) => {

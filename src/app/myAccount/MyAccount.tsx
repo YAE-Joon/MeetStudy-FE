@@ -1,10 +1,14 @@
 "use client";
+
 import { ChangeEvent, useState, useEffect } from "react";
+import { MyaccountProps, UserProfile } from "@/lib/types";
+import getAPIendPoint from "@/lib/settingUrl";
+
 import {
   FristSectionContainer,
   FirstSectionUl,
   ButtonWrapper,
-} from "@/app/myAccount/myAccountComponents";
+} from "@/app/myAccount/myAccountClientComponents";
 import { PrimaryButton } from "@/component/styled-components/Button/Buttons";
 import {
   BasicInput,
@@ -15,31 +19,27 @@ import {
   BasicLabel,
   BasicSelect,
 } from "@/component/styled-components/Forms";
-import { MyaccountProps, UserData } from "@/lib/types";
-import getAPIendPoint from "@/lib/settingUrl";
 
 const categoryList = ["국어", "영어", "수학", "과학", "사회", "정보와컴퓨터"];
 
-const EditSections: React.FC<MyaccountProps> = ({ userData }) => {
+const EditSections: React.FC<MyaccountProps> = ({ UserProfile }) => {
   const [isEditing, setIsEditing] = useState(false);
-  const [userInfo, setUserInfo] = useState<UserData | null>(userData);
+  const [userInfo, setUserInfo] = useState<UserProfile | null>(UserProfile);
 
   const [selectedInterests, setSelectedInterests] = useState<
     string[] | null | undefined
-  >(userData.interests);
+  >(UserProfile.interests);
   const [interestLists, setInterestLists] = useState<string[]>(categoryList);
 
   /////// handlers //////////
   const handleEditClick = () => {
-    console.log("현재 isEditing", isEditing);
-    console.log("바뀔 isEditing", !isEditing);
     setIsEditing((prv) => !prv);
   };
 
-  const updateUserInfo = async (editedData: UserData) => {
+  const updateUserInfo = async (editedData: UserProfile) => {
     console.log("🙆‍♂️ Try update(upt) Data from MyAccount(CC): ");
     const { username, nickname, password, interests } = editedData;
-    const apiEndpoint = getAPIendPoint(`/api/mypage`);
+    const apiEndpoint = getAPIendPoint(`/api/myaccount`);
     try {
       const response = await fetch(apiEndpoint, {
         method: "PUT",
@@ -87,7 +87,7 @@ const EditSections: React.FC<MyaccountProps> = ({ userData }) => {
     idx: number
   ) => {
     if (selectedInterests) {
-      console.log("event.target.value", event.target.value);
+      //console.log("event.target.value", event.target.value);
       const { value } = event.target;
 
       const newSelectedInterests = [...selectedInterests];
@@ -99,7 +99,7 @@ const EditSections: React.FC<MyaccountProps> = ({ userData }) => {
         ...userInfo,
         interests: newSelectedInterests,
       };
-      setUserInfo(updatedUserInfo as UserData);
+      setUserInfo(updatedUserInfo as UserProfile);
     }
   };
 

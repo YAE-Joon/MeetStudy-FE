@@ -25,6 +25,7 @@ interface TextProps {
   htype?: 1 | 2 | 3 | 4 | 5 | 6;
   isAuthor?: boolean;
   isBold?: boolean;
+  className?: string;
 }
 
 /** styled */
@@ -80,7 +81,6 @@ const StyledDesc = styled.p<StyledTextProps>`
     }}
   );
 
-  padding: 1rem;
   min-height: 4rem;
 
   overflow-wrap: break-word;
@@ -146,10 +146,17 @@ export const Title: React.FC<TextProps> = ({
   fontSize = null,
   htype = 1,
   align,
+  className,
 }) => {
   const Tag = `h${htype}` as keyof JSX.IntrinsicElements; // htype에 따른 태그 결정
   return (
-    <StyledTitle as={Tag} $color={color} $fontSize={fontSize} $align={align}>
+    <StyledTitle
+      as={Tag}
+      $color={color}
+      $fontSize={fontSize}
+      $align={align}
+      className={className}
+    >
       {content}
     </StyledTitle>
   );
@@ -170,9 +177,15 @@ export const Description: React.FC<TextProps> = ({
   fontSize = null,
   htype = null,
   align = "left",
+  className,
 }) => {
   return (
-    <StyledDesc $color={color} $fontSize={fontSize} $align={align}>
+    <StyledDesc
+      $color={color}
+      $fontSize={fontSize}
+      $align={align}
+      className={className}
+    >
       {content}
     </StyledDesc>
   );
@@ -194,6 +207,7 @@ export const Span: React.FC<TextProps> = ({
   isAuthor = false,
   align,
   isBold,
+  className,
 }) => {
   const Tag = isAuthor ? "cite" : "span";
 
@@ -204,6 +218,7 @@ export const Span: React.FC<TextProps> = ({
       $fontSize={fontSize}
       $align={align}
       $isBold={isBold}
+      className={className}
     >
       {content}
     </StyledSpanOrCite>

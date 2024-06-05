@@ -1,14 +1,36 @@
 "use client";
-import { Title } from "@/component/styled-components/TextBoxes";
+import { UserProfile } from "@/lib/types";
+import useFetch from "@/hooks/useFetch";
+import MyAccountLoading from "@/app/myAccount/loading";
+
 import dt from "@/lib/designToken/designTokens";
+
 import { Container } from "@/component/styled-components/Container";
-import { PageWrapper, TitleWrapper } from "@/app/myAccount/myAccountComponents";
+import Wrapper from "@/component/styled-components/Wrapper";
+import { Title } from "@/component/styled-components/TextBoxes";
+import {
+  PageWrapper,
+  TitleWrapper,
+} from "@/app/myAccount/myAccountClientComponents";
 import EditSections from "./MyAccount";
-import { MyaccountProps, UserData } from "@/lib/types";
 
 const tokens = dt.DesignTokenVarNames;
 
-export const Myaccount: React.FC<MyaccountProps> = ({ userData }) => {
+export const Myaccount = () => {
+  const [userProfileData, error] = useFetch<UserProfile>(`/api/myaccount`); //임시, next.js의 서버와 통신
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
+
+  if (!userProfileData) {
+    return (
+      <Wrapper $bgColor={tokens.colors.simple.whitebg}>
+        {" "}
+        <MyAccountLoading />;
+      </Wrapper>
+    );
+  }
   return (
     <Container
       height={"100vh"}
@@ -24,7 +46,7 @@ export const Myaccount: React.FC<MyaccountProps> = ({ userData }) => {
         />
       </TitleWrapper>
       <PageWrapper>
-        <EditSections userData={userData} />
+        <EditSections UserProfile={userProfileData} />
       </PageWrapper>
     </Container>
   );

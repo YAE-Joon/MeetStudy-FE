@@ -20,7 +20,6 @@ export const FlexBoxH = styled.div<StyledFlexProps>`
   justify-content: ${({ type }) => type || "space-between"};
 
   align-items: center;
-  padding: 0 1rem;
 
   gap: 0.5rem;
 
@@ -47,7 +46,6 @@ export const FlexBoxV = styled.div<StyledFlexProps>`
     direction === "right" ? "row-reverse" : "column"};
   justify-content: ${({ type }) => type || "space-between"};
   align-items: center;
-  padding: 0 1rem;
 
   gap: 5rem;
   height: 100%;

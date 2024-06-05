@@ -8,7 +8,8 @@ import "react-toastify/dist/ReactToastify.css";
 import StyledComponentsRegistry from "@/lib/styled-components/registry";
 import Footer from "@/component/Footer";
 import { useRouter } from "next/router";
-import { useTransition } from "react";
+import { Suspense, useTransition } from "react";
+import MainLoading from "@/app/loading";
 
 interface Props {
   children?: React.ReactNode;
@@ -34,7 +35,7 @@ export const NextLayout = ({ children }: Props) => {
   return (
     <div className="layout">
       <Navbar />
-      {children}
+      <Suspense fallback={<MainLoading />}>{children}</Suspense>
       <Footer />
     </div>
   );
