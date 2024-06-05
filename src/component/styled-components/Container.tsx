@@ -150,6 +150,10 @@ const StyledOuterContainer = styled.div<StyledContainerProps>`
   //overflow-y: scroll;
   min-height: 100vh;
   flex: 1; /** footer를 밀어내기 위해서 */
+
+  @media only screen and (max-width: ${mobileWidth}) {
+    width: 95vw;
+  }
 `;
 export const OuterContainer: React.FC<ContainerProps> = ({
   children,

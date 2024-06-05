@@ -49,18 +49,6 @@ const PageWrapper = styled.div`
     text-align: center;
   }
 `;
-const TitleWrapper1 = styled(PageWrapper)`
-  @media only screen and (max-width: ${mobileWidth}) {
-    height: 20px;
-  }
-`;
-
-const TitleWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  height: 2px;
-`;
 
 const FristSectionContainer = styled(FlexBoxV)`
   width: 100%;
@@ -176,7 +164,6 @@ const DeleteThisUser = styled(BasicButton)`
 const StyledAccounts = {
   PartContainerV,
   PageWrapper,
-  TitleWrapper,
   FristSectionContainer,
   FirstSectionUl,
   ButtonWrapper,

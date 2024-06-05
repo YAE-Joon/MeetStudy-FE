@@ -224,3 +224,9 @@ export const Span: React.FC<TextProps> = ({
     </StyledSpanOrCite>
   );
 };
+
+export const TitleWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+`;
