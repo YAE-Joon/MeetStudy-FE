@@ -25,6 +25,52 @@ const SettingSection = styled.section`
   justify-content: flex-end;
 `;
 
+const SectionContainerH = styled(FlexBoxH)`
+  width: 80vw;
+
+  > * {
+    flex: 1;
+  }
+`;
+
+const SectionContainerV = styled(FlexBoxV)`
+  width: 80vw;
+
+  > * {
+    flex: 1;
+  }
+`;
+
+const PartContainerV = styled(FlexBoxV)`
+  padding: 3rem;
+  background-color: var(${tokens.colors.simple.whitebg});
+  border-radius: 20px;
+  border: thick double var(${tokens.colors.simple.tertiarygray});
+
+  gap: 1rem;
+
+  @media only screen and (max-width: ${mobileWidth}) {
+    width: 100%;
+
+    height: auto;
+  }
+`;
+
+const PartContainerH = styled(FlexBoxH)`
+  padding: 3rem;
+  background-color: var(${tokens.colors.simple.whitebg});
+  border-radius: 20px;
+  border: thick double var(${tokens.colors.simple.tertiarygray});
+
+  gap: 1rem;
+
+  @media only screen and (max-width: ${mobileWidth}) {
+    width: 100%;
+
+    height: auto;
+  }
+`;
+
 const MySettingUl = styled.ul<{ gap?: string }>`
   position: absolute;
   top: 0;
@@ -93,8 +139,6 @@ const FlexBar = styled.nav`
 
   background-color: var(${tokens.colors.simple.whitebg});
 `;
-
-interface Styled_ul extends StyledProps {}
 
 const StyledList = styled(FlexBoxUlV)`
   display: flex;
@@ -179,51 +223,6 @@ const ErrorBox = styled(FlexBoxV)`
 
   border: thick double var(${tokens.colors.simple.tertiarygray});
 `;
-const SectionContainerH = styled(FlexBoxH)`
-  width: 80vw;
-
-  > * {
-    flex: 1;
-  }
-`;
-
-const SectionContainerV = styled(FlexBoxV)`
-  width: 80vw;
-
-  > * {
-    flex: 1;
-  }
-`;
-
-const PartContainerV = styled(FlexBoxV)`
-  padding: 3rem;
-  background-color: var(${tokens.colors.simple.whitebg});
-  border-radius: 20px;
-  border: thick double var(${tokens.colors.simple.tertiarygray});
-
-  gap: 1rem;
-
-  @media only screen and (max-width: ${mobileWidth}) {
-    width: 100%;
-
-    height: auto;
-  }
-`;
-
-const PartContainerH = styled(FlexBoxH)`
-  padding: 3rem;
-  background-color: var(${tokens.colors.simple.whitebg});
-  border-radius: 20px;
-  border: thick double var(${tokens.colors.simple.tertiarygray});
-
-  gap: 1rem;
-
-  @media only screen and (max-width: ${mobileWidth}) {
-    width: 100%;
-
-    height: auto;
-  }
-`;
 
 const StyledDescription = styled(Description)`
   padding: 1rem 1rem 1rem 1rem;
@@ -232,16 +231,16 @@ const StyledDescription = styled(Description)`
 const MainStyledPack = {
   MainPageContainer,
   SettingSection,
+  SectionContainerH,
+  SectionContainerV,
+  PartContainerV,
+  PartContainerH,
   MySettingUl,
   FlexBar,
   StyledList,
   StyledDetails,
   MainTitleWrapper,
   ErrorBox,
-  SectionContainerH,
-  SectionContainerV,
-  PartContainerV,
-  PartContainerH,
   StyledDescription,
 };
 export default MainStyledPack;

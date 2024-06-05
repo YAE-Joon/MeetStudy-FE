@@ -31,15 +31,6 @@ const TextPart = styled.section`
   align-items: left;
 
   width: 100%;
-  // height: 100%;
-  @media only screen and (max-width: ${mobileWidth}) {
-    /* position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center; */
-    //color: white;
-  }
 `;
 
 const dummy_list_sect2 = {
@@ -84,6 +75,10 @@ const ExtendedFlexBoxV = styled(FlexBoxV)`
   }
 `;
 
+const LandingDesc = styled(Description)`
+  padding: 1rem;
+`;
+
 /** Components */
 // 사진과 타이틀
 export const FirstSectionLanding = React.forwardRef<
@@ -106,7 +101,7 @@ export const FirstSectionLanding = React.forwardRef<
               content={"온라인에서도 함께 공부해요, 밋스터디"}
               align="left"
             />
-            <Description content={"온라인 스터디 공간"} align="left" />
+            <LandingDesc content={"온라인 스터디 공간"} align="left" />
             <GridBox_ul>
               <PrimaryButton content={"스터디 합류하기"} href={"/"} />
               <SecondaryButton
