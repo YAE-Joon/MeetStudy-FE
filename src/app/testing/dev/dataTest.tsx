@@ -17,7 +17,7 @@ const TESTDataFetching = () => {
   }
 
   const baseURL = getAPIendPoint(apiUrl, true);
-  const [userData, error] = useFetch(apiUrl, true);
+  const [userData, error] = useFetch(apiUrl, {}, false, false);
 
   console.log(`❗❗${testTitle}`, userData);
 

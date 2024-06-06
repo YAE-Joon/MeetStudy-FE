@@ -30,7 +30,7 @@ const SearchPageContainer = ({
 }) => {
   const [isopen, setIsopen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const [studyRooms, error] = useFetch("/api/studyrooms", true);
+  const [studyRooms, error] = useFetch("/api/studyrooms", {}, false, false);
 
   const dummy_list_sect3 = [
     {
