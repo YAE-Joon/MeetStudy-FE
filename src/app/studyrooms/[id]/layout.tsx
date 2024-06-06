@@ -57,6 +57,7 @@ export default function StudyRoomdLayout({
     { label: "채팅", link: `/studyrooms/${roomId}/chatRoom` },
     { label: "스터디룸_캘린더", link: `/studyrooms/${roomId}/calendar` },
     { label: "참가자_리스트", link: `/studyrooms/${roomId}/members` },
+    { label: "게시판", link: `/studyrooms/${roomId}/board` },
   ];
   return (
     <OuterContainer>

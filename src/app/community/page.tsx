@@ -182,7 +182,7 @@ export default function CommunityPage() {
 
   useEffect(() => {
     axios
-      .get("http://34.47.79.59:8080/api/post/public?page=0&size=100")
+      .get("http://34.47.79.59:8080/api/post/public?page=0&size=15")
       .then((response) => {
         dispatch(setCertificates(response.data)); // Redux 스토어에 데이터 설정
       })
@@ -194,10 +194,9 @@ export default function CommunityPage() {
 
   useEffect(() => {
     axios
-      .get("http://34.47.79.59:8080/api/post/user", {
+      .get("http://34.47.79.59:8080/api/post/public?page=0&size=15", {
         headers: {
           Authorization: token,
-          Host: "34.47.79.59:8080",
         },
       })
       .then((response) => {
