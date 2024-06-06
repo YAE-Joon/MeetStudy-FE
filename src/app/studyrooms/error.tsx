@@ -24,7 +24,7 @@ export default function Error({
   }, [error]);
 
   return (
-    <OuterContainer padding={"2rem 0 2rem 0"}>
+    <OuterContainer>
       <div
         style={{
           display: "flex",

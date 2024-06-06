@@ -37,10 +37,23 @@ async function fetchDataBE(
     (headers as Record<string, string>)["Authorization"] = `${adminToken}`;
   }
 
+  console.log(
+    "🙆‍♂️ [fetchDataBE] fetch를 시작합니다. 요청받은 옵션: apiUrl, options, isAdmin, isTest/",
+    apiUrl,
+    options,
+    isAdmin,
+    isTest
+  );
+
   const response = await fetch(endpoint, {
     method: options.method || "GET",
     body: options.body ? JSON.stringify(options.body) : null,
   }); //fetch 함수의 응답 객체
+
+  console.log(
+    "🙆‍♂️ [fetchDataBE] fetch가 종료되었습니다. 상태: ",
+    response.status
+  );
 
   if (!response.ok) {
     const errorMessage = await response.text();

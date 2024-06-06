@@ -20,7 +20,8 @@ const { SectionContainerH, SectionContainerV, PartContainerV, PartContainerH } =
   MainStyledPack;
 // 첫번째 구역 : 일정과 참여중인 스터디룸(미완성)
 const FirstSectionMain = () => {
-  const [userData, error] = useFetch<UserData>("/api/mypage");
+  const [userData, error] = useFetch<UserData>("/api/mypage", {}, false, false);
+  console.log("클라이언트, userData 보입니까?", userData);
 
   if (error) {
     return <div>Error: {error.message}</div>;

@@ -28,7 +28,13 @@ const useFetch = <T>(
   useEffect(() => {
     const loadData = async () => {
       try {
-        console.log("useFetch에서 데이터를 호출합니다");
+        console.log(
+          "useFetch에서 데이터를 호출합니다: apiUrl, options, isAdmin, isTest",
+          apiUrl,
+          options,
+          isAdmin,
+          isTest
+        );
         const data = await fetchDataBE(apiUrl, options, isAdmin, isTest);
         setData(data);
       } catch (err) {
@@ -41,6 +47,8 @@ const useFetch = <T>(
     };
     loadData();
   }, [apiUrl, isAdmin, isTest]);
+
+  console.log("[useFetch.ts] data?", data);
 
   return [data, error] as const;
 };
