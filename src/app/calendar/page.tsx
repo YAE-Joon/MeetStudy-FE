@@ -5,6 +5,7 @@ import { Calendar, momentLocalizer, SlotInfo } from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import styled, { keyframes } from "styled-components";
+import axios from "axios";
 
 moment.locale("en-GB");
 const localizer = momentLocalizer(moment);
@@ -66,6 +67,22 @@ export default function ReactBigCalendar() {
       setLoading(false);
     }, 2000);
     return () => clearTimeout(timer);
+  }, []);
+
+  const token =
+    "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyMCIsImF1dGgiOiJBRE1JTiIsInVzZXJuYW1lIjoi7J287J207IK87Jyg7KCAIiwiZXhwIjoyNzE3NjY0MDI2fQ.hrVSdMxokj0FbBXnmUKLlqgPwHvGMllGpeGmPw6pVdSFmybESvKhQbpZmpkuowbEc61rpYdkcPIi9m91C41StQ";
+
+  useEffect(() => {
+    axios
+      .get("http://34.47.79.59:8080/api/calendar?year=2024&month=6", {
+        headers: {
+          Authorization: token,
+        },
+      })
+      .then((response) => {
+        console.log("Fetched data:", response.data); // 데이터를 콘솔에 출력
+      })
+      .catch((error) => console.error("Error fetching posts:", error));
   }, []);
 
   const handleSelect = ({ start, end }: SlotInfo) => {
