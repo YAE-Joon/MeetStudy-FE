@@ -1,11 +1,11 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import certificateReducer from "./reducers/certificateReducer";
-import postReducer from "./reducers/postReducer";
+import categoryReducer from "./reducers/categoryReducer";
 
 // 루트 리듀서 정의
 const rootReducer = combineReducers({
   certificates: certificateReducer,
-  posts: postReducer,
+  categories: categoryReducer,
 });
 
 // RootState 타입 정의

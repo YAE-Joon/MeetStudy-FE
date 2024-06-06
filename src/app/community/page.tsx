@@ -4,10 +4,12 @@ import styled from "styled-components";
 import { LuSearch } from "react-icons/lu";
 import { useRouter } from "next/navigation";
 import axios from "axios";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setCertificates } from "../../redux/actions/certificationActions";
+import { RootState } from "../../redux/reducers";
 import Board from "@/component/Board";
 import Pagination from "@/component/Pagination";
+import { setCategories } from "@/redux/actions/categoryActions";
 
 interface TabButtonProps {
   active: boolean;
@@ -23,7 +25,9 @@ const TabBar = styled.div`
   padding: 1em 2em 0;
 `;
 
-const TabButton = styled.button<TabButtonProps>`
+const TabButton = styled.button.withConfig({
+  shouldForwardProp: (prop: string) => prop !== "active",
+})<TabButtonProps>`
   padding: 10px 20px;
   border: none;
   border-radius: 20px 20px 0 0;
@@ -98,7 +102,9 @@ const TableCell = styled.td`
   border-bottom: 1px solid #ddd;
 `;
 
-const TestIcon = styled.span<TestIconProps>`
+const TestIcon = styled.span.withConfig({
+  shouldForwardProp: (prop) => prop !== "backgroundColor",
+})<TestIconProps>`
   border-radius: 3px;
   font-weight: 500;
   font-size: 14px;
@@ -116,6 +122,12 @@ export default function CommunityPage() {
   const dispatch = useDispatch();
   const router = useRouter();
   const [activeTab, setActiveTab] = useState("certificate");
+  const postData = useSelector(
+    (state: RootState) => state.certificates.certificates
+  ); // Accessing data from Redux store
+  const categoryData = useSelector(
+    (state: RootState) => state.categories.categories
+  ); // Accessing data from Redux store
   const [certificateSearchQuery, setCertificateSearchQuery] = useState("");
   const [certificate, setCertificate] = useState([
     {
@@ -152,91 +164,10 @@ export default function CommunityPage() {
 
   const itemsPerPage = 2;
 
-  // 더미 데이터 생성
-  const postMessage = [
-    {
-      title: "새로운 기능 업데이트 안내",
-      author: "관리자",
-      date: "2023-06-03",
-      comments: 12,
-    },
-    {
-      title: "감정평가사",
-      author: "홍길동",
-      date: "2023-06-01",
-      comments: 8,
-    },
-    {
-      title: "기계경비지도사",
-      author: "김철수",
-      date: "2023-05-28",
-      comments: 24,
-    },
-    {
-      title: "기계경비지도사",
-      author: "김철수",
-      date: "2023-05-28",
-      comments: 24,
-    },
-    {
-      title: "기계경비지도사",
-      author: "김철수",
-      date: "2023-05-28",
-      comments: 24,
-    },
-    {
-      title: "기계경비지도사",
-      author: "김철수",
-      date: "2023-05-28",
-      comments: 24,
-    },
-  ];
-
   const popularPosts = [
     "짱 쉬운 자격증 SQLD",
     "더 쉬운 자격증 정보처리기사",
     "나처럼 해봐요 공인중개사",
-  ];
-
-  const categories = ["자연", "공학", "어쩌구", "저쩌구"];
-
-  const infoMessage = [
-    {
-      title: "새로운 기능 업데이트 안내",
-      author: "관리자",
-      date: "2023-06-03",
-      comments: 12,
-    },
-    {
-      title: "자유게시판테스트1",
-      author: "홍길동",
-      date: "2023-06-01",
-      comments: 8,
-    },
-    {
-      title: "자유게시판테스트2",
-      author: "김철수",
-      date: "2023-05-28",
-      comments: 24,
-    },
-    {
-      title: "자유게시판테스트3",
-      author: "김철수",
-      date: "2023-05-28",
-      comments: 24,
-    },
-    {
-      title: "자유게시판테스트4",
-      author: "김철수",
-      date: "2023-05-28",
-      comments: 24,
-    },
-    {
-      title: "자유게시판테스트5",
-      author: "김철수",
-      date: "2023-05-28",
-      comments: 24,
-    },
   ];
 
   const popularinfoPosts = ["스터디 같이해요", "모각코", "강남역 9시"];
@@ -251,10 +182,26 @@ export default function CommunityPage() {
 
   useEffect(() => {
     axios
-      .get("http://34.47.79.59:8080/api/v1/post")
+      .get("http://34.47.79.59:8080/api/post/public?page=0&size=100")
+      .then((response) => {
+        dispatch(setCertificates(response.data)); // Redux 스토어에 데이터 설정
+      })
+      .catch((error) => console.error("Error fetching posts:", error));
+  }, [dispatch]);
+
+  const token =
+    "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyMCIsImF1dGgiOiJBRE1JTiIsInVzZXJuYW1lIjoi7J287J207IK87Jyg7KCAIiwiZXhwIjoyNzE3NjU1MzgxfQ.ixwHx5klLxyJTyfMXIURJW-G7OjB5AeOTL6U_E7VsbKO5DCzc2eJhC9Lew1zRRvW_4rdZvKXyfmoPMHOBzVxJQ";
+
+  useEffect(() => {
+    axios
+      .get("http://34.47.79.59:8080/api/admin/categories", {
+        headers: {
+          Authorization: token,
+        },
+      })
       .then((response) => {
         console.log("Fetched data:", response.data); // 데이터를 콘솔에 출력
-        dispatch(setCertificates(response.data)); // Redux 스토어에 데이터 설정
+        dispatch(setCategories(response.data)); // Redux 스토어에 데이터 설정
       })
       .catch((error) => console.error("Error fetching posts:", error));
   }, [dispatch]);
@@ -375,9 +322,9 @@ export default function CommunityPage() {
           <CertificateInfoBoard>
             <Board
               title="자격증 정보공유 게시판"
-              posts={postMessage}
+              posts={postData}
               popularPosts={popularPosts}
-              categories={categories}
+              categories={categoryData}
             />
           </CertificateInfoBoard>
         );
@@ -386,9 +333,9 @@ export default function CommunityPage() {
           <InfoBoard>
             <Board
               title="정보공유 게시판"
-              posts={infoMessage}
+              posts={postData}
               popularPosts={popularinfoPosts}
-              categories={categories}
+              categories={categoryData}
             />
           </InfoBoard>
         );

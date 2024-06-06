@@ -5,7 +5,7 @@ import {
 } from "../actions/certificationActions";
 
 interface CertificateState {
-  certificates: Certificate[];
+  certificates: PostBoard[];
 }
 
 const initialState: CertificateState = {
@@ -20,4 +20,4 @@ const certificateReducer = createReducer(initialState, (builder) => {
 
 export default certificateReducer;
 // 타입을 재사용하기 위해 Certificate 타입을 임포트합니다.
-import { Certificate } from "@/types/Certificate";
+import { PostBoard } from "@/types/PostBoard";

@@ -1,10 +1,11 @@
 import { combineReducers } from "redux";
-import certificateReducer from "./certificateReducer";
-import postReducer from "./postReducer";
+import categoryReducer from "./categoryReducer";
+import certificationReducer from "./certificateReducer";
 
 const rootReducer = combineReducers({
-  certificates: certificateReducer,
-  posts: postReducer,
+  categories: categoryReducer,
+  certificates: certificationReducer,
 });
 
+export type RootState = ReturnType<typeof rootReducer>;
 export default rootReducer;

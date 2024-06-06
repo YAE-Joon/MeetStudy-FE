@@ -1,18 +1,28 @@
 import React, { useState } from "react";
 import Pagination from "@/component/Pagination"; // Pagination 컴포넌트의 경로에 맞게 수정하세요.
+import Link from "next/link";
 
 interface Post {
+  id: number;
+  category: string;
+  nickname: string;
   title: string;
-  author: string;
-  date: string;
-  comments: number;
+  content: string;
+  hit: number;
+  createdAt: string;
+}
+
+interface Categories {
+  id: number;
+  name: string;
+  description: string;
 }
 
 interface Props {
   title: string;
   posts: Post[];
   popularPosts: string[];
-  categories: string[];
+  categories: Categories[];
 }
 
 const Board: React.FC<Props> = ({ title, posts, popularPosts, categories }) => {
@@ -86,17 +96,19 @@ const Board: React.FC<Props> = ({ title, posts, popularPosts, categories }) => {
               key={index}
               className="bg-white dark:bg-gray-950 rounded-lg shadow p-4"
             >
-              <div className="grid grid-cols-[auto_1fr_auto] items-center gap-4">
-                <div className="font-medium text-lg">{post.title}</div>
-                <div className="text-sm text-gray-500 dark:text-gray-400">
-                  <span>{post.author}</span>
-                  <span className="mx-2">·</span>
-                  <span>{post.date}</span>
+              <Link href={`/community/${post.id}`}>
+                <div className="grid grid-cols-[auto_1fr_auto] items-center gap-4">
+                  <div className="font-medium text-lg">{post.title}</div>
+                  <div className="text-sm text-gray-500 dark:text-gray-400">
+                    <span>{post.nickname}</span>
+                    <span className="mx-2">·</span>
+                    <span>{post.createdAt}</span>
+                  </div>
+                  <div className="text-sm text-gray-500 dark:text-gray-400">
+                    조회수 {post.hit}
+                  </div>
                 </div>
-                <div className="text-sm text-gray-500 dark:text-gray-400">
-                  댓글 {post.comments}
-                </div>
-              </div>
+              </Link>
             </div>
           ))}
           <Pagination
@@ -124,7 +136,7 @@ const Board: React.FC<Props> = ({ title, posts, popularPosts, categories }) => {
             <div className="space-y-2 flex flex-col">
               {categories.map((category, index) => (
                 <a key={index} href="#" className="text-sm hover:underline">
-                  {category}
+                  {category.name}
                 </a>
               ))}
             </div>
