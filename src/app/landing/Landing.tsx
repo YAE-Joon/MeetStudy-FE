@@ -87,20 +87,18 @@ export const FirstSectionLanding = React.forwardRef<
 >(({ mover }, ref) => {
   return (
     <Container
-      bgColor={tokens.colors.simple.secondary}
-      padding={"2rem 0 2rem 0"}
-      gap={"3px"}
-      height={"100vh"}
+      $bgColor={tokens.colors.simple.secondary}
+      $padding={"2rem 0 2rem 0"}
+      $gap={"3px"}
+      $height={"100vh"}
       ref={ref}
     >
       <ExtendedFlexBoxV>
         <ExtendedFlexBoxH>
           <TextPart>
-            <Title
-              htype={1}
-              content={"온라인에서도 함께 공부해요, 밋스터디"}
-              align="left"
-            />
+            <Title $htype={1} $align="left">
+              온라인에서도 함께 공부해요, 밋스터디
+            </Title>
             <LandingDesc content={"온라인 스터디 공간"} align="left" />
             <GridBox_ul>
               <PrimaryButton content={"스터디 합류하기"} href={"/"} />
@@ -135,18 +133,16 @@ export const SecondSectionLanding = React.forwardRef<
 >(({ mover }, ref) => {
   return (
     <Container
-      bgColor={tokens.colors.simple.whitebg}
-      padding={"2rem 0 2rem 0"}
-      gap={"3px"}
-      height={"100vh"}
+      $bgColor={tokens.colors.simple.whitebg}
+      $padding={"2rem 0 2rem 0"}
+      $gap={"3px"}
+      $height={"100vh"}
       ref={ref}
     >
       <FlexBoxV type={"center"}>
-        <Title
-          htype={2}
-          content={"밋스터디의 서비스 자랑목록"}
-          color={tokens.colors.simple.blackbasic}
-        />
+        <Title $htype={2} $color={tokens.colors.simple.blackbasic}>
+          밋스터디의 서비스 자랑목록
+        </Title>
         <FlexBox_H_ul>
           {Object.entries(dummy_list_sect2).map(([emoji, comment], idx) => (
             <Li_card key={idx} item={{ emoji, comment }} />
@@ -164,18 +160,16 @@ export const ThirdSectionLanding = React.forwardRef<
 >(({ mover }, ref) => {
   return (
     <Container
-      bgColor={tokens.colors.simple.tertiarygray}
-      padding={"2rem 0 2rem 0"}
-      gap={"3px"}
-      height={"100vh"}
+      $bgColor={tokens.colors.simple.tertiarygray}
+      $padding={"2rem 0 2rem 0"}
+      $gap={"3px"}
+      $height={"100vh"}
       ref={ref}
     >
       <FlexBoxV type={"center"}>
-        <Title
-          htype={2}
-          content={"사용자 후기"}
-          color={tokens.colors.simple.blackbasic}
-        />
+        <Title $htype={2} $color={tokens.colors.simple.blackbasic}>
+          사용자 후기
+        </Title>
 
         <FlexBox_H_ul>
           {dummy_list_sect3.map((item, idx) => (
@@ -207,18 +201,17 @@ export const ForthSectionLanding = React.forwardRef<
 >(({ mover }, ref) => {
   return (
     <Container
-      bgColor={tokens.colors.simple.whitebg}
-      padding={"2rem 0 2rem 0"}
-      gap={"3px"}
-      height={"100vh"}
+      $bgColor={tokens.colors.simple.whitebg}
+      $padding={"2rem 0 2rem 0"}
+      $gap={"3px"}
+      $height={"100vh"}
       ref={ref}
     >
       <FlexBoxV type={"center"}>
         <Title
-          htype={2}
-          content={`지금 ${10}개의 스터디룸이 함께하고 있어요`}
-          color={tokens.colors.simple.blackbasic}
-        />
+          $htype={2}
+          $color={tokens.colors.simple.blackbasic}
+        >{`지금 ${10}개의 스터디룸이 함께하고 있어요`}</Title>
 
         <FlexBox_H_ul>
           {dummy_list_sect3.map((item, idx) => (

@@ -94,12 +94,13 @@ export const DailyList = ({
                 <StyledDetails key={userCalendar.id}>
                   <MainTitleWrapper>
                     <Title
-                      htype={4}
-                      fontSize={tokens.fontSize.web.small}
-                      color={tokens.colors.simple.blackbasic}
-                      content={userCalendar.title}
-                      align={"left"}
-                    />
+                      $htype={4}
+                      $color={tokens.colors.simple.blackbasic}
+                      $fontSize={tokens.fontSize.web.small}
+                      $align={"left"}
+                    >
+                      {userCalendar.title}
+                    </Title>
                     <div>
                       <p>
                         {startDateStr} {startTimeStr}

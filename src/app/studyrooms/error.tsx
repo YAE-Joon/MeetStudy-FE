@@ -4,7 +4,6 @@ import { OuterContainer } from "@/component/styled-components/Container";
 import { Title, Description } from "@/component/styled-components/TextBoxes";
 import { MdErrorOutline } from "react-icons/md";
 import {
-  BasicButton,
   PrimaryButton,
   SecondaryButton,
 } from "@/component/styled-components/Button/Buttons";
@@ -35,11 +34,12 @@ export default function Error({
       >
         <FlexBoxV>
           <Title
-            htype={2}
-            color={tokens.colors.simple.blackbasic}
-            fontSize={tokens.fontSize.web.medium}
-            content={"Error!"}
-          />
+            $htype={2}
+            $color={tokens.colors.simple.blackbasic}
+            $fontSize={tokens.fontSize.web.medium}
+          >
+            Error!
+          </Title>
           <MdErrorOutline
             style={{
               color: `var(${tokens.colors.simple.invalidred})`,

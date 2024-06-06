@@ -52,9 +52,11 @@ export interface StyledProps {
     | null;
 
   // 기타
+  $gap?: string | null;
   $isBold?: boolean;
   $borderRadius?: string | null;
   $boxShadow?: string | null;
+  $overflow?: string | null;
 }
 
 /**

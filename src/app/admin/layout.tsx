@@ -1,45 +1,24 @@
 "use client";
-import { OuterContainer } from "@/component/styled-components/Container";
-import SearchPageContainer from "@/app/studyrooms/StudyRoomPage";
-import StyledStudyRoomIndex from "@/app/studyrooms/StudyRoomIndexClientComponents";
-
-import { TitleWrapper } from "@/component/styled-components/TextBoxes";
-import { Title } from "@/component/styled-components/TextBoxes";
 
 import { ChangeEvent, useState } from "react";
-import { MdMenu } from "react-icons/md";
-
-import {
-  InnerContainer,
-  CategoryNav,
-  StudyRoomCategories,
-} from "@/app/studyrooms/[id]/StyledComponents";
-
-import dt from "@/lib/designToken/designTokens";
 import Link from "next/link";
-const tokens = dt.DesignTokenVarNames;
-
 import { useParams } from "next/navigation";
 
-const {
-  // InnerContainer,
-  // CategoryNav,
-  //StudyRoomCategories,
-  SearchResultSection,
-  SearchBarWarpper,
-  InputContainer,
-  SearchResultContainer,
-  HamburgerIcon,
-  CategoryTitleWrapper,
-} = StyledStudyRoomIndex;
+import { MdMenu } from "react-icons/md";
+import dt from "@/lib/designToken/designTokens";
+
+import { OuterContainer } from "@/component/styled-components/Container";
+import { InnerContainer } from "@/app/studyrooms/[id]/StyledComponents";
+import { FlexBoxV } from "@/component/styled-components/FlexBoxes";
+import MovingMenu from "@/component/styled-components/MovingMenu";
+
+const tokens = dt.DesignTokenVarNames;
 
 export default function StudyRoomdLayout({
   children, // will be a page or nested layout
 }: {
   children: React.ReactNode;
 }) {
-  const [isopen, setIsopen] = useState(false);
-
   //const roomId = params.id;
 
   //const roomId = 1;
@@ -47,10 +26,6 @@ export default function StudyRoomdLayout({
   const params = useParams();
   const roomId = params.id?.toString();
   console.log("roomId", roomId);
-
-  const toggleMenu = () => {
-    setIsopen(!isopen);
-  };
 
   const studyRoomMenu = [
     { label: "회원 관리", link: `/admin` },
@@ -62,30 +37,8 @@ export default function StudyRoomdLayout({
   return (
     <OuterContainer>
       <InnerContainer>
-        <CategoryNav
-          $bgColor={`var(${tokens.colors.simple.secondary})`}
-          $txtColor={`var(${tokens.colors.simple.blackbasic})`}
-        >
-          <StudyRoomCategories isopen={isopen}>
-            <CategoryTitleWrapper>
-              <TitleWrapper>
-                <Title
-                  htype={3}
-                  align={"left"}
-                  content={"Admin Page"}
-                  color={tokens.colors.simple.whitebg}
-                  fontSize={tokens.fontSize.web.medium}
-                />
-              </TitleWrapper>
-            </CategoryTitleWrapper>
-            {studyRoomMenu.map((menuItem, idx) => (
-              <Link key={idx} href={menuItem.link}>
-                {menuItem.label}
-              </Link>
-            ))}
-          </StudyRoomCategories>
-        </CategoryNav>
-        <SearchResultSection>{children}</SearchResultSection>
+        <MovingMenu menu={studyRoomMenu} roomId={roomId} title={"Admin Page"} />
+        <FlexBoxV>{children}</FlexBoxV>
       </InnerContainer>
     </OuterContainer>
   );

@@ -99,12 +99,13 @@ const calender = () => {
     <>
       <SearchBarWarpper>
         <Title
-          htype={3}
-          align={"left"}
-          content={"캘린더입니다"}
-          color={tokens.colors.simple.blackbasic}
-          fontSize={tokens.fontSize.web.medium}
-        />
+          $htype={3}
+          $align={"left"}
+          $color={tokens.colors.simple.blackbasic}
+          $fontSize={tokens.fontSize.web.medium}
+        >
+          캘린더입니다
+        </Title>
       </SearchBarWarpper>
       <div className="w-full">
         <Calendar

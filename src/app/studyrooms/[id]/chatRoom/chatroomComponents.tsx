@@ -1,16 +1,11 @@
 "use client";
+import React from "react";
+import { useParams, useRouter, usePathname } from "next/navigation";
+import Link from "next/link";
 import styled from "styled-components";
-import dt from "@/lib/designToken/designTokens";
+import { ChatRoomInfoProps } from "@/lib/types";
 
 import { StyledProps } from "@/component/styled-components/styledProps";
-import { Description } from "@/component/styled-components/TextBoxes";
-import { Container } from "@/component/styled-components/Container";
-import React from "react";
-import Link from "next/link";
-import { ChatRoomInfoProps } from "@/lib/types";
-// const ChatRoomCard = () =>{
-
-// }
 
 const ChatRoomContainer = styled.div`
   display: grid;
@@ -53,10 +48,18 @@ export const ChatRoomList = ({
 }: {
   chatRoomList: ChatRoomInfoProps[];
 }) => {
+  const params = useParams();
+  const studyroomId = params.id?.toString();
+  const router = useRouter();
+  const pathname = usePathname();
+  console.log("pathname?", pathname);
   return (
     <ChatRoomContainer>
       {chatRoomList.map((chatRoomInfo, idx) => (
-        <ChatRoomCard key={idx} href={"/"}>
+        <ChatRoomCard
+          key={chatRoomInfo.id}
+          href={`${pathname}/${chatRoomInfo.id}`}
+        >
           <LinkContent>
             <LinkTitle>{chatRoomInfo.title}</LinkTitle>
             <LinkDetails>{chatRoomInfo.desc} </LinkDetails>

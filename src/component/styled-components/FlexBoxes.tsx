@@ -7,17 +7,19 @@ const mobileWidth = dt.DesignTokenExcept.media.mobile;
 
 interface Styled_ul extends StyledProps {}
 
-interface StyledFlexProps {
+interface StyledFlexProps extends StyledProps {
   type?: "center" | "space-between";
   direction?: "right" | "left";
 }
+
 export const FlexBoxH = styled.div<StyledFlexProps>`
   display: flex;
   flex-wrap: nowrap;
   flex-direction: ${({ direction }) => {
     return direction === "right" ? "row-reverse" : "row";
   }};
-  justify-content: ${({ type }) => type || "space-between"};
+  justify-content: ${({ $justifyContent }) =>
+    $justifyContent || "space-between"};
 
   align-items: center;
 
@@ -41,27 +43,29 @@ export const FlexBoxH = styled.div<StyledFlexProps>`
 
 export const FlexBoxV = styled.div<StyledFlexProps>`
   display: flex;
-  flex-wrap: wrap;
+
   flex-direction: ${({ direction }) =>
     direction === "right" ? "row-reverse" : "column"};
-  justify-content: ${({ type }) => type || "space-between"};
+  justify-content: ${({ $justifyContent }) =>
+    $justifyContent || "space-between"};
   align-items: center;
-
   gap: 5rem;
   height: 100%;
+
+  align-items: ${({ $alignItems }) => $alignItems || "center"};
+  padding: ${({ $padding }) => $padding || "0 0.5rem 1rem 1rem"};
+  gap: ${({ $gap }) => $gap || "1rem"};
 
   @media only screen and (max-width: ${mobileWidth}) {
     width: 100%;
     flex-direction: column;
+    flex-wrap: wrap;
     align-items: center;
+    min-width: 400px;
+    padding: 0;
   }
-
-  /* > div,
-  > section {
-    flex: 1 1 45%;
-    min-width: 45%;
-  } */
 `;
+
 // ul - flex - basic
 export const StyledUl = styled.ul<Styled_ul>`
   display: flex;
