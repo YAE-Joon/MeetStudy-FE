@@ -40,7 +40,7 @@ export default function NavBar() {
         <div className="navbar__list">
           {status === "authenticated" ? (
             <>
-              <Link href="/" className="navbar__list--item">
+              <Link href="/studyrooms" className="navbar__list--item">
                 스터디룸
               </Link>
               <Link href="/community" className="navbar__list--item">

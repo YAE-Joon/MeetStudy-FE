@@ -136,8 +136,16 @@ export default function PostDetail() {
         <div className="mt-6">
           <h3 className="text-lg font-bold mb-2">Leave a Comment</h3>
           <form className="grid gap-4">
-            {/* <Textarea placeholder="Write your comment..." className="p-4" />
-            <Button type="submit">Submit</Button> */}
+            <textarea
+              className="flex min-h-[80px] w-full rounded-md border border-input bg-background text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 p-4"
+              placeholder="Write your comment..."
+            ></textarea>
+            <button
+              className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-[#007bff] text-[#fff] hover:bg-[#007bff]/90 h-10 px-4 py-2"
+              type="submit"
+            >
+              Submit
+            </button>
           </form>
         </div>
       </div>

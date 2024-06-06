@@ -13,7 +13,7 @@ interface StyledFlexProps {
 }
 export const FlexBoxH = styled.div<StyledFlexProps>`
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   flex-direction: ${({ direction }) => {
     return direction === "right" ? "row-reverse" : "row";
   }};
@@ -28,7 +28,7 @@ export const FlexBoxH = styled.div<StyledFlexProps>`
   @media only screen and (max-width: ${mobileWidth}) {
     flex-direction: column;
     align-items: center;
-
+    flex-wrap: wrap;
     position: relative;
   }
 

@@ -1,10 +1,11 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import StyledStudyRoomIndex from "@/app/studyrooms/StudyRoomIndexClientComponents";
+import { Title } from "@/component/styled-components/TextBoxes";
 import { Calendar, momentLocalizer, SlotInfo } from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import styled, { keyframes } from "styled-components";
 
 moment.locale("en-GB");
 const localizer = momentLocalizer(moment);
@@ -56,7 +57,21 @@ const initialEvents: Event[] = [
   },
 ];
 
-export default function ReactBigCalendar() {
+const {
+  // InnerContainer,
+  // CategoryNav,
+  //StudyRoomCategories,
+  SearchResultSection,
+  SearchBarWarpper,
+  InputContainer,
+  SearchResultContainer,
+  HamburgerIcon,
+  CategoryTitleWrapper,
+} = StyledStudyRoomIndex;
+
+import dt from "@/lib/designToken/designTokens";
+const tokens = dt.DesignTokenVarNames;
+const calender = () => {
   const [eventsData, setEventsData] = useState<Event[]>(initialEvents);
   const [loading, setLoading] = useState(true);
 
@@ -80,57 +95,32 @@ export default function ReactBigCalendar() {
       setEventsData([...eventsData, newEvent]);
     }
   };
-
   return (
-    <AppContainer>
-      {loading ? (
-        <LoadingScreen>
-          <Spinner />
-          <p>Loading...</p>
-        </LoadingScreen>
-      ) : (
-        <div className="p-10">
-          <Calendar
-            views={["day", "agenda", "work_week", "month"]}
-            selectable
-            localizer={localizer}
-            defaultDate={new Date()}
-            defaultView="month"
-            events={eventsData}
-            style={{ height: "100vh" }}
-            onSelectEvent={(event) => alert(event.title)}
-            onSelectSlot={handleSelect}
-          />
-        </div>
-      )}
-    </AppContainer>
+    <>
+      <SearchBarWarpper>
+        <Title
+          htype={3}
+          align={"left"}
+          content={"캘린더입니다"}
+          color={tokens.colors.simple.blackbasic}
+          fontSize={tokens.fontSize.web.medium}
+        />
+      </SearchBarWarpper>
+      <div className="w-full">
+        <Calendar
+          views={["day", "agenda", "work_week", "month"]}
+          selectable
+          localizer={localizer}
+          defaultDate={new Date()}
+          defaultView="month"
+          events={eventsData}
+          style={{ height: "100vh" }}
+          onSelectEvent={(event) => alert(event.title)}
+          onSelectSlot={handleSelect}
+        />
+      </div>
+    </>
   );
-}
+};
 
-const AppContainer = styled.div`
-  height: auto;
-`;
-
-const LoadingScreen = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  background-color: #f0f0f0;
-`;
-
-const spin = keyframes`
-  to {
-    transform: rotate(360deg);
-  }
-`;
-
-const Spinner = styled.div`
-  border: 4px solid rgba(0, 0, 0, 0.1);
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  border-left-color: #09f;
-  animation: ${spin} 1s linear infinite;
-`;
+export default calender;
