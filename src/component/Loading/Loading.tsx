@@ -13,6 +13,7 @@ const Background = styled.div`
 
   background-color: var(${tokens.colors.simple.whitebg});
   height: 100vh;
+  width: 100vw;
 `;
 
 const Spinner = styled.span`

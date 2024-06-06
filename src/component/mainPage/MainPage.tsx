@@ -31,7 +31,7 @@ const FirstSectionMain = () => {
     return (
       <Wrapper $bgColor={tokens.colors.simple.whitebg}>
         {" "}
-        <MainSubLoading />;
+        <MainSubLoading />
       </Wrapper>
     );
   }
@@ -71,7 +71,7 @@ const FirstSectionMain = () => {
 
 // 게시글 섹션(미완성, 향후 게시판 컴포넌트 재활용 예정)
 const SecondSectionMain = () => {
-  const [userData, error] = useFetch<UserData>("/api/mypage");
+  const [userData, error] = useFetch<UserData>("/api/mypage", {}, false, false);
 
   if (error) {
     return <div>Error: {error.message}</div>;

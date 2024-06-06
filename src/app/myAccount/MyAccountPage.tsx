@@ -18,7 +18,12 @@ import EditSections from "./MyAccount";
 const tokens = dt.DesignTokenVarNames;
 
 export const Myaccount = () => {
-  const [userProfileData, error] = useFetch<UserProfile>(`/api/myaccount`); //임시, next.js의 서버와 통신
+  const [userProfileData, error] = useFetch<UserProfile>(
+    `/api/myaccount`,
+    {},
+    false,
+    false
+  ); //임시, next.js의 서버와 통신
 
   if (error) {
     return <div>Error: {error.message}</div>;
