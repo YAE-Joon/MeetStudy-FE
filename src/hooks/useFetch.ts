@@ -7,10 +7,20 @@ import fetchDataBE from "@/lib/fetch";
  * @param apiUrl [baseUrl]/api/v2...
  * @returns json 형식으로 파싱된 데이터 | Error
  */
+
+/**
+ *
+ * @param apiUrl
+ * @param options
+ * @param isAdmin
+ * @param isTest
+ * @returns
+ */
 const useFetch = <T>(
   apiUrl: string,
-  isTest: boolean | null = null,
-  options: FetchOptions = {}
+  options: FetchOptions = {},
+  isAdmin: boolean | null = null,
+  isTest: boolean | null = null
 ) => {
   const [data, setData] = useState<T | null>(null);
   const [error, setError] = useState<Error | null>(null);
@@ -18,7 +28,8 @@ const useFetch = <T>(
   useEffect(() => {
     const loadData = async () => {
       try {
-        const data = await fetchDataBE(apiUrl, isTest, options);
+        console.log("useFetch에서 데이터를 호출합니다");
+        const data = await fetchDataBE(apiUrl, options, isAdmin, isTest);
         setData(data);
       } catch (err) {
         if (err instanceof Error) {
@@ -29,7 +40,7 @@ const useFetch = <T>(
       }
     };
     loadData();
-  }, [apiUrl, isTest]);
+  }, [apiUrl, isAdmin, isTest]);
 
   return [data, error] as const;
 };

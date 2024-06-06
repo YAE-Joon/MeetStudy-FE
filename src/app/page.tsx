@@ -1,8 +1,4 @@
-import {
-  FirstSectionMain,
-  SecondSectionMain,
-} from "@/component/mainPage/MainPage";
-import { MainNavBar } from "@/component/mainPage/mainClinentComponents";
+import MainPage from "@/component/mainPage/MainPage";
 import {
   Container,
   OuterContainer,
@@ -15,12 +11,7 @@ const tokens = dt.DesignTokenVarNames;
 export default async function Main() {
   return (
     <OuterContainer>
-      <MainNavBar mode={"mypage"} />
-
-      <Container bgColor={`var(${tokens.colors.simple.primary})`}>
-        <FirstSectionMain />
-        <SecondSectionMain />
-      </Container>
+      <MainPage />
     </OuterContainer>
   );
 }

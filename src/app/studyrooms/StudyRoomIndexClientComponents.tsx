@@ -77,7 +77,7 @@ const SearchResultSection = styled(FlexBoxV)`
 
   min-width: 500px;
 
-  padding: 0 0 1rem 1rem;
+  padding: 0 0.5rem 1rem 1rem;
 
   gap: 1rem;
 
@@ -96,7 +96,7 @@ const SearchBarWarpper = styled(FlexBoxUlV)`
   align-items: flex-start;
   height: 10vh;
   min-height: 30px;
-  width: 100%;
+  width: 90%;
 
   padding: 0.5rem 0 1rem 1rem;
   margin-bottom: 1rem;

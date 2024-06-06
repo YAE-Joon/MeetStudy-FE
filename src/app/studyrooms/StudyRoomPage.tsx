@@ -9,6 +9,7 @@ import { ChangeEvent, useState } from "react";
 import useFetch from "@/hooks/useFetch";
 import { StudyRoomCard } from "@/component/styled-components/Card";
 import { MdMenu } from "react-icons/md";
+import Link from "next/link";
 
 const tokens = dt.DesignTokenVarNames;
 const {
@@ -95,6 +96,7 @@ const SearchPageContainer = ({
               <MdMenu />
             </HamburgerIcon>
           </CategoryTitleWrapper>
+          <Link href={"/studyrooms/1"}>개발용 채팅방으로</Link>
           {categories.map((category, idx) => {
             return (
               <li key={category.id} title={category.description}>

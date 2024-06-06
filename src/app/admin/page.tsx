@@ -1,10 +1,6 @@
+import UserPage from "@/app/admin/UserPage";
 function AdminIndexPage() {
-  return (
-    <div>
-      <h1>Admin Page</h1>
-      <p>관리자 페이지 입니다.</p>
-    </div>
-  );
+  return <UserPage />;
 }
 
 export default AdminIndexPage;

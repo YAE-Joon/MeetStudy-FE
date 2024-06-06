@@ -1,38 +1,42 @@
 import getAPIendPoint from "@/lib/settingUrl";
 import { FetchOptions } from "@/lib/types";
 
-// 다른 서버사이드 fetching에서도 재활용.
 /**
- * Backend에서 데이터를 fetch 하는 함수입니다. 
- * @param apiUrl :필수, string, '/api/...'
- * @param isTest :선택, boolean, 기본 null
- * @param options : 선택, 기본 {}, FetchOptions type
- * 기본 메서드는 GET
+ *
+ * @param apiUrl
+ * @param options
+ * @param isAdmin
+ * @param isTest
+ * @returns
  * 
  * interface FetchOptions {
   method?: string;
   headers?: HeadersInit;
   body?: any;
 }
- * @returns Promise
  */
 async function fetchDataBE(
   apiUrl: string,
-  isTest: boolean | null = null,
-  options: FetchOptions = {}
+  options: FetchOptions = {},
+  isAdmin: boolean | null = null,
+  isTest: boolean | null = null
 ) {
   const endpoint = getAPIendPoint(apiUrl, isTest);
-
   const headers = {
     "Content-Type": "application/json",
     ...options.headers,
   };
   // Authorization
   const token = process.env.NEXT_PUBLIC_TEST_TOKEN;
+  const adminToken = process.env.NEXT_PUBLIC_TEST_ADMIN;
   if (token) {
     //(headers as Record<string, string>)["Authorization"] = `Bearer ${token}`;
     (headers as Record<string, string>)["Authorization"] = `${token}`;
   }
+  if (isAdmin) {
+    (headers as Record<string, string>)["Authorization"] = `${adminToken}`;
+  }
+
   const response = await fetch(endpoint, {
     method: options.method || "GET",
     body: options.body ? JSON.stringify(options.body) : null,
@@ -43,7 +47,15 @@ async function fetchDataBE(
     throw new Error(`❗데이터 패칭에 실패하였습니다: ${errorMessage}`);
   }
   const fetchedData = await response.json(); // JSON으로 파싱된 응답 데이터
-  //console.log("🙆‍♂️ 데이터를 가져왔습니다!", userData);
+  console.log("🙆‍♂️ 데이터를 가져왔습니다!", endpoint, "/", fetchedData);
+
+  // console.log(
+  //   `👩‍💻| endpoint : ${endpoint} 에서 다음 response를 받았습니다 | status:`,
+  //   response.status,
+  //   "body",
+  //   fetchedData
+  // );
+
   return fetchedData;
 }
 

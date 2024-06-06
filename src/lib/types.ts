@@ -46,4 +46,5 @@ export interface CategoriyOptions {
   id: number;
   name: string;
   description: string;
+  slug?: string;
 }

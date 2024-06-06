@@ -52,6 +52,14 @@ const nextConfig = {
 
     return config;
   },
+  // async rewrites() {
+  //   return [
+  //     {
+  //       source: "/api/:path",
+  //       destination: `${process.env.NEXT_PUBLIC_SITE_URL}:path*`,
+  //     },
+  //   ];
+  // },
 };
 
 export default nextConfig;
