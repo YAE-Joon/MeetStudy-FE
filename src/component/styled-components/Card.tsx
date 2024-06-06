@@ -16,7 +16,7 @@ interface Styled_li_card_props extends StyledProps {
   $effectType?: "hoverEffect" | null;
 }
 
-interface Itemprops {
+interface ItemProps {
   image?: string;
   emoji?: string;
   author?: string;
@@ -25,7 +25,7 @@ interface Itemprops {
 }
 
 interface LiCardProps extends StyledComponentsProps {
-  item: Itemprops;
+  item: ItemProps;
   key?: string | number;
   styles?: Styled_li_card_props;
 }

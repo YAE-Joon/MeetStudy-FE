@@ -7,7 +7,9 @@ interface Simple {
   tertiarylightgray: string;
   whitebg: string;
   blackbasic: string;
-  grayforText: string;
+  grayfortext: string;
+  invalidred: string;
+  validgreen: string;
 }
 
 interface Colors {
@@ -86,7 +88,9 @@ const simple: Simple = {
   tertiarylightgray: "--colors-simple-tertiarylightgray",
   whitebg: "--colors-simple-whitebg",
   blackbasic: "--colors-simple-blackbasic",
-  grayforText: "--colors-simple-grayforText",
+  grayfortext: "--colors-simple-grayfortext",
+  invalidred: "--colors-simple-invalidred",
+  validgreen: "--colors-simple-validgreen",
 };
 
 const colors: Colors = {
@@ -179,12 +183,14 @@ export default dt
     --colors-simple-primary:#52C233;
 --colors-simple-secondary:#008BFB;
 --colors-simple-primarydeeper:#2B8213;
---colors-simple-annotations:#008BFB;
+--colors-simple-annotations:#F6BE2C;
 --colors-simple-tertiarygray:#ECECEC;
 --colors-simple-tertiarylightgray:#C9EFBE;
 --colors-simple-whitebg:#F9F9F9;
 --colors-simple-blackbasic:#000000;
---colors-simple-grayfor-text:#555555;
+--colors-simple-grayfortext:#555555;
+--colors-simple-invalidred:#D32F2F;
+--colors-simple-validgreen:#388E3C;
 --font-size-web-xlarge:calc(16px + 2vw);
 --font-size-web-large:calc(14px + 1.5vw);
 --font-size-web-medium:calc(12px + 1vw);
