@@ -75,7 +75,7 @@ const CategoryNav = styled.nav`
 const SearchResultSection = styled(FlexBoxV)`
   align-items: flex-start;
 
-  min-width: 500px;
+  //min-width: 500px;
 
   padding: 0 0.5rem 1rem 1rem;
 
@@ -174,9 +174,15 @@ interface HamburgerProp {
   isopen: boolean;
 }
 
-const StudyRoomCategories = styled(FlexBoxUlV).attrs<{ isopen: boolean }>({
-  isopen: undefined, // DOM에 직접 전달되지 않도록 필터링
-})<{ isopen: boolean }>`
+interface StudyRoomCategoriesProps {
+  isopen: boolean;
+}
+
+const StudyRoomCategories = styled(FlexBoxUlV).attrs<StudyRoomCategoriesProps>(
+  ({ isopen }) => ({
+    isopen: isopen ?? undefined, // DOM에 직접 전달되지 않도록 필터링
+  })
+)<StudyRoomCategoriesProps>`
   align-items: flex-start;
   gap: 1rem;
   width: 100%;

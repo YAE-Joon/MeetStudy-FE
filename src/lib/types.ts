@@ -48,3 +48,10 @@ export interface CategoriyOptions {
   description: string;
   slug?: string;
 }
+
+export interface ChatRoomInfoProps {
+  title: string;
+  member: number;
+  maxMember: number;
+  desc: string;
+}

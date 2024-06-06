@@ -62,7 +62,6 @@ export const FlexBoxV = styled.div<StyledFlexProps>`
     min-width: 45%;
   } */
 `;
-
 // ul - flex - basic
 export const StyledUl = styled.ul<Styled_ul>`
   display: flex;
