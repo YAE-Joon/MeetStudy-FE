@@ -190,13 +190,14 @@ export default function CommunityPage() {
   }, [dispatch]);
 
   const token =
-    "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyMCIsImF1dGgiOiJBRE1JTiIsInVzZXJuYW1lIjoi7J287J207IK87Jyg7KCAIiwiZXhwIjoyNzE3NjU1MzgxfQ.ixwHx5klLxyJTyfMXIURJW-G7OjB5AeOTL6U_E7VsbKO5DCzc2eJhC9Lew1zRRvW_4rdZvKXyfmoPMHOBzVxJQ";
+    "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyMCIsImF1dGgiOiJBRE1JTiIsInVzZXJuYW1lIjoi7J287J207IK87Jyg7KCAIiwiZXhwIjoyNzE3NjY0MDI2fQ.hrVSdMxokj0FbBXnmUKLlqgPwHvGMllGpeGmPw6pVdSFmybESvKhQbpZmpkuowbEc61rpYdkcPIi9m91C41StQ";
 
   useEffect(() => {
     axios
-      .get("http://34.47.79.59:8080/api/admin/categories", {
+      .get("http://34.47.79.59:8080/api/post/user", {
         headers: {
           Authorization: token,
+          Host: "34.47.79.59:8080",
         },
       })
       .then((response) => {
@@ -213,10 +214,12 @@ export default function CommunityPage() {
 
   const handleTabSwitch = (tab: string) => {
     setActiveTab(tab);
-    if (tab === "certificate") {
+    const currentPath = window.location.pathname;
+    console.log(currentPath);
+    if (tab === "certificate" && currentPath !== "/community") {
       setCurrentPage(1);
       router.push(`/community/?page=1`, undefined);
-    } else {
+    } else if (tab !== "certificate" && currentPath !== "/community") {
       router.push(`/community`, undefined);
     }
   };
