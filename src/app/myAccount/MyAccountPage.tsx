@@ -1,7 +1,7 @@
 "use client";
-import { UserProfile } from "@/lib/types";
 import useFetch from "@/hooks/useFetch";
-import MyAccountLoading from "@/app/myAccount/loading";
+
+import { UserProfile } from "@/lib/types";
 
 import dt from "@/lib/designToken/designTokens";
 
@@ -11,10 +11,11 @@ import { TitleWrapper } from "@/component/styled-components/TextBoxes";
 import { Title } from "@/component/styled-components/TextBoxes";
 import StyledAccounts from "@/app/myAccount/myAccountClientComponents";
 
-const { PartContainerV, PageWrapper } = StyledAccounts;
+import MyAccountLoading from "@/app/myAccount/loading";
 
 import EditSections from "./MyAccount";
 
+const { PartContainerV, PageWrapper } = StyledAccounts;
 const tokens = dt.DesignTokenVarNames;
 
 export const Myaccount = () => {
@@ -39,20 +40,21 @@ export const Myaccount = () => {
   }
   return (
     <Container
-      height={"100vh"}
-      bgColor={tokens.colors.simple.whitebg}
+      $height={"100vh"}
+      $bgColor={tokens.colors.simple.whitebg}
       as="section"
-      padding={"2rem 0 2rem 0"}
-      gap={"2px"}
+      $padding={"2rem 0 2rem 0"}
+      $gap={"2px"}
     >
       <PartContainerV>
         <TitleWrapper>
           <Title
-            content={"내 정보 수정하기"}
-            fontSize={tokens.fontSize.web.large}
-            color={tokens.colors.simple.blackbasic}
-            htype={2}
-          />
+            $fontSize={tokens.fontSize.web.large}
+            $color={tokens.colors.simple.blackbasic}
+            $htype={2}
+          >
+            내 정보 수정하기
+          </Title>
         </TitleWrapper>
         <PageWrapper>
           <EditSections UserProfile={userProfileData} />

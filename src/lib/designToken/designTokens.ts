@@ -191,11 +191,11 @@ export default dt
 --colors-simple-grayfortext:#555555;
 --colors-simple-invalidred:#D32F2F;
 --colors-simple-validgreen:#388E3C;
---font-size-web-xlarge:calc(16px + 2vw);
---font-size-web-large:calc(14px + 1.5vw);
---font-size-web-medium:calc(12px + 1vw);
---font-size-web-small:calc(10px + 0.75vw);
---font-size-web-xsmall:calc(8px + 0.5vw);
+--font-size-web-xlarge:32px;
+--font-size-web-large:24px;
+--font-size-web-medium:18px;
+--font-size-web-small:14px;
+--font-size-web-xsmall:12px;
 --font-size-mobile-xlarge:calc(14px + 2vw);
 --font-size-mobile-large:calc(12px + 1.5vw);
 --font-size-mobile-medium:calc(10px + 1vw);

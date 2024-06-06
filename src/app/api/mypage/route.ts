@@ -5,9 +5,7 @@ import { UserCalendar, UserProfile } from "@/lib/types";
 import { UserData } from "@/lib/types";
 
 const getUserData = async () => {
-  console.log(
-    "👩‍💻 서버에서 mypage에 데이터 요청을 받아서 데이터를 가져옵니다.."
-  );
+  console.log("👩‍💻 Client>Next.server:  데이터를 가져옵니다..");
   let userData: UserData = {
     userProfile: null,
     userCalendars: [],

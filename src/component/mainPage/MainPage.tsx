@@ -2,6 +2,7 @@
 import Link from "next/link";
 import useFetch from "@/hooks/useFetch";
 import { UserData } from "@/lib/types";
+
 import { Container } from "@/component/styled-components/Container";
 import Wrapper from "@/component/styled-components/Wrapper";
 import { FlexBoxV } from "@/component/styled-components/FlexBoxes";
@@ -11,9 +12,9 @@ import {
   MainNavBar,
 } from "@/component/mainPage/mainClinentComponents";
 import MainSubLoading from "@/component/mainPage/loading";
-
-import dt from "@/lib/designToken/designTokens";
 import MainStyledPack from "@/component/mainPage/mainStyledComponents";
+import dt from "@/lib/designToken/designTokens";
+
 const tokens = dt.DesignTokenVarNames;
 
 const { SectionContainerH, SectionContainerV, PartContainerV, PartContainerH } =
@@ -41,20 +42,23 @@ const FirstSectionMain = () => {
       <SectionContainerH>
         <PartContainerV>
           <Title
-            htype={3}
-            content="일정"
-            fontSize={tokens.fontSize.web.medium}
-            color={tokens.colors.simple.blackbasic}
-          />
+            $htype={3}
+            $fontSize={tokens.fontSize.web.medium}
+            $color={tokens.colors.simple.blackbasic}
+          >
+            일정
+          </Title>
           <DailyList userCalendars={userData.userCalendars} />
         </PartContainerV>
         <PartContainerV>
           <FlexBoxV>
             <Title
-              htype={3}
-              content="내가 참여중인 스터디룸"
-              color={tokens.colors.simple.blackbasic}
-            />
+              $htype={3}
+              $fontSize={tokens.fontSize.web.medium}
+              $color={tokens.colors.simple.blackbasic}
+            >
+              내가 참여중인 스터디들
+            </Title>
             {/* {userStudyRooms && (
             <ul>
               {userStudyRooms.map((userStudyRoom, idx) => {
@@ -91,20 +95,23 @@ const SecondSectionMain = () => {
       <SectionContainerV>
         <PartContainerH>
           <Title
-            htype={3}
-            content="내가 스크랩한 게시글"
-            fontSize={tokens.fontSize.web.medium}
-            color={tokens.colors.simple.blackbasic}
-          />
+            $htype={3}
+            $fontSize={tokens.fontSize.web.medium}
+            $color={tokens.colors.simple.blackbasic}
+          >
+            내가 스크렙한 게시글
+          </Title>
           <DailyList userCalendars={userData.userCalendars} />
         </PartContainerH>
         <PartContainerH>
           <FlexBoxV>
             <Title
-              htype={3}
-              content="내가 작성한 게시글"
-              color={tokens.colors.simple.blackbasic}
-            />
+              $htype={3}
+              $fontSize={tokens.fontSize.web.medium}
+              $color={tokens.colors.simple.blackbasic}
+            >
+              내가 작성한 게시글
+            </Title>
             {/* {userStudyRooms && (
             <ul>
               {userStudyRooms.map((userStudyRoom, idx) => {
@@ -124,7 +131,7 @@ const MainPage = () => {
     <>
       <MainNavBar mode={"mypage"} />
       <Link href={"/admin"}>관리자 페이지(개발용)</Link>
-      <Container bgColor={`var(${tokens.colors.simple.primary})`}>
+      <Container $bgColor={`var(${tokens.colors.simple.primary})`}>
         <FirstSectionMain />
         <SecondSectionMain />
       </Container>

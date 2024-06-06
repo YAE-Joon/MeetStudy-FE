@@ -48,3 +48,19 @@ export interface CategoriyOptions {
   description: string;
   slug?: string;
 }
+
+export interface ChatRoomInfoProps {
+  id: number;
+  title: string;
+  member: number;
+  maxMember: number;
+  desc: string;
+}
+
+export interface ChatMessage {
+  nickName: string;
+  content: string;
+  chatRoomId?: string;
+  createdAt: string;
+  isOwn?: boolean;
+}
