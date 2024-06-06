@@ -18,6 +18,8 @@ const getAPIendPoint = (api: string, isSWTest: boolean | null = null) => {
     baseUrl = process.env.NEXT_DEV_API_URL || "http://localhost:3000";
   }
 
+  console.log("요청 주소:", baseUrl, "| 최종", `${baseUrl}${api}`);
+
   return `${baseUrl}${api}`;
 };
 

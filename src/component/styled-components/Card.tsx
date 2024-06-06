@@ -42,37 +42,16 @@ const Styled_li = styled.li<Styled_li_card_props>`
   // box-sizing: border-box;
   padding: 1rem;
 
-  flex: 1 1 calc(33.333% - 1rem); // 1 line 3 card
+  // flex: 1 1 calc(33.333% - 1rem); // 1 line 3 card
   gap: 0.5rem;
 
-  /** options  */
-  ${({ $effectType }) => {
-    return (
-      $effectType === "hoverEffect" &&
-      `
-      &:hover {
-        transform: scale(1.15);
-        transition: transform 0.3s ease-in-out;
-      }
-    `
-    );
-  }}
+  &:hover {
+    background-color: var(${tokens.colors.simple.tertiarygray});
+  }
 
-  ${({ $shadow }) =>
-    $shadow === "primary" &&
-    `
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  `}
-
-${({ $bgColor }) =>
-    $bgColor
-      ? `
-        background-color: var(${$bgColor});
-        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-      `
-      : ""}
-
-
+  border: 3px solid var(${tokens.colors.simple.tertiarygray});
+  background-color: var(${tokens.colors.simple.whitebg});
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 
   @media only screen and (max-width: ${mobileWidth}) {
     flex-direction: column;
@@ -147,7 +126,37 @@ export const Li_card: React.FC<LiCardProps> = ({ item, styles = {} }) => {
         {item.content && (
           <Description
             content={item.content}
-            color={tokens.colors.simple.grayforText}
+            color={tokens.colors.simple.grayfortext}
+          />
+        )}
+      </CardContent>
+    </Styled_li>
+  );
+};
+
+export const StudyRoomCard: React.FC<LiCardProps> = ({ item, styles = {} }) => {
+  return (
+    <Styled_li
+      $effectType={styles.$effectType}
+      $shadow={styles.$shadow}
+      $bgColor={styles.$bgColor}
+    >
+      <CardContent>
+        <CardUpper_ul>
+          {(item.image || item.emoji) && (
+            <figure>
+              {item.image && <img src={item.image} alt="Image description" />}
+              {item.emoji && <figcaption>{item.emoji}</figcaption>}
+            </figure>
+          )}
+
+          {item.author && <Span content={item.author} isBold={true} />}
+        </CardUpper_ul>
+        {item.comment && <Span content={item.comment} />}
+        {item.content && (
+          <Description
+            content={item.content}
+            color={tokens.colors.simple.grayfortext}
           />
         )}
       </CardContent>

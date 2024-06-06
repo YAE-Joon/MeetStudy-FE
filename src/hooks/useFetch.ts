@@ -1,29 +1,41 @@
-import getAPIendPoint from "@/lib/settingUrl";
+"use client";
 import { useState, useEffect } from "react";
-
-interface FetchOptions {
-  method?: string;
-  headers?: HeadersInit;
-  body?: any;
-}
-
+import { FetchOptions } from "@/lib/types";
+import fetchDataBE from "@/lib/fetch";
 /**
  *
  * @param apiUrl [baseUrl]/api/v2...
  * @returns json 형식으로 파싱된 데이터 | Error
  */
+
+/**
+ *
+ * @param apiUrl
+ * @param options
+ * @param isAdmin
+ * @param isTest
+ * @returns
+ */
 const useFetch = <T>(
   apiUrl: string,
-  isTest: boolean | null = null,
-  options: FetchOptions = {}
+  options: FetchOptions = {},
+  isAdmin: boolean | null = null,
+  isTest: boolean | null = null
 ) => {
   const [data, setData] = useState<T | null>(null);
   const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const loadData = async () => {
       try {
-        const data = await fetching(apiUrl, isTest, options);
+        console.log(
+          "useFetch에서 데이터를 호출합니다: apiUrl, options, isAdmin, isTest",
+          apiUrl,
+          options,
+          isAdmin,
+          isTest
+        );
+        const data = await fetchDataBE(apiUrl, options, isAdmin, isTest);
         setData(data);
       } catch (err) {
         if (err instanceof Error) {
@@ -33,41 +45,12 @@ const useFetch = <T>(
         }
       }
     };
-    fetchData();
-  }, [apiUrl, isTest]);
+    loadData();
+  }, [apiUrl, isAdmin, isTest]);
+
+  console.log("[useFetch.ts] data?", data);
 
   return [data, error] as const;
 };
-
-async function fetching(
-  apiUrl: string,
-  isTest: boolean | null = null,
-  options: FetchOptions
-) {
-  const endpoint = getAPIendPoint(apiUrl, isTest);
-
-  const headers = {
-    "Content-Type": "application/json",
-    ...options.headers,
-  };
-  // Authorization
-  const token = process.env.NEXT_PUBLIC_TEST_TOKEN;
-  if (token) {
-    //(headers as Record<string, string>)["Authorization"] = `Bearer ${token}`;
-    (headers as Record<string, string>)["Authorization"] = `${token}`;
-  }
-  const response = await fetch(endpoint, {
-    method: options.method || "GET",
-    body: options.body ? JSON.stringify(options.body) : null,
-  }); //fetch 함수의 응답 객체
-
-  if (!response.ok) {
-    const errorMessage = await response.text();
-    throw new Error(`❗데이터 패칭에 실패하였습니다: ${errorMessage}`);
-  }
-  const fetchedData = await response.json(); // JSON으로 파싱된 응답 데이터
-  //console.log("🙆‍♂️ 데이터를 가져왔습니다!", userData);
-  return fetchedData;
-}
 
 export default useFetch;

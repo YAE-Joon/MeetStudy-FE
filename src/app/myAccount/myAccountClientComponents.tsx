@@ -24,6 +24,7 @@ const PartContainerV = styled(FlexBoxV)`
   @media only screen and (max-width: ${mobileWidth}) {
     width: 100%;
     height: auto;
+    grid-template-columns: 1fr;
   }
 
   > *:first-child {
@@ -44,20 +45,21 @@ const PageWrapper = styled.div`
   width: 80%;
 
   @media only screen and (max-width: ${mobileWidth}) {
-    grid-template-columns: 1fr;
-    min-width: var(${tokens.boxSizes.width.wrapperMaxMobile});
-    min-width: 600px;
-
+    width: 100%;
     text-align: center;
   }
 `;
-const TitleWrapper = styled(PageWrapper)``;
 
 const FristSectionContainer = styled(FlexBoxV)`
   width: 100%;
   height: 100%;
 
   overflow: auto;
+
+  @media only screen and (max-width: ${mobileWidth}) {
+    width: 100%;
+    height: auto;
+  }
 `;
 
 const FirstSectionUl = styled(FlexBoxUlV)`
@@ -110,6 +112,7 @@ const FirstSectionUl = styled(FlexBoxUlV)`
   }
 
   @media only screen and (max-width: ${mobileWidth}) {
+    width: 100%;
     font-size: var(${tokens.fontSize.mobile.small});
 
     text-align: center;
@@ -139,7 +142,7 @@ const DeleteThisUser = styled(BasicButton)`
   text-align: center;
 
   height: 100%;
-  padding: 0 1rem;
+  padding: 0.5rem;
   margin: auto 0;
 
   background-color: var(${tokens.colors.simple.tertiarygray});
@@ -151,12 +154,16 @@ const DeleteThisUser = styled(BasicButton)`
     color: white;
     border: black;
   }
+
+  @media only screen and (max-width: ${mobileWidth}) {
+    font-size: var(${tokens.fontSize.mobile.small});
+    padding: 0.5rem 2rem 0.5rem 2rem;
+  }
 `;
 
 const StyledAccounts = {
   PartContainerV,
   PageWrapper,
-  TitleWrapper,
   FristSectionContainer,
   FirstSectionUl,
   ButtonWrapper,

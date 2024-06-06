@@ -1,11 +1,15 @@
 "use client";
+import Link from "next/link";
 import useFetch from "@/hooks/useFetch";
 import { UserData } from "@/lib/types";
-
+import { Container } from "@/component/styled-components/Container";
 import Wrapper from "@/component/styled-components/Wrapper";
 import { FlexBoxV } from "@/component/styled-components/FlexBoxes";
 import { Title } from "@/component/styled-components/TextBoxes";
-import { DailyList } from "@/component/mainPage/mainClinentComponents";
+import {
+  DailyList,
+  MainNavBar,
+} from "@/component/mainPage/mainClinentComponents";
 import MainSubLoading from "@/component/mainPage/loading";
 
 import dt from "@/lib/designToken/designTokens";
@@ -15,8 +19,9 @@ const tokens = dt.DesignTokenVarNames;
 const { SectionContainerH, SectionContainerV, PartContainerV, PartContainerH } =
   MainStyledPack;
 // 첫번째 구역 : 일정과 참여중인 스터디룸(미완성)
-export const FirstSectionMain = () => {
-  const [userData, error] = useFetch<UserData>("/api/mypage");
+const FirstSectionMain = () => {
+  const [userData, error] = useFetch<UserData>("/api/mypage", {}, false, false);
+  console.log("클라이언트, userData 보입니까?", userData);
 
   if (error) {
     return <div>Error: {error.message}</div>;
@@ -65,7 +70,7 @@ export const FirstSectionMain = () => {
 };
 
 // 게시글 섹션(미완성, 향후 게시판 컴포넌트 재활용 예정)
-export const SecondSectionMain = () => {
+const SecondSectionMain = () => {
   const [userData, error] = useFetch<UserData>("/api/mypage");
 
   if (error) {
@@ -113,3 +118,18 @@ export const SecondSectionMain = () => {
     </Wrapper>
   );
 };
+
+const MainPage = () => {
+  return (
+    <>
+      <MainNavBar mode={"mypage"} />
+      <Link href={"/admin"}>관리자 페이지(개발용)</Link>
+      <Container bgColor={`var(${tokens.colors.simple.primary})`}>
+        <FirstSectionMain />
+        <SecondSectionMain />
+      </Container>
+    </>
+  );
+};
+
+export default MainPage;

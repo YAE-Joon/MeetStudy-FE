@@ -139,18 +139,21 @@ const FlexBar = styled.nav`
 
   background-color: var(${tokens.colors.simple.whitebg});
 `;
+interface StyledListProps {
+  gap?: string;
+  height?: string;
+  width?: string;
+}
 
-const StyledList = styled(FlexBoxUlV)`
+const StyledList = styled(FlexBoxUlV)<StyledListProps>`
   display: flex;
   justify-content: center;
   align-items: flex-start;
-
   flex-direction: column;
+  gap: ${({ gap }) => gap || "1rem"};
+  width: ${({ width }) => width || "100%"};
+  height: ${({ height }) => height || "100%"};
 
-  gap: 1rem;
-
-  width: 100%;
-  height: 100%;
   > li {
     flex: 1;
   }
@@ -161,14 +164,15 @@ const StyledList = styled(FlexBoxUlV)`
   }
 `;
 
-const StyledDetails = styled.li`
+const StyledDetails = styled.li<StyledListProps>`
   flex: 1;
   list-style: none;
 
   font-size: var(${tokens.fontSize.web.small});
 
-  width: 100%;
-  height: 100%;
+  width: ${({ width }) => width || "100%"};
+  height: ${({ height }) => height || "100%"};
+
   > li {
     flex: 1;
   }
@@ -178,7 +182,14 @@ const StyledDetails = styled.li`
   }
 `;
 
-const MainTitleWrapper = styled(FlexBoxH)`
+interface StyledTitleProps {
+  gap?: string;
+  height?: string;
+  width?: string;
+  padding?: string;
+}
+
+const MainTitleWrapper = styled(FlexBoxH)<StyledTitleProps>`
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
@@ -186,8 +197,7 @@ const MainTitleWrapper = styled(FlexBoxH)`
   flex-direction: row;
 
   border-bottom: 1px solid var(${tokens.colors.simple.tertiarylightgray});
-
-  padding: 1rem 0 1rem 0;
+  padding: ${({ padding }) => padding || "1rem 0 1rem 0"};
 
   > div {
     display: flex;

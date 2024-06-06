@@ -144,20 +144,49 @@ export const Container = forwardRef<HTMLDivElement, ContainerProps>(
 
 // outer container
 
-const StyledOuterContainer = styled.div<StyledContainerProps>`
+// const StyledOuterContainer = styled.div<StyledContainerProps>`
+//   scroll-snap-type: y mandatory;
+//   height: 100vh;
+//   //overflow-y: scroll;
+//   min-height: 100vh;
+//   flex: 1; /** footer를 밀어내기 위해서 */
+
+//   @media only screen and (max-width: ${mobileWidth}) {
+//     width: 95vw;
+//   }
+// `;
+// export const OuterContainer: React.FC<ContainerProps> = ({
+//   children,
+//   as = "div",
+//   minWidth = null,
+//   gap = null,
+//   height = null,
+//   bgColor = null,
+// }) => {
+//   return <StyledOuterContainer as={as}>{children}</StyledOuterContainer>;
+// };
+interface OuterContainerProps {
+  as?: keyof JSX.IntrinsicElements;
+  $minWidth?: string | null;
+  $gap?: string | null;
+  $height?: string | null;
+  $bgColor?: string | null;
+}
+
+export const OuterContainer = styled.div.attrs<OuterContainerProps>(
+  ({ as }) => ({
+    as: as || "div",
+  })
+)<OuterContainerProps>`
   scroll-snap-type: y mandatory;
-  height: 100vh;
-  //overflow-y: scroll;
+  height: ${(props) => props.$height || "100vh"};
   min-height: 100vh;
   flex: 1; /** footer를 밀어내기 위해서 */
+  min-width: ${(props) => props.$minWidth || "auto"};
+  gap: ${(props) => props.$gap || "0"};
+  background-color: ${(props) => props.$bgColor || "transparent"};
+
+  @media only screen and (max-width: ${mobileWidth}) {
+    width: 100vw;
+  }
 `;
-export const OuterContainer: React.FC<ContainerProps> = ({
-  children,
-  as = "div",
-  minWidth = null,
-  gap = null,
-  height = null,
-  bgColor = null,
-}) => {
-  return <StyledOuterContainer as={as}>{children}</StyledOuterContainer>;
-};

@@ -88,6 +88,10 @@ const getUserData = async () => {
   userData.userCalendars = dummyUserCalendar;
   userData.userProfile = dummyUserProfile;
 
+  console.log(
+    "넥스트 웹서버에서 유저데이터를 요청받았습니다: ",
+    userData.userCalendars
+  );
   return userData;
 };
 

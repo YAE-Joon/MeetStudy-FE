@@ -7,10 +7,11 @@ import dt from "@/lib/designToken/designTokens";
 
 import { Container } from "@/component/styled-components/Container";
 import Wrapper from "@/component/styled-components/Wrapper";
+import { TitleWrapper } from "@/component/styled-components/TextBoxes";
 import { Title } from "@/component/styled-components/TextBoxes";
 import StyledAccounts from "@/app/myAccount/myAccountClientComponents";
 
-const { PartContainerV, PageWrapper, TitleWrapper } = StyledAccounts;
+const { PartContainerV, PageWrapper } = StyledAccounts;
 
 import EditSections from "./MyAccount";
 

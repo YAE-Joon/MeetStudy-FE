@@ -1,3 +1,8 @@
+export interface FetchOptions {
+  method?: string;
+  headers?: HeadersInit;
+  body?: any;
+}
 export interface UserProfile {
   email?: string;
   username: string;
@@ -35,4 +40,11 @@ export interface UserData {
   userCalendars: UserCalendar[];
   userScrappedPosts: null;
   userPosts: null;
+}
+
+export interface CategoriyOptions {
+  id: number;
+  name: string;
+  description: string;
+  slug?: string;
 }

@@ -84,13 +84,13 @@ export const BasicInput = styled.input`
   font-size: var(${tokens.fontSize.web.small});
 
   &:valid {
-    border-bottom-color: var(${tokens.colors.simple.validGreen});
-    color: var(${tokens.colors.simple.validGreen});
+    border-bottom-color: var(${tokens.colors.simple.validgreen});
+    color: var(${tokens.colors.simple.validgreen});
   }
 
   &:invalid {
-    border-bottom-color: var(${tokens.colors.simple.validGreen});
-    color: var(${tokens.colors.simple.invalidRed});
+    border-bottom-color: var(${tokens.colors.simple.validgreen});
+    color: var(${tokens.colors.simple.validgreen});
   }
 
   @media only screen and (max-width: ${mobileWidth}) {
