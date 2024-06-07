@@ -1,4 +1,6 @@
 "use client";
+import { StudyRoom } from "@/lib/types";
+
 import StyledStudyRoomIndex from "@/app/studyrooms/StudyRoomIndexClientComponents";
 
 import { Title } from "@/component/styled-components/TextBoxes";
@@ -9,6 +11,7 @@ import { ChangeEvent, useEffect, useState } from "react";
 import useFetch from "@/hooks/useFetch";
 import { StudyRoomCard } from "@/component/styled-components/Card";
 
+import { apiPaths } from "@/config/api";
 import { FlexBoxV } from "@/component/styled-components/FlexBoxes";
 import MovingCategories from "@/component/styled-components/MovingCategories";
 const tokens = dt.DesignTokenVarNames;
@@ -26,142 +29,16 @@ const SearchPageContainer = ({
   categories: CategoriyOptions[];
 }) => {
   const [searchQuery, setSearchQuery] = useState("");
-  const [studyRooms, error] = useFetch("/api/studyrooms", {}, false, false);
+  const [studyRooms, error] = useFetch<StudyRoom[]>(
+    apiPaths.studyrooms.all,
+    {},
+    false,
+    false
+  );
 
-  const dummy_list_sect3 = [
-    {
-      category: "개발",
-      desc: "스터디룸 소개",
-      profilePic: "👩‍💻",
-      author: "스터디룸 이름",
-    },
-    {
-      category: "공무원",
-      desc: "스터디룸 소개",
-      profilePic: "👩‍💻",
-      author: "스터디룸 이름",
-    },
-    {
-      category: "개발",
-      desc: "스터디룸 소개",
-      profilePic: "👩‍💻",
-      author: "스터디룸 이름",
-    },
-    {
-      category: "공무원",
-      desc: "스터디룸 소개",
-      profilePic: "👩‍💻",
-      author: "스터디룸 이름",
-    },
-    {
-      category: "개발",
-      desc: "스터디룸 소개",
-      profilePic: "👩‍💻",
-      author: "스터디룸 이름",
-    },
-    {
-      category: "공무원",
-      desc: "스터디룸 소개",
-      profilePic: "👩‍💻",
-      author: "스터디룸 이름",
-    },
-    {
-      category: "개발",
-      desc: "스터디룸 소개",
-      profilePic: "👩‍💻",
-      author: "스터디룸 이름",
-    },
-    {
-      category: "공무원",
-      desc: "스터디룸 소개",
-      profilePic: "👩‍💻",
-      author: "스터디룸 이름",
-    },
-    {
-      category: "개발",
-      desc: "스터디룸 소개",
-      profilePic: "👩‍💻",
-      author: "스터디룸 이름",
-    },
-    {
-      category: "공무원",
-      desc: "스터디룸 소개",
-      profilePic: "👩‍💻",
-      author: "스터디룸 이름",
-    },
-    {
-      category: "개발",
-      desc: "스터디룸 소개",
-      profilePic: "👩‍💻",
-      author: "스터디룸 이름",
-    },
-    {
-      category: "공무원",
-      desc: "스터디룸 소개",
-      profilePic: "👩‍💻",
-      author: "스터디룸 이름",
-    },
-    {
-      category: "개발",
-      desc: "스터디룸 소개",
-      profilePic: "👩‍💻",
-      author: "스터디룸 이름",
-    },
-    {
-      category: "공무원",
-      desc: "스터디룸 소개",
-      profilePic: "👩‍💻",
-      author: "스터디룸 이름",
-    },
-    {
-      category: "개발",
-      desc: "스터디룸 소개",
-      profilePic: "👩‍💻",
-      author: "스터디룸 이름",
-    },
-    {
-      category: "공무원",
-      desc: "스터디룸 소개",
-      profilePic: "👩‍💻",
-      author: "스터디룸 이름",
-    },
-    {
-      category: "개발",
-      desc: "스터디룸 소개",
-      profilePic: "👩‍💻",
-      author: "스터디룸 이름",
-    },
-    {
-      category: "공무원",
-      desc: "스터디룸 소개",
-      profilePic: "👩‍💻",
-      author: "스터디룸 이름",
-    },
-    {
-      category: "개발",
-      desc: "스터디룸 소개",
-      profilePic: "👩‍💻",
-      author: "스터디룸 이름",
-    },
-    {
-      category: "공무원",
-      desc: "스터디룸 소개",
-      profilePic: "👩‍💻",
-      author: "스터디룸 이름",
-    },
-    {
-      category: "개발",
-      desc: "스터디룸 소개",
-      profilePic: "👩‍💻",
-      author: "스터디룸 이름",
-    },
-    {
-      category: "공무원",
-      desc: "스터디룸 소개",
-      profilePic: "👩‍💻",
-      author: "스터디룸 이름",
-    },
-  ];
+  if (!studyRooms) {
+    return <div>로딩 중</div>;
+  }
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
@@ -184,15 +61,8 @@ const SearchPageContainer = ({
           <InputContainer value={searchQuery} onChange={handleInputChange} />
         </SearchBarWarpper>
         <SearchResultContainer>
-          {dummy_list_sect3.map((item, idx) => (
-            <StudyRoomCard
-              key={idx}
-              item={{
-                emoji: item.profilePic,
-                comment: item.desc,
-                author: item.author,
-              }}
-            />
+          {studyRooms.map((studyRoom, idx) => (
+            <StudyRoomCard key={studyRoom.id} item={studyRoom} />
           ))}
         </SearchResultContainer>
       </FlexBoxV>

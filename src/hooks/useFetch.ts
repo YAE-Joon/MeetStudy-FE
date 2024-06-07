@@ -2,11 +2,6 @@
 import { useState, useEffect } from "react";
 import { FetchOptions } from "@/lib/types";
 import fetchDataBE from "@/lib/fetch";
-/**
- *
- * @param apiUrl [baseUrl]/api/v2...
- * @returns json 형식으로 파싱된 데이터 | Error
- */
 
 /**
  *

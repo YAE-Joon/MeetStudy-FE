@@ -223,11 +223,12 @@ const HamburgerMenu = styled.div.attrs<{ $isopen: boolean }>({
   }
 `;
 const SearchResultContainer = styled(StyledUl)`
-  width: 100%;
+  width: 80%;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 1rem;
   padding-bottom: 2vh;
+  justify-content: start;
 
   > li {
     min-width: 300px;

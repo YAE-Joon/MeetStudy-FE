@@ -49,10 +49,8 @@ export const ChatRoomList = ({
   chatRoomList: ChatRoomInfoProps[];
 }) => {
   const params = useParams();
-  const studyroomId = params.id?.toString();
-  const router = useRouter();
   const pathname = usePathname();
-  console.log("pathname?", pathname);
+  //console.log("pathname?", pathname);
   return (
     <ChatRoomContainer>
       {chatRoomList.map((chatRoomInfo, idx) => (
@@ -62,7 +60,7 @@ export const ChatRoomList = ({
         >
           <LinkContent>
             <LinkTitle>{chatRoomInfo.title}</LinkTitle>
-            <LinkDetails>{chatRoomInfo.desc} </LinkDetails>
+            <LinkDetails>{chatRoomInfo.notice} </LinkDetails>
           </LinkContent>
         </ChatRoomCard>
       ))}

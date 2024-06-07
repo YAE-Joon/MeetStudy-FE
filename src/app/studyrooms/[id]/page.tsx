@@ -1,9 +1,11 @@
 "use client";
+import { useStudyRoomData } from "@/context/StudyRoomDataContext";
 import Image from "next/image";
 import { ImageWrapper } from "@/component/ImageConainer";
 import titleImg from "../../../../public/images/1. landing-01.png";
 import dt from "@/lib/designToken/designTokens";
 import StyledStudyRoomIndex from "@/app/studyrooms/StudyRoomIndexClientComponents";
+import { Description } from "@/component/styled-components/TextBoxes";
 
 const { SearchResultContainer } = StyledStudyRoomIndex;
 
@@ -16,6 +18,8 @@ export default function Page({
   params: { id: number; slug: string };
 }) {
   const roomId = params.id;
+
+  const studyRoomData = useStudyRoomData();
 
   return (
     <>
@@ -30,7 +34,10 @@ export default function Page({
         />
       </ImageWrapper>
       <SearchResultContainer>
-        <div>홈 화면에 뭘 넣지?</div>
+        <Description
+          content={studyRoomData.description}
+          color={tokens.colors.simple.blackbasic}
+        />
       </SearchResultContainer>
     </>
   );
