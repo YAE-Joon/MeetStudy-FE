@@ -14,11 +14,11 @@ const tokens = dt.DesignTokenVarNames;
 
 const { StyledList, StyledDetails, MainTitleWrapper, StyledDescription } =
   MainStyledPack;
-
+import { apiPaths } from "@/config/api";
 //클라이언트에서 요청 보냄
 const AdminCategoryPage = () => {
   const [categories, error] = useFetch<CategoriyOptions[]>(
-    "/api/admin/categories",
+    apiPaths.category.public,
     // "/api/post/public",  // 테스트용, 공개된 api
     {},
     false,
@@ -26,7 +26,7 @@ const AdminCategoryPage = () => {
   );
 
   if (!categories) {
-    return <div>로딩 중</div>;
+    return <div>로딩 중 admin category loader</div>;
   }
 
   return (

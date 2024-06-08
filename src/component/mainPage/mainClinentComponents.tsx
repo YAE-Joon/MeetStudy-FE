@@ -5,14 +5,20 @@ import Link from "next/link";
 import { UserCalendar } from "@/lib/types";
 import routeLinks from "@/lib/routeLinks";
 
+import { standardizeDate } from "@/util/dateUtils";
+
 import { IoMdSettings } from "react-icons/io";
 import { RiUserFill } from "react-icons/ri";
 import { MdErrorOutline } from "react-icons/md";
 
 import dt from "@/lib/designToken/designTokens";
-import { Title, Description } from "@/component/styled-components/TextBoxes";
+import {
+  Title,
+  Description,
+  TitleWrapper,
+} from "@/component/styled-components/TextBoxes";
 import MainStyledPack from "@/component/mainPage/mainStyledComponents";
-
+import { StyledCalendarPack } from "@/component/mainPage/mainStyledComponents";
 const tokens = dt.DesignTokenVarNames;
 
 // styleds components
@@ -20,16 +26,26 @@ const {
   SettingSection,
   MySettingUl,
   FlexBar,
-  StyledList,
   StyledDetails,
   MainTitleWrapper,
   ErrorBox,
   StyledDescription,
 } = MainStyledPack;
 
+const { Date } = StyledCalendarPack;
 export const MainNavBar = ({ mode }: { mode?: string }) => {
+  const userNickName = "인증유저갖고오면바꿀닉네임";
   return (
     <FlexBar>
+      <Title
+        $htype={1}
+        $fontSize={tokens.fontSize.web.large}
+        $color={tokens.colors.simple.blackbasic}
+        $padding={"0"}
+      >
+        {`어서오세요, ${userNickName} 님!`}
+      </Title>
+
       <SettingSection>
         <MySettingUl>
           {mode === "mypage" ? (
@@ -64,7 +80,7 @@ export const MainNavBar = ({ mode }: { mode?: string }) => {
 export const DailyList = ({
   userCalendars,
 }: {
-  userCalendars: UserCalendar[] | null;
+  userCalendars: UserCalendar[];
 }) => {
   if (!userCalendars) {
     return (
@@ -82,111 +98,43 @@ export const DailyList = ({
 
   return (
     <>
-      <StyledList>
-        {userCalendars?.length === 0 ? (
-          <p>일정이 존재하지 않습니다.</p>
-        ) : (
-          <>
-            {userCalendars.map((userCalendar, idx) => {
-              const { startDateStr, endDateStr, startTimeStr, endTimeStr } =
-                standardizeDate(userCalendar);
-              return (
-                <StyledDetails key={userCalendar.id}>
-                  <MainTitleWrapper>
-                    <Title
-                      $htype={4}
-                      $color={tokens.colors.simple.blackbasic}
-                      $fontSize={tokens.fontSize.web.small}
-                      $align={"left"}
-                    >
-                      {userCalendar.title}
-                    </Title>
-                    <div>
-                      <p>
-                        {startDateStr} {startTimeStr}
-                      </p>
-                      <p>
-                        {endDateStr} {endTimeStr}
-                      </p>
-                    </div>
-                  </MainTitleWrapper>
-                  <StyledDescription
-                    content={userCalendar.content}
-                    fontSize={tokens.fontSize.web.xsmall}
-                  />
-                </StyledDetails>
-              );
-            })}
-          </>
-        )}
-      </StyledList>
+      {userCalendars?.length === 0 ? (
+        <p>일정이 존재하지 않습니다.</p>
+      ) : (
+        <>
+          {userCalendars.map((userCalendar, idx) => {
+            const { startDateStr, endDateStr, startTimeStr, endTimeStr } =
+              standardizeDate(userCalendar);
+            return (
+              <StyledDetails key={userCalendar.id}>
+                <MainTitleWrapper>
+                  <Date>{idx + 1}</Date>
+                  <Title
+                    $htype={4}
+                    $color={tokens.colors.simple.blackbasic}
+                    $fontSize={tokens.fontSize.web.small}
+                    $align={"left"}
+                  >
+                    {userCalendar.title}
+                  </Title>
+                  <div>
+                    <p>
+                      {startDateStr} {startTimeStr}
+                    </p>
+                    <p>
+                      {endDateStr} {endTimeStr}
+                    </p>
+                  </div>
+                </MainTitleWrapper>
+                <StyledDescription
+                  content={userCalendar.content}
+                  fontSize={tokens.fontSize.web.xsmall}
+                />
+              </StyledDetails>
+            );
+          })}
+        </>
+      )}
     </>
   );
 };
-
-function standardizeDate(userCalendar: UserCalendar) {
-  const { startDay, endDay, startTime, endTime } = userCalendar;
-
-  //set Data
-  const startDateStr = `${setDateStr(startDay)}`;
-  const endDateStr = `${setDateStr(endDay)}`;
-  //set time
-  const startTimeStr = `${setTimeSTr(startTime)}`;
-  const endTimeStr = `${setTimeSTr(endTime)}`;
-
-  return { startDateStr, endDateStr, startTimeStr, endTimeStr };
-
-  function setTimeSTr(time: string) {
-    let h, m;
-    let [oriH, oriM, oriS] = time.split(":").map((t) => Number(t));
-    let timeStr = "";
-
-    if (isNaN(oriH) || isNaN(oriM) || isNaN(oriS)) {
-      console.error("시간 형식 오류입니다.");
-      return "";
-    }
-
-    if (oriH > 12 && oriH <= 24) {
-      h = `오후 ${oriH - 12}시`;
-    } else {
-      h = `오전 ${oriH}시`;
-    }
-
-    if (oriM === 0) {
-      m = "";
-    } else {
-      m = `${oriM}분`;
-    }
-
-    timeStr = `${h} ${m}`;
-
-    return timeStr;
-  }
-
-  function setDateStr(date: string) {
-    //let [y, m, d] = date.split("-").map((d) => Number(d));
-
-    // 연, 월, 일 추출
-    const yearStr = date.substring(2, 4);
-    const monthStr = date.substring(4, 6);
-    const dayStr = date.substring(6);
-
-    const y = Number(yearStr);
-    const m = Number(monthStr);
-    const d = Number(dayStr);
-
-    if (isNaN(y) || isNaN(m) || isNaN(d)) {
-      throw new Error("숫자 변환 실패");
-    }
-
-    if (m < 1 || m > 12) {
-      throw new Error("유효하지 않은 월 값입니다");
-    }
-
-    if (d < 1 || d > 31) {
-      throw new Error("유효하지 않은 일 값입니다");
-    }
-
-    return `${y}년 ${m}월 ${d}일`;
-  }
-}

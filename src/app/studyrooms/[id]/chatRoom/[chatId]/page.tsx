@@ -2,7 +2,12 @@
 // 채팅방
 import { useState, ChangeEvent, useRef, useEffect } from "react";
 import ChatStyled from "@/app/studyrooms/[id]/chatRoom/[chatId]/chatStyled";
-import { ChatMessage } from "@/lib/types";
+import { ChatMessage, UserProfile } from "@/lib/types";
+import useWebSocket from "@/webSocket/client";
+import { getChatRoomId } from "@/app/studyrooms/studyroomSub";
+import useFetch from "@/hooks/useFetch";
+import { apiPaths } from "@/config/api";
+import Loading from "@/component/Loading/Loading";
 
 const {
   ChatRoomMain,
@@ -18,47 +23,61 @@ const {
 export default function ChatRoom() {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [newMessage, setNewMessage] = useState("");
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // console.log("pathname", pathname); //pathname /studyrooms/1/chatRoom/0
+  const webSocketUrl = `ws://${process.env.NEXT_PUBLIC_WS_URL}/ws`;
+  const chatRoomId = getChatRoomId();
+
+  const [userData, userDataFetchError, isLoading] = useFetch<UserProfile>(
+    apiPaths.mypage.info,
+    {},
+    false,
+    false
+  );
+  const [chatRecords, chatRecordError] = useFetch<ChatMessage[]>(
+    apiPaths.chatroom.getRecords(chatRoomId),
+    {},
+    false,
+    false
+  );
+  const { messages: receivedMessages, sendMessage } = useWebSocket(
+    webSocketUrl,
+    chatRoomId.toString()
+  );
+
+  useEffect(() => {
+    if (receivedMessages.length > 0) {
+      setMessages((prevMessages) => [...prevMessages, ...receivedMessages]);
+    }
+  }, [receivedMessages]);
 
   const msgEndRef = useRef<HTMLDivElement>(null);
 
-  // 스크롤을 이동하는 함수
   const scrollToBottom = () => {
     if (msgEndRef.current) {
       msgEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
   };
+  //수정예정
+  const isMyMessage = async (
+    myNickName: string,
+    chatRecords: ChatMessage[]
+  ) => {
+    console.log("🙆‍♂️ 기존 채팅 데이터를 불러옵니다... ", chatRecords);
 
-  // 채팅 기록 불러오기
-  const fetchChatRecords = async () => {
-    try {
-      const response = await fetch("/api/chat/chatSample");
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      const chatRecords: ChatMessage[] = await response.json();
-
-      const myNickname = "주니어프론트";
-      const markedRecords = chatRecords.map((record) =>
-        record.nickName === myNickname
-          ? { ...record, isOwn: true }
-          : { ...record, isOwn: false }
-      );
-      setMessages(markedRecords);
-      setLoading(false);
-    } catch (error) {
-      console.error("Error fetching chat records:", error);
-      setError("Failed to fetch chat records");
-      setLoading(false);
-    }
+    const markedRecords = chatRecords.map((record) =>
+      record.nickName === myNickName
+        ? { ...record, isOwn: true }
+        : { ...record, isOwn: false }
+    );
+    setMessages(markedRecords);
   };
 
   useEffect(() => {
-    fetchChatRecords();
-  }, []);
+    if (userData && chatRecords) {
+      isMyMessage(userData.nickname, chatRecords);
+    }
+  }, [userData, chatRecords]);
 
   useEffect(() => {
     scrollToBottom();
@@ -66,15 +85,15 @@ export default function ChatRoom() {
 
   const handleSendMessage = () => {
     if (newMessage.trim()) {
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        {
-          nickName: "나",
-          content: newMessage,
-          isOwn: true,
-          createdAt: new Date().toISOString(),
-        },
-      ]);
+      const messageObject: ChatMessage = {
+        nickName: "나",
+        content: newMessage,
+        isOwn: true,
+        createdAt: new Date().toISOString(),
+      };
+
+      setMessages((prevMessages) => [...prevMessages, messageObject]);
+      sendMessage(JSON.stringify(messageObject));
       setNewMessage("");
     }
   };
@@ -83,12 +102,16 @@ export default function ChatRoom() {
     setNewMessage(e.target.value);
   };
 
-  if (loading) {
-    return <div>로딩중</div>;
+  if (isLoading) {
+    return <div>"채팅로딩중(바꿀예정)"</div>;
   }
 
   if (error) {
-    return <div>Error: {error}</div>;
+    return <ChatRoomMain>Error: {error}</ChatRoomMain>;
+  }
+
+  if (!userData || !chatRecords) {
+    return <ChatRoomMain>!userData || !chatRecords</ChatRoomMain>;
   }
 
   return (

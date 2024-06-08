@@ -1,10 +1,11 @@
 "use client";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import dt from "@/lib/designToken/designTokens";
 import {
   FlexBoxH,
   FlexBoxUlV,
   FlexBoxV,
+  StyledUl,
 } from "@/component/styled-components/FlexBoxes";
 import { StyledProps } from "@/component/styled-components/styledProps";
 import { Description } from "@/component/styled-components/TextBoxes";
@@ -19,7 +20,7 @@ const MainPageContainer = styled(Container)`
 
 const SettingSection = styled.section`
   position: relative;
-  width: 100%;
+  width: 10%;
   height: 100%;
   display: flex;
   justify-content: flex-end;
@@ -49,11 +50,14 @@ const PartContainerV = styled(FlexBoxV)`
 
   gap: 1rem;
 
+  min-height: 200px;
+
   @media only screen and (max-width: ${mobileWidth}) {
     width: 100%;
-
     height: auto;
   }
+
+  // background-color: red;
 `;
 
 const PartContainerH = styled(FlexBoxH)`
@@ -132,10 +136,11 @@ const MySettingUl = styled.ul<{ gap?: string }>`
 const FlexBar = styled.nav`
   display: flex;
   flex-direction: row;
-  height: 3rem;
+  justify-content: space-between;
+  height: 4rem;
   width: 100%;
   margin: 0;
-  padding: 0 1rem 0 0;
+  padding: 1rem;
 
   background-color: var(${tokens.colors.simple.whitebg});
 `;
@@ -180,6 +185,10 @@ const StyledDetails = styled.li<StyledListProps>`
   > div {
     font-size: var(${tokens.fontSize.web.xsmall});
   }
+
+  background: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 `;
 
 interface StyledTitleProps {
@@ -197,9 +206,10 @@ const MainTitleWrapper = styled(FlexBoxH)<StyledTitleProps>`
   flex-direction: row;
 
   border-bottom: 1px solid var(${tokens.colors.simple.tertiarylightgray});
-  padding: ${({ padding }) => padding || "1rem 0 1rem 0"};
+  padding: ${({ padding }) => padding || "0.5rem 0 0.5rem 0"};
 
-  > div {
+  > div,
+  span {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -213,11 +223,15 @@ const MainTitleWrapper = styled(FlexBoxH)<StyledTitleProps>`
   }
 
   > *:nth-child(1) {
-    flex: 6;
+    flex: 0.5;
   }
 
   > *:nth-child(2) {
-    flex: 4;
+    flex: 7;
+  }
+
+  > *:nth-child(3) {
+    flex: 2.5;
   }
 `;
 
@@ -237,6 +251,157 @@ const ErrorBox = styled(FlexBoxV)`
 const StyledDescription = styled(Description)`
   padding: 1rem 1rem 1rem 1rem;
 `;
+
+////// skeleton /////
+
+const pulse = keyframes`
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+  100% {
+    opacity: 1;
+  }
+`;
+
+const SkeletonContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px;
+  width: 100%;
+  height: 100%;
+`;
+
+const SkeletonBar = styled.div`
+  width: 100%;
+  height: 20px;
+  background: #f6f7f8;
+  background-image: linear-gradient(
+    to right,
+    #eeeeee 0%,
+    #dddddd 50%,
+    #eeeeee 100%
+  );
+  background-repeat: no-repeat;
+  background-size: 1000px 100%;
+  display: inline-block;
+  position: relative;
+  animation: ${pulse} 2s infinite linear;
+  border-radius: 4px;
+`;
+
+export const MainSkleton = () => {
+  return (
+    <SkeletonContainer>
+      <SkeletonBar />
+      <SkeletonBar />
+      <SkeletonBar />
+    </SkeletonContainer>
+  );
+};
+
+//////// calendar ////////////
+
+const Grid = styled.div`
+  display: grid;
+  gap: 1rem;
+  min-height: 400px;
+
+  width: 100%;
+`;
+
+const Card = styled.div`
+  background: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  width: 100%;
+  height: auto;
+`;
+
+const CardContent = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+`;
+
+const Date = styled.span`
+  font-weight: 500;
+  color: var(${tokens.colors.simple.blackbasic});
+`;
+
+const EventDetails = styled.div`
+  flex: 1;
+  align-items: center;
+  gap: 0.5rem;
+`;
+
+const EventTitle = styled.div`
+  font-weight: 500;
+`;
+
+const EventTime = styled.div`
+  font-size: var(${tokens.fontSize.web.xsmall});
+  color: var(${tokens.colors.simple.grayfortext});
+`;
+const EventTimeWrapper = styled.div`
+  flex: 8;
+  display: flex;
+  flex-direction: column;
+`;
+
+/////// studyrooms ////
+
+const MyStudyRoomsContainer = styled(StyledUl)`
+  width: 100%;
+  display: flex;
+  overflow-x: scroll;
+  white-space: nowrap;
+  gap: 1rem;
+  padding-bottom: 10px;
+  justify-content: start;
+
+  > li {
+    flex: 0 0 auto;
+  }
+
+  &::-webkit-scrollbar {
+    height: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+
+  @media only screen and (max-width: ${mobileWidth}) {
+    grid-template-columns: 1fr;
+    width: 100%;
+  }
+`;
+
+export const StyledStudyRoomsPack = {
+  MyStudyRoomsContainer,
+};
+
+export const StyledCalendarPack = {
+  Grid,
+  Card,
+  CardContent,
+  Date,
+  EventDetails,
+  EventTitle,
+  EventTime,
+  EventTimeWrapper,
+};
 
 const MainStyledPack = {
   MainPageContainer,

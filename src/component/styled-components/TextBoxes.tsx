@@ -119,46 +119,13 @@ const StyledSpanOrCite = styled.span<StyledTextProps>`
 `;
 /** components  */
 
-/// Title ///
-
-// /**
-//  * Title component(h1) : 타이틀에 쓰이는 컴포넌트입니다.
-//  * @param param0.
-//  * @param param0.content : 제목 내용(텍스트)
-//  * @param param0.color: (선택) 제목 색상
-//  * @param param0.fontSize: (선택) 제목 크기 | (xlarge, large, medium, small, xsmall 중 하나)
-//  * @param param0.htype: (선택)제목의 HTML 태그 타입 | h1~h6 중 택1
-//  *
-//  * @returns
-//  */
-// export const Title: React.FC<TextProps> = ({
-//   content,
-//   color = null,
-//   fontSize = null,
-//   htype = 1,
-//   align,
-//   className,
-// }) => {
-//   const Tag = `h${htype}` as keyof JSX.IntrinsicElements; // htype에 따른 태그 결정
-//   return (
-//     <StyledTitle
-//       as={Tag}
-//       $color={color}
-//       $fontSize={fontSize}
-//       $align={align}
-//       className={className}
-//     >
-//       {content}
-//     </StyledTitle>
-//   );
-// };
-
 interface TitleProps {
   as?: keyof JSX.IntrinsicElements;
   $align?: "center" | "left";
   $fontSize?: string;
   $color?: string;
   $htype?: 1 | 2 | 3 | 4 | 5 | 6;
+  $padding?: string;
   isAuthor?: boolean;
   isBold?: boolean;
   className?: string;
@@ -174,7 +141,7 @@ export const Title = styled.h1.attrs<TitleProps>(({ as, $htype }) => ({
   color: ${({ $color }) =>
     `var(${$color || DesignTokenVarNames.colors.simple.whitebg})`};
   min-width: auto;
-  padding: 1rem;
+  padding: ${({ $padding }) => $padding || "1rem"};
   overflow-wrap: break-word;
   word-break: keep-all;
   font-weight: bold;
@@ -245,9 +212,12 @@ export const Span: React.FC<TextProps> = ({
     </StyledSpanOrCite>
   );
 };
-
-export const TitleWrapper = styled.div`
+interface TitleWrapperProp {
+  $bgColor?: string | null;
+}
+export const TitleWrapper = styled.div<TitleWrapperProp>`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  background-color: ${({ $bgColor }) => $bgColor || "transparent"};
 `;

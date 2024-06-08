@@ -5,17 +5,23 @@ import { CategoriyOptions } from "@/lib/types";
 
 import { OuterContainer } from "@/component/styled-components/Container";
 import SearchPageContainer from "@/app/studyrooms/StudyRoomPage";
+import { apiPaths } from "@/config/api";
 
 let categories: CategoriyOptions[];
-// next.js의 서버에서 요청 보냄
+
 async function GetCategories() {
-  console.log("카테고리에서 API를 호출합니다");
-  const apiUrl = "/api/admin/categories ";
-  // const apiUrl = "/api/post";  // 테스트용, 공개된 api
+  // studyrooms 페이지에 진입 시 서버에서 카테고리 정보를 불러옵니다.
+  //console.log("studyrooms에서 카테고리 API를 호출합니다");
+
   try {
-    const loadData = await fetchDataBE(apiUrl, {}, true, true);
+    const loadData = await fetchDataBE(
+      apiPaths.category.public,
+      {},
+      false, //관리자 아님
+      false
+    );
     categories = loadData;
-    console.log("스터디룸 페이지에서 불러오는 카테고리 :", categories);
+    //console.log("스터디룸 페이지에서 불러오는 카테고리 :", categories);
   } catch (err) {
     new Error("알 수 없는 에러가 발생했습니다.");
   }
@@ -25,7 +31,7 @@ GetCategories();
 
 function StudyRoomsIndexPage() {
   return (
-    <OuterContainer>
+    <OuterContainer $height="100vh">
       {categories && <SearchPageContainer categories={categories} />}
     </OuterContainer>
   );

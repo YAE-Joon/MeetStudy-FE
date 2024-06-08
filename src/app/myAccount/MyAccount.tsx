@@ -132,7 +132,7 @@ const EditSections: React.FC<MyaccountProps> = ({ UserProfile }) => {
             </li>
             <li>
               <span style={{ fontWeight: "bold" }}>비밀번호</span>{" "}
-              <span>{"*".repeat(userInfo.password.length)}</span>
+              <span>{"*".repeat(Math.min(userInfo.password.length, 6))}</span>
             </li>
             <li>
               <span style={{ fontWeight: "bold" }}>관심분야</span>{" "}
