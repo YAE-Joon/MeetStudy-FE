@@ -3,6 +3,8 @@
 import { useState, ChangeEvent, useRef, useEffect } from "react";
 import ChatStyled from "@/app/studyrooms/[id]/chatRoom/[chatId]/chatStyled";
 import { ChatMessage } from "@/lib/types";
+import useWebSocket from "@/webSocket/client";
+import { getChatRoomId } from "@/app/studyrooms/studyroomSub";
 
 const {
   ChatRoomMain,
@@ -20,6 +22,23 @@ export default function ChatRoom() {
   const [newMessage, setNewMessage] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  //websocketw
+  const webSocketUrl = `ws://${process.env.NEXT_PUBLIC_WS_URL}/ws`;
+
+  const chatRoomId = getChatRoomId();
+
+  const { messages: receivedMessages, sendMessage } = useWebSocket(
+    webSocketUrl,
+    chatRoomId.toString()
+  );
+
+  // websocket이 보내는 메시지를 저장
+  useEffect(() => {
+    if (receivedMessages.length > 0) {
+      setMessages((prevMessages) => [...prevMessages, ...receivedMessages]);
+    }
+  }, [receivedMessages]);
 
   // console.log("pathname", pathname); //pathname /studyrooms/1/chatRoom/0
 
@@ -66,15 +85,16 @@ export default function ChatRoom() {
 
   const handleSendMessage = () => {
     if (newMessage.trim()) {
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        {
-          nickName: "나",
-          content: newMessage,
-          isOwn: true,
-          createdAt: new Date().toISOString(),
-        },
-      ]);
+      const messageObject: ChatMessage = {
+        nickName: "나",
+        content: newMessage,
+        isOwn: true,
+        createdAt: new Date().toISOString(),
+      };
+
+      setMessages((prevMessages) => [...prevMessages, messageObject]);
+      setMessages((prevMessages) => [...prevMessages, messageObject]);
+      sendMessage(JSON.stringify(messageObject));
       setNewMessage("");
     }
   };

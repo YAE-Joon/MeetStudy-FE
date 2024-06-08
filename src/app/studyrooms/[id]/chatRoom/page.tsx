@@ -8,7 +8,7 @@ import { FlexBoxV } from "@/component/styled-components/FlexBoxes";
 import { Title } from "@/component/styled-components/TextBoxes";
 import dt from "@/lib/designToken/designTokens";
 import { apiPaths } from "@/config/api";
-import { usePathname } from "next/navigation";
+import { getRoomId } from "@/app/studyrooms/studyroomSub";
 
 const { SearchBarWarpper } = StyledStudyRoomIndex;
 
@@ -61,19 +61,3 @@ const ChatRoom = () => {
 };
 
 export default ChatRoom;
-
-// room id 추출
-// studyRooms 를 통해 들어오지 않는 경우를 대비
-function getRoomId() {
-  const currPath = usePathname();
-  const match = currPath.match(/\/studyrooms\/(\d+)\/chatRoom/);
-
-  if (match && match[1]) {
-    const roomId = parseInt(match[1], 10);
-    console.log("현재 참가중인 방 아이디:", roomId);
-    return roomId;
-  } else {
-    console.log("방 아이디를 찾을 수 없습니다.");
-    return 0;
-  }
-}
