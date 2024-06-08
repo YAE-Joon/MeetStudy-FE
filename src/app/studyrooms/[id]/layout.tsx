@@ -19,15 +19,17 @@ export default function StudyRoomdLayout({
   children: React.ReactNode;
 }) {
   const params = useParams();
-  const roomId = params.id?.toString();
+  const roomId = Number(params.id);
   //console.log("roomId", roomId);
 
+  // 입장한 스터디룸에 대한 정보를 불러옵니다.
   const [studyRoomData, error] = useFetch<StudyRoom>(
     apiPaths.studyrooms.detail(roomId),
     {},
     false,
     false
   );
+
   const studyRoomMenu = [
     { label: "홈", link: `/studyrooms/${roomId}` },
     { label: "채팅", link: `/studyrooms/${roomId}/chatRoom` },
@@ -40,16 +42,24 @@ export default function StudyRoomdLayout({
     return <div>로딩 중</div>;
   }
 
+  //packing data
+
+  const currentMembers = studyRoomData.userStudyRooms.length;
+  const packedStudyRoomData = {
+    ...studyRoomData,
+    currentMembers,
+  };
+
   return (
     <OuterContainer>
       <InnerContainer>
         <MovingMenu
           menu={studyRoomMenu}
-          roomId={roomId}
+          roomId={roomId.toString()}
           title={studyRoomData.title}
         />
         <FlexBoxV $padding={"0 1rem 0 0.5rem"}>
-          <StudyRoomDataProvider value={studyRoomData}>
+          <StudyRoomDataProvider value={packedStudyRoomData}>
             {children}
           </StudyRoomDataProvider>
         </FlexBoxV>

@@ -92,8 +92,9 @@ export const FirstSectionLanding = React.forwardRef<
       $gap={"3px"}
       $height={"100vh"}
       ref={ref}
+      $justifyContent={"center"}
     >
-      <ExtendedFlexBoxV>
+      <ExtendedFlexBoxV $justifyContent={"center"}>
         <ExtendedFlexBoxH>
           <TextPart>
             <Title $htype={1} $align="left">
@@ -139,7 +140,7 @@ export const SecondSectionLanding = React.forwardRef<
       $height={"100vh"}
       ref={ref}
     >
-      <FlexBoxV type={"center"}>
+      <FlexBoxV type={"center"} $justifyContent={"center"}>
         <Title $htype={2} $color={tokens.colors.simple.blackbasic}>
           밋스터디의 서비스 자랑목록
         </Title>
@@ -166,7 +167,7 @@ export const ThirdSectionLanding = React.forwardRef<
       $height={"100vh"}
       ref={ref}
     >
-      <FlexBoxV type={"center"}>
+      <FlexBoxV type={"center"} $justifyContent={"center"}>
         <Title $htype={2} $color={tokens.colors.simple.blackbasic}>
           사용자 후기
         </Title>
@@ -207,7 +208,7 @@ export const ForthSectionLanding = React.forwardRef<
       $height={"100vh"}
       ref={ref}
     >
-      <FlexBoxV type={"center"}>
+      <FlexBoxV type={"center"} $justifyContent={"center"}>
         <Title
           $htype={2}
           $color={tokens.colors.simple.blackbasic}

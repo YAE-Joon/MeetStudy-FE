@@ -43,7 +43,6 @@ async function fetchDataBE(
   }
 
   // 헤더 체크
-
   if ("Authorization" in headers) {
     console.log(
       `🙆‍♂️ [fetchDataBE] Authorization 헤더가 존재합니다: ${headers["Authorization"]}`
@@ -72,14 +71,7 @@ async function fetchDataBE(
     throw new Error(`❗데이터 패칭에 실패하였습니다: ${errorMessage}`);
   }
   const fetchedData = await response.json(); // JSON으로 파싱된 응답 데이터
-  console.log("🙆‍♂️ 데이터를 가져왔습니다!", apiPath, "/", fetchedData);
-
-  // console.log(
-  //   `👩‍💻| endpoint : ${endpoint} 에서 다음 response를 받았습니다 | status:`,
-  //   response.status,
-  //   "body",
-  //   fetchedData
-  // );
+  //console.log("🙆‍♂️ 데이터를 가져왔습니다!", apiPath, "/", fetchedData);
 
   return fetchedData;
 }

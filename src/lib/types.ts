@@ -11,14 +11,17 @@ export interface UserProfile {
   interests: string[];
 }
 
-export interface UserCalendar {
-  id: number;
-  title: string;
-  content: string;
+export interface CalendarPeriod {
   startDay: string;
   endDay: string;
   startTime: string;
   endTime: string;
+}
+export interface UserCalendar extends CalendarPeriod {
+  id: number;
+  title: string;
+  content: string;
+
   isHoliday: boolean;
 }
 
@@ -81,7 +84,8 @@ export interface APIRequestConfig {
   hasParam?: boolean;
 }
 
-export interface User {
+// 향후 extens해서 사용할 것
+export interface BasicUser {
   email: string;
   password: string;
 }
@@ -91,7 +95,14 @@ export interface UserStudyRoom {
   joinDate: string;
   permission: string;
   studyRoomId: number;
-  user: User;
+  user: BasicUser;
+}
+
+export interface StudyRoomMember {
+  id: number;
+  joinDate: string;
+  permission: string;
+  email: string;
 }
 
 export interface StudyRoom {

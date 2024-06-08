@@ -88,7 +88,7 @@ export const Container = styled(
 
   width: ${(props) => props.$width || "100%"};
   min-width: ${(props) => props.$minWidth || "100%"};
-  background-color: ${(props) => props.$bgColor || "transparent"};
+  background-color: ${(props) => `var(${props.$bgColor})` || "transparent"};
   gap: ${(props) => props.$gap || "0"};
   padding: ${(props) => props.$padding || "0"};
   height: ${(props) => (props.$height ? props.$height : "auto")};
@@ -99,7 +99,9 @@ export const Container = styled(
 
   @media only screen and (max-width: ${mobileWidth}) {
     grid-template-columns: 1fr;
-    min-width: var(${tokens.boxSizes.width.containerMinMobile});
+    width: 100%;
+    min-width: 200px;
+
     text-align: center;
   }
 

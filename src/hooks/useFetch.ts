@@ -19,6 +19,7 @@ const useFetch = <T>(
 ) => {
   const [data, setData] = useState<T | null>(null);
   const [error, setError] = useState<Error | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const loadData = async () => {
@@ -38,6 +39,8 @@ const useFetch = <T>(
         } else {
           setError(new Error("알 수 없는 에러가 발생했습니다."));
         }
+      } finally {
+        setLoading(false);
       }
     };
     loadData();
@@ -45,7 +48,7 @@ const useFetch = <T>(
 
   console.log("[useFetch.ts] data?", data);
 
-  return [data, error] as const;
+  return [data, error, loading] as const;
 };
 
 export default useFetch;

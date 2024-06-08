@@ -62,7 +62,7 @@ const SearchPageContainer = ({
         </SearchBarWarpper>
         <SearchResultContainer>
           {studyRooms.map((studyRoom, idx) => (
-            <StudyRoomCard key={studyRoom.id} item={studyRoom} />
+            <StudyRoomCard key={studyRoom.id} {...studyRoom} />
           ))}
         </SearchResultContainer>
       </FlexBoxV>

@@ -64,9 +64,9 @@ export const apiPaths = {
   },
   studyrooms: {
     all: "/api/studyrooms",
-    detail: (id: string) => `/api/studyrooms/${id}`,
-    update: (id: string) => `/api/studyrooms/${id}`,
-    delete: (id: string) => `/api/studyrooms/${id}`,
+    detail: (id: number) => `/api/studyrooms/${id}`,
+    update: (id: number) => `/api/studyrooms/${id}`,
+    delete: (id: number) => `/api/studyrooms/${id}`,
     create: "/api/studyrooms/add",
     byUser: (email: string) => `/api/studyrooms/user/${email}`,
   },
@@ -76,12 +76,13 @@ export const apiPaths = {
     leave: (id: string) => `/api/userstudyrooms/quit/${id}`,
   },
   chatroom: {
-    detail: (chatRoomId: string) => `/api/chatroom/${chatRoomId}`,
-    delete: (chatRoomId: string) => `/api/chatroom/${chatRoomId}`,
+    detail: (chatRoomId: number) => `/api/chatroom/${chatRoomId}`,
+    delete: (chatRoomId: number) => `/api/chatroom/${chatRoomId}`,
     create: "/api/chatroom/add",
     updateNotice: "/api/chatroom/notice",
     byStudyRoom: (studyRoomId: number) =>
       `/api/studyrooms/${studyRoomId}/chatroom`,
+    getRecords: (chatRoomId: number) => `/api/chat/${chatRoomId}`,
   },
   question: {
     create: "/api/question",

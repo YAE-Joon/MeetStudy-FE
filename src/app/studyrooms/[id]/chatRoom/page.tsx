@@ -9,6 +9,7 @@ import { Title } from "@/component/styled-components/TextBoxes";
 import dt from "@/lib/designToken/designTokens";
 import { apiPaths } from "@/config/api";
 import { getRoomId } from "@/app/studyrooms/studyroomSub";
+import { Container } from "@/component/styled-components/Container";
 
 const { SearchBarWarpper } = StyledStudyRoomIndex;
 
@@ -43,19 +44,21 @@ const ChatRoom = () => {
 
   return (
     <>
-      <FlexBoxV $justifyContent={"center"}>
-        <SearchBarWarpper>
-          <Title
-            $htype={3}
-            $align={"left"}
-            $color={tokens.colors.simple.blackbasic}
-            $fontSize={tokens.fontSize.web.medium}
-          >
-            채팅방입니당
-          </Title>
-        </SearchBarWarpper>
-        <ChatRoomList chatRoomList={chatRoomList} />
-      </FlexBoxV>
+      <Container $width={"100%"} $minWidth={"600px"}>
+        <FlexBoxV $justifyContent={"center"}>
+          <SearchBarWarpper>
+            <Title
+              $htype={3}
+              $align={"left"}
+              $color={tokens.colors.simple.blackbasic}
+              $fontSize={tokens.fontSize.web.medium}
+            >
+              채팅방입니당
+            </Title>
+          </SearchBarWarpper>
+          <ChatRoomList chatRoomList={chatRoomList} />
+        </FlexBoxV>
+      </Container>
     </>
   );
 };

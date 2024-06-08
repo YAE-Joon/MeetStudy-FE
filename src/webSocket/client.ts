@@ -23,13 +23,13 @@ const useWebSocket = (url: string, chatRoomId: string) => {
   const subscribRoom = `/room/${chatRoomId}`;
   const sendMessageDestination = `/send/${chatRoomId}`;
 
-  console.log("🙆‍♂️테스트: wsUrl:", wsUrl, "httpUrl:", httpUrl, "token", token);
-  console.log(
-    "🙆‍♂️구독 url:",
-    subscribRoom,
-    "메시지 보내는 목적지:",
-    sendMessageDestination
-  );
+  // console.log("🙆‍♂️테스트: wsUrl:", wsUrl, "httpUrl:", httpUrl, "token", token);
+  // console.log(
+  //   "🙆‍♂️구독 url:",
+  //   subscribRoom,
+  //   "메시지 보내는 목적지:",
+  //   sendMessageDestination
+  // );
 
   useEffect(() => {
     // websocket API in client
@@ -42,11 +42,12 @@ const useWebSocket = (url: string, chatRoomId: string) => {
     const stompClient = new Client({
       //webSocketFactory: () => sockJs, //http
       webSocketFactory,
+      reconnectDelay: 20000,
       connectHeaders: {
         Authorization: token,
       },
       debug: (str) => {
-        console.log("🕷️[degub]: ", str);
+        //console.log("🕷️[degub]: ", str);
       },
       onConnect: () => {
         console.log("🙆‍♂️Connected to WebSocket");
@@ -64,12 +65,12 @@ const useWebSocket = (url: string, chatRoomId: string) => {
           body: JSON.stringify({ message: " 🙆‍♂️ room에 연결을 시도합니다." }),
         });
       },
-      onStompError: (frame) => {
-        console.error(
-          `Broker에서 보내온 Error msesage: ${frame.headers["message"]}`
-        );
-        console.error(`추가 세부사항: ${frame.body}`);
-      },
+      // onStompError: (frame) => {
+      //   console.error(
+      //     `Broker에서 보내온 Error msesage: ${frame.headers["message"]}`
+      //   );
+      //   console.error(`추가 세부사항: ${frame.body}`);
+      // },
     });
 
     stompClient.activate();

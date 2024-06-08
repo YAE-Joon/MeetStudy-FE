@@ -1,16 +1,23 @@
 "use client";
-
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import styled from "styled-components";
+
+import { StudyRoom, StudyRoomMember } from "@/lib/types";
+import { setDateStr, convertISOToYMD } from "@/util/dateUtils";
+import { getRandomEmoji } from "@/util/getEmoji";
+
 import {
   StyledProps,
   StyledComponentsProps,
 } from "@/component/styled-components/styledProps";
+import {
+  Span,
+  Description,
+  Title,
+} from "@/component/styled-components/TextBoxes";
 
 import dt from "@/lib/designToken/designTokens";
-import { Span, Description } from "@/component/styled-components/TextBoxes";
-import { StudyRoom } from "@/lib/types";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
 const mobileWidth = dt.DesignTokenExcept.media.mobile;
 const tokens = dt.DesignTokenVarNames;
 
@@ -19,7 +26,7 @@ interface Styled_li_card_props extends StyledProps {
   $effectType?: "hoverEffect" | null;
 }
 
-interface ItemProps extends StudyRoom {
+interface ItemProps {
   image?: string;
   emoji?: string;
   author?: string;
@@ -33,6 +40,98 @@ interface LiCardProps extends StyledComponentsProps {
   styles?: Styled_li_card_props;
   link?: string;
 }
+
+///////////// components /////////////////////
+
+export const Li_card: React.FC<LiCardProps> = ({ item, styles = {} }) => {
+  return (
+    <Styled_li
+      $effectType={styles.$effectType}
+      $shadow={styles.$shadow}
+      $bgColor={styles.$bgColor}
+    >
+      <CardContent>
+        <CardUpper_ul>
+          {(item.image || item.emoji) && (
+            <figure>
+              {item.image && <img src={item.image} alt="Image description" />}
+              {item.emoji && <figcaption>{item.emoji}</figcaption>}
+            </figure>
+          )}
+
+          {item.author && <Span content={item.author} isBold={true} />}
+        </CardUpper_ul>
+        {item.comment && <Span content={item.comment} />}
+        {item.content && (
+          <Description
+            content={item.content}
+            color={tokens.colors.simple.grayfortext}
+          />
+        )}
+      </CardContent>
+    </Styled_li>
+  );
+};
+
+///// cards for studyroom list
+
+export const StudyRoomCard: React.FC<StudyRoom> = (item: StudyRoom) => {
+  const pathname = usePathname();
+
+  console.log("item.createdDate 원본", item.createdDate);
+  return (
+    <StyledLink href={`${pathname}/${item.id}`}>
+      <CardContent>
+        <CardUpper_ul>
+          <Emoji>{getRandomEmoji()}</Emoji>
+
+          <Title
+            $htype={3}
+            $fontSize={tokens.fontSize.web.medium}
+            $color={tokens.colors.simple.blackbasic}
+          >
+            {item.title}
+          </Title>
+
+          <Span
+            content={`생성일: ${setDateStr(convertISOToYMD(item.createdDate))}`}
+          />
+        </CardUpper_ul>
+
+        <Description
+          content={item.description}
+          color={tokens.colors.simple.grayfortext}
+        />
+      </CardContent>
+    </StyledLink>
+  );
+};
+
+// card for studyRoom's member
+
+export const MemberCard = (data: StudyRoomMember) => {
+  return (
+    <StudyRoomMemberCard>
+      <ImageContainer>
+        <Emoji>{getRandomEmoji()}</Emoji>
+        <GradientOverlay></GradientOverlay>
+      </ImageContainer>
+      <Title
+        $htype={4}
+        $fontSize={tokens.fontSize.web.medium}
+        $color={tokens.colors.simple.primarydeeper}
+      >
+        {data.email}
+      </Title>
+      <Content>
+        <Position>{data.permission}</Position>
+        <Description content={data.joinDate} />
+      </Content>
+    </StudyRoomMemberCard>
+  );
+};
+
+/////////////// styled ///////////////////
 
 const Styled_li = styled.li<Styled_li_card_props>`
   list-style-type: none;
@@ -82,6 +181,8 @@ const StyledLink = styled(Link)<Styled_li_card_props>`
 
   // flex: 1 1 calc(33.333% - 1rem); // 1 line 3 card
   gap: 0.5rem;
+
+  max-width: 300px;
 
   &:hover {
     background-color: var(${tokens.colors.simple.tertiarygray});
@@ -142,78 +243,47 @@ const CardUpper_ul = styled.ul<Styled_li_card_props>`
   gap: 0.5rem;
 `;
 
-export const Li_card: React.FC<LiCardProps> = ({ item, styles = {} }) => {
-  return (
-    <Styled_li
-      $effectType={styles.$effectType}
-      $shadow={styles.$shadow}
-      $bgColor={styles.$bgColor}
-    >
-      <CardContent>
-        <CardUpper_ul>
-          {(item.image || item.emoji) && (
-            <figure>
-              {item.image && <img src={item.image} alt="Image description" />}
-              {item.emoji && <figcaption>{item.emoji}</figcaption>}
-            </figure>
-          )}
+const StudyRoomMemberCard = styled.div`
+  background-color: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 
-          {item.author && <Span content={item.author} isBold={true} />}
-        </CardUpper_ul>
-        {item.comment && <Span content={item.comment} />}
-        {item.content && (
-          <Description
-            content={item.content}
-            color={tokens.colors.simple.grayfortext}
-          />
-        )}
-      </CardContent>
-    </Styled_li>
-  );
-};
+  //width: 300px;
 
-export const StudyRoomCard: React.FC<LiCardProps> = ({ item, styles = {} }) => {
-  const pathname = usePathname();
-  return (
-    <StyledLink
-      href={`${pathname}/${item.id}`}
-      $effectType={styles.$effectType}
-      $shadow={styles.$shadow}
-      $bgColor={styles.$bgColor}
-    >
-      <CardContent>
-        <CardUpper_ul>
-          {(item.image || item.emoji) && (
-            <figure>
-              {item.image && <img src={item.image} alt="Image description" />}
-              {item.emoji && <figcaption>{item.emoji}</figcaption>}
-            </figure>
-          )}
-          {item.title && <Span content={item.title} isBold={true} />}
+  background-color: var(${tokens.colors.simple.whitebg});
 
-          {item.author && <Span content={item.author} isBold={true} />}
-        </CardUpper_ul>
-        {item.comment && <Span content={item.comment} />}
-        {item.content && (
-          <Description
-            content={item.content}
-            color={tokens.colors.simple.grayfortext}
-          />
-        )}
+  max-width: 300px;
+  margin: 10px;
+`;
 
-        {item.description && (
-          <Description
-            content={item.description}
-            color={tokens.colors.simple.grayfortext}
-          />
-        )}
-        {item.maxCapacity && (
-          <Span
-            content={item.maxCapacity}
-            color={tokens.colors.simple.grayfortext}
-          />
-        )}
-      </CardContent>
-    </StyledLink>
-  );
-};
+const ImageContainer = styled.div`
+  position: relative;
+`;
+
+const Emoji = styled.div`
+  width: 100%;
+  height: 192px;
+  font-size: 128px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const GradientOverlay = styled.div`
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to top, rgba(76, 170, 104, 0.7), transparent);
+  padding: 16px;
+`;
+
+const Content = styled.div`
+  padding: 16px;
+`;
+
+const Position = styled.p`
+  color: gray;
+  margin-bottom: 8px;
+`;
