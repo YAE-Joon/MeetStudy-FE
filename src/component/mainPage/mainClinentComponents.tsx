@@ -12,7 +12,11 @@ import { RiUserFill } from "react-icons/ri";
 import { MdErrorOutline } from "react-icons/md";
 
 import dt from "@/lib/designToken/designTokens";
-import { Title, Description } from "@/component/styled-components/TextBoxes";
+import {
+  Title,
+  Description,
+  TitleWrapper,
+} from "@/component/styled-components/TextBoxes";
 import MainStyledPack from "@/component/mainPage/mainStyledComponents";
 import { StyledCalendarPack } from "@/component/mainPage/mainStyledComponents";
 const tokens = dt.DesignTokenVarNames;
@@ -22,26 +26,26 @@ const {
   SettingSection,
   MySettingUl,
   FlexBar,
-  StyledList,
   StyledDetails,
   MainTitleWrapper,
   ErrorBox,
   StyledDescription,
 } = MainStyledPack;
 
-const {
-  Grid,
-  Card,
-  CardContent,
-  Date,
-  EventDetails,
-  EventTitle,
-  EventTime,
-  EventTimeWrapper,
-} = StyledCalendarPack;
+const { Date } = StyledCalendarPack;
 export const MainNavBar = ({ mode }: { mode?: string }) => {
+  const userNickName = "인증유저갖고오면바꿀닉네임";
   return (
     <FlexBar>
+      <Title
+        $htype={1}
+        $fontSize={tokens.fontSize.web.large}
+        $color={tokens.colors.simple.blackbasic}
+        $padding={"0"}
+      >
+        {`어서오세요, ${userNickName} 님!`}
+      </Title>
+
       <SettingSection>
         <MySettingUl>
           {mode === "mypage" ? (
@@ -78,7 +82,6 @@ export const DailyList = ({
 }: {
   userCalendars: UserCalendar[];
 }) => {
-  console.log("userCalendars in DailyList");
   if (!userCalendars) {
     return (
       <ErrorBox>

@@ -18,7 +18,7 @@ const { StudyRoomCategories, HamburgerIcon } = StyledStudyRoomIndex;
 
 const NaviContainerDiv = styled.div`
   width: 100%;
-  height: 100vh;
+  height: 80vh;
   display: flex;
   position: relative; // 추가: CategoryNav의 위치를 상위 div 안에서 설정하기 위해 relative로 변경
 

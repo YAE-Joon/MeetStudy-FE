@@ -26,7 +26,7 @@ const AdminCategoryPage = () => {
   );
 
   if (!categories) {
-    return <div>로딩 중</div>;
+    return <div>로딩 중 admin category loader</div>;
   }
 
   return (

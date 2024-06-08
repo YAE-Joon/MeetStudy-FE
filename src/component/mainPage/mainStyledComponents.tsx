@@ -5,6 +5,7 @@ import {
   FlexBoxH,
   FlexBoxUlV,
   FlexBoxV,
+  StyledUl,
 } from "@/component/styled-components/FlexBoxes";
 import { StyledProps } from "@/component/styled-components/styledProps";
 import { Description } from "@/component/styled-components/TextBoxes";
@@ -19,7 +20,7 @@ const MainPageContainer = styled(Container)`
 
 const SettingSection = styled.section`
   position: relative;
-  width: 100%;
+  width: 10%;
   height: 100%;
   display: flex;
   justify-content: flex-end;
@@ -135,10 +136,11 @@ const MySettingUl = styled.ul<{ gap?: string }>`
 const FlexBar = styled.nav`
   display: flex;
   flex-direction: row;
-  height: 3rem;
+  justify-content: space-between;
+  height: 4rem;
   width: 100%;
   margin: 0;
-  padding: 0 1rem 0 0;
+  padding: 1rem;
 
   background-color: var(${tokens.colors.simple.whitebg});
 `;
@@ -351,6 +353,45 @@ const EventTimeWrapper = styled.div`
   display: flex;
   flex-direction: column;
 `;
+
+/////// studyrooms ////
+
+const MyStudyRoomsContainer = styled(StyledUl)`
+  width: 100%;
+  display: flex;
+  overflow-x: scroll;
+  white-space: nowrap;
+  gap: 1rem;
+  padding-bottom: 10px;
+  justify-content: start;
+
+  > li {
+    flex: 0 0 auto;
+  }
+
+  &::-webkit-scrollbar {
+    height: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+
+  @media only screen and (max-width: ${mobileWidth}) {
+    grid-template-columns: 1fr;
+    width: 100%;
+  }
+`;
+
+export const StyledStudyRoomsPack = {
+  MyStudyRoomsContainer,
+};
+
 export const StyledCalendarPack = {
   Grid,
   Card,

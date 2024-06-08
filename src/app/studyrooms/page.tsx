@@ -31,7 +31,7 @@ GetCategories();
 
 function StudyRoomsIndexPage() {
   return (
-    <OuterContainer>
+    <OuterContainer $height="100vh">
       {categories && <SearchPageContainer categories={categories} />}
     </OuterContainer>
   );

@@ -11,8 +11,7 @@ import { DailyList } from "@/component/mainPage/mainClinentComponents";
 
 import { Title } from "@/component/styled-components/TextBoxes";
 import { MainSkleton } from "@/component/mainPage/mainStyledComponents";
-import MainLoading from "@/app/loading";
-const { PartContainerV } = MainStyledPack;
+
 const tokens = dt.DesignTokenVarNames;
 
 const MyCalendar = () => {

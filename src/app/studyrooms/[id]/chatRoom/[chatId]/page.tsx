@@ -7,6 +7,7 @@ import useWebSocket from "@/webSocket/client";
 import { getChatRoomId } from "@/app/studyrooms/studyroomSub";
 import useFetch from "@/hooks/useFetch";
 import { apiPaths } from "@/config/api";
+import Loading from "@/component/Loading/Loading";
 
 const {
   ChatRoomMain,
@@ -22,13 +23,12 @@ const {
 export default function ChatRoom() {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [newMessage, setNewMessage] = useState("");
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   const webSocketUrl = `ws://${process.env.NEXT_PUBLIC_WS_URL}/ws`;
   const chatRoomId = getChatRoomId();
 
-  const [userData, userDataFetchError] = useFetch<UserProfile>(
+  const [userData, userDataFetchError, isLoading] = useFetch<UserProfile>(
     apiPaths.mypage.info,
     {},
     false,
@@ -58,7 +58,7 @@ export default function ChatRoom() {
       msgEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
   };
-
+  //수정예정
   const isMyMessage = async (
     myNickName: string,
     chatRecords: ChatMessage[]
@@ -71,7 +71,6 @@ export default function ChatRoom() {
         : { ...record, isOwn: false }
     );
     setMessages(markedRecords);
-    setLoading(false);
   };
 
   useEffect(() => {
@@ -103,16 +102,16 @@ export default function ChatRoom() {
     setNewMessage(e.target.value);
   };
 
-  if (loading) {
-    return <div>로딩중</div>;
+  if (isLoading) {
+    return <div>"채팅로딩중(바꿀예정)"</div>;
   }
 
   if (error) {
-    return <div>Error: {error}</div>;
+    return <ChatRoomMain>Error: {error}</ChatRoomMain>;
   }
 
   if (!userData || !chatRecords) {
-    return <div>!userData || !chatRecords</div>;
+    return <ChatRoomMain>!userData || !chatRecords</ChatRoomMain>;
   }
 
   return (

@@ -37,7 +37,7 @@ const SearchPageContainer = ({
   );
 
   if (!studyRooms) {
-    return <div>로딩 중</div>;
+    return <div>로딩 중 - studyrooms loader</div>;
   }
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -62,7 +62,7 @@ const SearchPageContainer = ({
         </SearchBarWarpper>
         <SearchResultContainer>
           {studyRooms.map((studyRoom, idx) => (
-            <StudyRoomCard key={studyRoom.id} {...studyRoom} />
+            <StudyRoomCard key={studyRoom.id} item={studyRoom} />
           ))}
         </SearchResultContainer>
       </FlexBoxV>

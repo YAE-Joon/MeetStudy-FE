@@ -12,6 +12,7 @@ import { OuterContainer } from "@/component/styled-components/Container";
 import { FlexBoxV } from "@/component/styled-components/FlexBoxes";
 import { InnerContainer } from "@/app/studyrooms/[id]/StyledComponents";
 import MovingMenu from "@/component/styled-components/MovingMenu";
+import Loading from "@/component/Loading/Loading";
 
 export default function StudyRoomdLayout({
   children, // will be a page or nested layout
@@ -38,8 +39,9 @@ export default function StudyRoomdLayout({
     { label: "게시판", link: `/studyrooms/${roomId}/board` },
   ];
 
+  //  layout의 !studyroomData 의 로더가 더 laoder.tsx보다 우선한다?
   if (!studyRoomData) {
-    return <div>로딩 중</div>;
+    return <Loading />;
   }
 
   //packing data

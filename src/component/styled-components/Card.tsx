@@ -74,11 +74,19 @@ export const Li_card: React.FC<LiCardProps> = ({ item, styles = {} }) => {
 };
 
 ///// cards for studyroom list
+interface StudyRoomCardProps {
+  item: StudyRoom;
+  root?: string | null;
+}
 
-export const StudyRoomCard: React.FC<StudyRoom> = (item: StudyRoom) => {
-  const pathname = usePathname();
+export const StudyRoomCard: React.FC<StudyRoomCardProps> = ({ item, root }) => {
+  let pathname;
+  if (root === null) {
+    pathname = usePathname();
+  } else if ((root = "main")) {
+    pathname = `studyrooms`;
+  }
 
-  console.log("item.createdDate 원본", item.createdDate);
   return (
     <StyledLink href={`${pathname}/${item.id}`}>
       <CardContent>
