@@ -60,7 +60,7 @@ export default function StudyRoomdLayout({
           roomId={roomId.toString()}
           title={studyRoomData.title}
         />
-        <FlexBoxV $padding={"0 1rem 0 0.5rem"}>
+        <FlexBoxV $padding={"0 1rem 0 0.5rem"} $width={"100%"}>
           <StudyRoomDataProvider value={packedStudyRoomData}>
             {children}
           </StudyRoomDataProvider>

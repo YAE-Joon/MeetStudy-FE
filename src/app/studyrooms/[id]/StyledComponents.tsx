@@ -10,12 +10,14 @@ export const InnerContainer = styled(FlexBoxH)`
 
   //margin-top: 0.5rem;
   > *:first-child {
-    flex-grow: 2;
+    flex: 3 0 20%;
     max-width: 20%;
+    background-color: red;
   }
 
   > *:last-child {
-    flex-grow: 8;
+    flex: 7 0 70%;
+    background-color: blue;
   }
 
   @media only screen and (max-width: ${mobileWidth}) {

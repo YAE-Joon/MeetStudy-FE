@@ -51,6 +51,7 @@ export const FlexBoxV = styled.div<StyledFlexProps>`
   align-items: center;
   gap: 5rem;
   height: 100%;
+  width: ${({ $width }) => $width || "auto"};
 
   align-items: ${({ $alignItems }) => $alignItems || "center"};
   padding: ${({ $padding }) => $padding || "0 0.5rem 1rem 1rem"};

@@ -2,16 +2,18 @@
 // 채팅방
 //🙆‍♂️ 클라이언트
 //🙆 백엔드 서버
-import { useState, ChangeEvent, useRef, useEffect } from "react";
-import ChatStyled from "@/app/studyrooms/[id]/chatRoom/[chatId]/chatStyled";
-import { ChatMessage, UserProfile } from "@/lib/types";
-import useWebSocket from "@/webSocket/client";
-import { getChatRoomId } from "@/app/studyrooms/studyroomSub";
-import useFetch from "@/hooks/useFetch";
-import { apiPaths } from "@/config/api";
-import Loading from "@/component/Loading/Loading";
 // sending: 🙆‍♂️->🙆, received: 🙆->🙆‍♂️
+import { useState, ChangeEvent, useRef, useEffect } from "react";
+
+import { apiPaths } from "@/config/api";
+import useFetch from "@/hooks/useFetch";
+import useWebSocket from "@/webSocket/client";
 import { SendingChatMessage, ReceivedChatMessage } from "@/types/Chatroom";
+import { getChatRoomId } from "@/app/studyrooms/studyroomSub";
+
+import ChatStyled from "@/app/studyrooms/[id]/chatRoom/[chatId]/chatStyled";
+import Loading from "@/component/Loading/Loading";
+
 const {
   ChatRoomMain,
   MessageContainer,
@@ -92,54 +94,53 @@ export default function ChatRoom() {
     // setMessages((prevMessages) =>
     //   prevMessages.filter((msg) => msg !== myMessage)
     // );
-
-    const onChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-      // 입력한 새로운 메시지
-      setNewMessage(e.target.value);
-    };
-
-    if (isLoading) {
-      return <div>"채팅로딩중(바꿀예정)"</div>;
-    }
-
-    if (error) {
-      return <ChatRoomMain>Error: {error}</ChatRoomMain>;
-    }
-
-    if (!chatRecords) {
-      return <ChatRoomMain>chatRecords 가 로딩중</ChatRoomMain>;
-    }
-
-    return (
-      <>
-        <ChatRoomMain>
-          {messages.map((msg, index) => {
-            //임시 idx로 처리
-            let isMyMsg: boolean = msg.nickName === currentUserNickName;
-            return (
-              <MessageContainer
-                key={index}
-                $justify={isMyMsg ? "flex-end" : "flex-start"}
-              >
-                <Message $isMyMsg={isMyMsg}>
-                  <MessageAuthor>{msg.nickName}</MessageAuthor>
-                  <MessageText>{msg.content}</MessageText>
-                  <p>{msg.createdAt}</p>
-                </Message>
-              </MessageContainer>
-            );
-          })}
-          <div ref={msgEndRef} />
-        </ChatRoomMain>
-        <Footer>
-          <StyledTextarea
-            placeholder="메세지를 입력하세요"
-            value={newMessage}
-            onChange={onChange}
-          />
-          <Button onClick={handleSendMessage}>보내기</Button>
-        </Footer>
-      </>
-    );
   };
+  const onChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    // 입력한 새로운 메시지
+    setNewMessage(e.target.value);
+  };
+
+  if (isLoading) {
+    return <div>"채팅로딩중(바꿀예정)"</div>;
+  }
+
+  if (error) {
+    return <ChatRoomMain>Error: {error}</ChatRoomMain>;
+  }
+
+  if (!chatRecords) {
+    return <ChatRoomMain>chatRecords 가 로딩중</ChatRoomMain>;
+  }
+
+  return (
+    <>
+      <ChatRoomMain>
+        {messages.map((msg, index) => {
+          //임시 idx로 처리
+          let isMyMsg: boolean = msg.nickName === currentUserNickName;
+          return (
+            <MessageContainer
+              key={index}
+              $justify={isMyMsg ? "flex-end" : "flex-start"}
+            >
+              <Message $isMyMsg={isMyMsg}>
+                <MessageAuthor>{msg.nickName}</MessageAuthor>
+                <MessageText>{msg.content}</MessageText>
+                <p>{msg.createdAt}</p>
+              </Message>
+            </MessageContainer>
+          );
+        })}
+        <div ref={msgEndRef} />
+      </ChatRoomMain>
+      <Footer>
+        <StyledTextarea
+          placeholder="메세지를 입력하세요"
+          value={newMessage}
+          onChange={onChange}
+        />
+        <Button onClick={handleSendMessage}>보내기</Button>
+      </Footer>
+    </>
+  );
 }
