@@ -23,8 +23,8 @@ const useWebSocket = (
   const subscribeRoom = `/room/${chatRoomId}`;
   const sendMessageDestination = `/send/${chatRoomId}`;
 
-  const enterRoomDestination = `/enter/${chatRoomId}`;
-  const exitRoomDestination = `/exit/${chatRoomId}`;
+  const enterRoomDestination = `/send/enter/${chatRoomId}`;
+  const exitRoomDestination = `/send/exit/${chatRoomId}`;
 
   useEffect(() => {
     //ws로 통신하기 위해 웹소켓으로 만듦
@@ -94,7 +94,7 @@ const useWebSocket = (
 
   // 클라이언트 컴포넌트에서 메시지를 보낼 때 사용함!
   const sendMessage = <T>(messageObj: T) => {
-    console.log("🙆‍♂️➡️➡️🙆:", messageObj);
+    console.log("🙆‍♂️➡️➡️🙆:", messageObj, "| stompClient:", stompClient);
     let response = { status: false, message: "" };
     let msg = "";
     if (stompClient && stompClient.connected) {
@@ -107,10 +107,12 @@ const useWebSocket = (
           },
         });
         response.status = true;
+        return response;
       } catch (error) {
         msg = `[🙆‍♂️➡️➡️🙆] 메시지 전송 실패:", ${error}`;
         console.error(msg);
         response.message = msg;
+        return response;
       }
     }
     msg = `[❌] stompClient가 연결되지 않음`;

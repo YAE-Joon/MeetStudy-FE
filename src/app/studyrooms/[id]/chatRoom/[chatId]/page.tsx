@@ -87,13 +87,6 @@ export default function ChatRoom() {
       }
     }
     setNewMessage("");
-
-    // 현재 화면에 렌더링되고 있는 배열에 넣기
-    // setMessages((prevMessages) => [...prevMessages, myMessage]);
-
-    // setMessages((prevMessages) =>
-    //   prevMessages.filter((msg) => msg !== myMessage)
-    // );
   };
   const onChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     // 입력한 새로운 메시지
