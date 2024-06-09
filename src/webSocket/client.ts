@@ -1,97 +1,123 @@
 import { ChatMessage } from "@/lib/types";
 import { useEffect, useState } from "react";
-//import { dataJSONParser } from "@/app/api/auth/route";
-import SockJS from "sockjs-client";
 import { Client } from "@stomp/stompjs";
+
+import { SendingChatMessage, ReceivedChatMessage } from "@/types/Chatroom";
 //🙆‍♂️ 클라이언트
 //❤️ next 서버
 //🙆 백엔드 서버
 // client - next.js 🙆‍♂️➡️➡️❤️
-const useWebSocket = (url: string, chatRoomId: string) => {
+const useWebSocket = (
+  wsUrl: string,
+  chatRoomId: number,
+  chatRecords: ReceivedChatMessage[]
+) => {
   const [socket, setSocket] = useState<WebSocket | null>(null);
-  const [messages, setMessages] = useState<ChatMessage[]>([]);
-
+  const [messages, setMessages] = useState<ReceivedChatMessage[]>(chatRecords);
   const [stompClient, setStompClient] = useState<Client | null>(null);
 
   // Authorization
   const userToken = process.env.NEXT_PUBLIC_TEST_TOKEN;
   const token = `Bearer ${userToken}`;
-  // WebSocket URL
-  const wsUrl = `ws://${process.env.NEXT_PUBLIC_WS_URL}/ws`;
-  const httpUrl = `${process.env.NEXT_PUBLIC_SITE_URL}`;
 
-  const subscribRoom = `/room/${chatRoomId}`;
+  const subscribeRoom = `/room/${chatRoomId}`;
   const sendMessageDestination = `/send/${chatRoomId}`;
 
-  // console.log("🙆‍♂️테스트: wsUrl:", wsUrl, "httpUrl:", httpUrl, "token", token);
-  // console.log(
-  //   "🙆‍♂️구독 url:",
-  //   subscribRoom,
-  //   "메시지 보내는 목적지:",
-  //   sendMessageDestination
-  // );
+  const enterRoomDestination = `/enter/${chatRoomId}`;
+  const exitRoomDestination = `/exit/${chatRoomId}`;
 
   useEffect(() => {
-    // websocket API in client
-    //const ws = new SockJs(wsUrl);
-    //const sockJs = new SockJS(httpUrl); //sockJS는 http류만 지원함! 근데 우린 ws잖아? 안될거야...
-
     //ws로 통신하기 위해 웹소켓으로 만듦
     const webSocketFactory = () => new WebSocket(wsUrl);
 
     const stompClient = new Client({
-      //webSocketFactory: () => sockJs, //http
       webSocketFactory,
       reconnectDelay: 20000,
       connectHeaders: {
         Authorization: token,
       },
       debug: (str) => {
-        //console.log("🕷️[degub]: ", str);
+        console.log("🕷️[degub]: ", str);
+      },
+      beforeConnect: () => {
+        console.log(
+          `🙆‍♂️ 연결을 시도합니다: chatRoomId : ${chatRoomId} | ws Url : ${wsUrl}`
+        );
       },
       onConnect: () => {
         console.log("🙆‍♂️Connected to WebSocket");
 
-        stompClient.subscribe(subscribRoom, (message) => {
+        stompClient.publish({
+          destination: enterRoomDestination, //`/enter/${chatRoomId}`;
+          body: JSON.stringify({
+            userId: 1, // 임시
+            content: "🙆‍♂️ room에 연결을 시도합니다.",
+            chatRoomId: chatRoomId,
+          }),
+        });
+
+        //connection이 완료 되면 /room/{chatRoomId} 으로 입장 메세지가 뜨고 메세지는 데이터베이스에 저장된다.
+
+        stompClient.subscribe(subscribeRoom, (message) => {
           console.log(`🙆➡️➡️🙆‍♂️ Received: ${message.body}`);
           setMessages((prevMessages) => [
             ...prevMessages,
             JSON.parse(message.body),
           ]);
         });
-
-        stompClient.publish({
-          destination: sendMessageDestination,
-          body: JSON.stringify({ message: " 🙆‍♂️ room에 연결을 시도합니다." }),
-        });
       },
-      // onStompError: (frame) => {
-      //   console.error(
-      //     `Broker에서 보내온 Error msesage: ${frame.headers["message"]}`
-      //   );
-      //   console.error(`추가 세부사항: ${frame.body}`);
-      // },
+      onStompError: (frame) => {
+        console.error(
+          `Broker에서 보내온 Error msesage: ${frame.headers["message"]}`
+        );
+        console.error(`추가 세부사항: ${frame.body}`);
+      },
     });
 
     stompClient.activate();
     setStompClient(stompClient);
 
     return () => {
-      stompClient.deactivate();
+      if (stompClient && stompClient.connected) {
+        stompClient.publish({
+          destination: exitRoomDestination,
+          body: JSON.stringify({
+            userId: 1, // 임시
+            content: "🙆‍♂️ 접속이 종료되었습니다",
+            chatRoomId: chatRoomId,
+          }),
+        });
+        stompClient.deactivate();
+      }
     };
-  }, [url, chatRoomId, token, httpUrl]);
+  }, [wsUrl, chatRoomId, token]);
 
-  const sendMessage = (message: string) => {
-    console.log("🙆‍♂️➡️➡️🙆:", message);
+  // 클라이언트 컴포넌트에서 메시지를 보낼 때 사용함!
+  const sendMessage = <T>(messageObj: T) => {
+    console.log("🙆‍♂️➡️➡️🙆:", messageObj);
+    let response = { status: false, message: "" };
+    let msg = "";
     if (stompClient && stompClient.connected) {
-      stompClient.publish({
-        destination: sendMessageDestination,
-        body: JSON.stringify({ message }),
-        headers: {
-          Authorization: token,
-        },
-      });
+      try {
+        stompClient.publish({
+          destination: sendMessageDestination,
+          body: JSON.stringify(messageObj),
+          headers: {
+            Authorization: token,
+          },
+        });
+        response.status = true;
+      } catch (error) {
+        msg = `[🙆‍♂️➡️➡️🙆] 메시지 전송 실패:", ${error}`;
+        console.error(msg);
+        response.message = msg;
+      }
     }
+    msg = `[❌] stompClient가 연결되지 않음`;
+    console.error(msg);
+    response.message = msg;
+
+    return response;
   };
 
   return { messages, sendMessage };

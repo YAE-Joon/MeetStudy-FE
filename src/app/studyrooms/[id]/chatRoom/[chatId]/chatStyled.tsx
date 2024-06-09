@@ -82,15 +82,15 @@ const MessageContainer = styled.div<MessageContainerProps>`
 `;
 
 interface MessageProps {
-  $isOwn?: boolean;
+  $isMyMsg?: boolean;
 }
 
 const Message = styled.div<MessageProps>`
-  background-color: ${({ $isOwn }) =>
-    $isOwn
+  background-color: ${({ $isMyMsg }) =>
+    $isMyMsg
       ? `var(${tokens.colors.simple.secondary})`
       : `var(${tokens.colors.simple.whitebg})`};
-  color: ${({ $isOwn }) => ($isOwn ? "white" : "black")};
+  color: ${({ $isMyMsg }) => ($isMyMsg ? "white" : "black")};
   border-radius: 0.5rem;
   padding: 16px;
   max-width: 75%;
