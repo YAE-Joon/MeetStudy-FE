@@ -33,6 +33,10 @@ export const OuterContainer = styled.div.attrs<OuterContainerProps>(
   gap: ${(props) => props.$gap || "0"};
   background-color: ${(props) => props.$bgColor || "transparent"};
 
+  //수정용
+  height: auto;
+  min-height: ${(props) => props.$height || "100vh"};
+
   @media only screen and (max-width: ${mobileWidth}) {
     width: 100vw;
   }

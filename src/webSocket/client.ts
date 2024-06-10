@@ -3,6 +3,9 @@ import { useEffect, useState } from "react";
 import { Client } from "@stomp/stompjs";
 
 import { SendingChatMessage, ReceivedChatMessage } from "@/types/Chatroom";
+
+import { ChatRecordsResponse } from "@/types/Chat";
+
 //🙆‍♂️ 클라이언트
 //❤️ next 서버
 //🙆 백엔드 서버

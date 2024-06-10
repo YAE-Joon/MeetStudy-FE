@@ -11,6 +11,8 @@ import useWebSocket from "@/webSocket/client";
 import { SendingChatMessage, ReceivedChatMessage } from "@/types/Chatroom";
 import { getChatRoomId } from "@/app/studyrooms/studyroomSub";
 
+import { ChatRecordsResponse } from "@/types/Chat";
+
 import ChatStyled from "@/app/studyrooms/[id]/chatRoom/[chatId]/chatStyled";
 import Loading from "@/component/Loading/Loading";
 import { ChatTextArea } from "@/app/studyrooms/[id]/chatRoom/[chatId]/ChatTextArea";
@@ -24,6 +26,7 @@ const {
   Footer,
   StyledTextarea,
   Button,
+  ChatLoader,
 } = ChatStyled;
 
 export default function ChatRoom() {
@@ -39,15 +42,16 @@ export default function ChatRoom() {
   const webSocketUrl = `ws://${process.env.NEXT_PUBLIC_WS_URL}/ws`;
 
   // 기존 채팅 기록들을 불러옵니다.
-  const [chatRecords, chatRecordError, isLoading] = useFetch<
-    ReceivedChatMessage[]
-  >(
-    //apiPaths.chatroom.getRecords(chatRoomId),
-    "/api/chat/chatSample",
-    {},
-    false,
-    true
-  );
+  const [chatRecords, chatRecordError, isLoading] =
+    useFetch<ChatRecordsResponse>(
+      apiPaths.chatroom.getRecords(chatRoomId),
+      //"/api/chat/chatSample",
+      {},
+      false,
+      false
+    );
+
+  console.log("❤️❤️❤️ chatRecords.content", chatRecords?.content);
 
   // 불러온 기존 데이터를 webSockethook으로 넘겨줍니다?
   // 왜? websocket에서 화면에서 그려지는 message를 통합으로 관리하기 때문에..
@@ -55,7 +59,7 @@ export default function ChatRoom() {
   const { messages, sendMessage } = useWebSocket(
     webSocketUrl,
     chatRoomId,
-    chatRecords || []
+    chatRecords?.content || []
   );
 
   const scrollToBottom = () => {
@@ -84,18 +88,13 @@ export default function ChatRoom() {
     }
   };
 
-  if (isLoading) {
-    return <div>"채팅로딩중(바꿀예정)"</div>;
+  if (isLoading || !chatRecords) {
+    return <ChatLoader />;
   }
 
   if (error) {
     return <ChatRoomMain>Error: {error}</ChatRoomMain>;
   }
-
-  if (!chatRecords) {
-    return <ChatRoomMain>chatRecords 가 로딩중</ChatRoomMain>;
-  }
-
   return (
     <>
       <ChatRoomMain>

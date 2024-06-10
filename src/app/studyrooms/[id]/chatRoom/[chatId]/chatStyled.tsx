@@ -1,5 +1,5 @@
 "use client";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import dt from "@/lib/designToken/designTokens";
 
 const tokens = dt.DesignTokenVarNames;
@@ -147,6 +147,56 @@ const Button = styled.button`
     outline: none;
   }
 `;
+
+/// chat loader
+interface LetterProps {
+  $delay: number;
+}
+
+const blink = keyframes`
+  0%, 100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+`;
+
+const Container = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  gap: 10px;
+
+  font-size: var(${tokens.fontSize.web.large});
+  height: 100%;
+  width: 100%;
+`;
+
+const Letter = styled.span<LetterProps>`
+  color: white;
+  /* background-color: var(${tokens.colors.simple.whitebg}); */
+
+  animation: ${blink} 1.5s infinite;
+  animation-delay: ${(props) => props.$delay}s;
+`;
+
+const ChatLoader = () => {
+  const message = "대화를 불러오는 중입니다...";
+
+  return (
+    <Container>
+      {message.split("").map((letter, index) => (
+        <Letter key={index} $delay={index * 0.1}>
+          {letter}
+        </Letter>
+      ))}
+    </Container>
+  );
+};
+
 const ChatStyled = {
   Header,
   Title,
@@ -160,6 +210,7 @@ const ChatStyled = {
   Footer,
   StyledTextarea,
   Button,
+  ChatLoader,
 };
 
 export default ChatStyled;
