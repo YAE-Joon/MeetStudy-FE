@@ -18,6 +18,7 @@ export default function StudyRoomdLayout({
   children: React.ReactNode;
 }) {
   console.log("[id ]스터디룸의 레이아웃입니다.");
+  const userEmail = "hayeong@elice.com"; //임시
   const params = useParams();
   const roomId = Number(params.id);
   //console.log("roomId", roomId);
@@ -29,6 +30,19 @@ export default function StudyRoomdLayout({
     false,
     false
   );
+
+  const isUserInStudyRooms = studyRoomData?.userStudyRooms?.map((member) => {
+    const { id, joinDate, permission, user } = member;
+    const memberInfo = {
+      id,
+      joinDate,
+      permission,
+      email: user.email,
+    };
+    return memberInfo.email === userEmail;
+  });
+
+  const isMember = isUserInStudyRooms?.some((isMember) => isMember) || false;
 
   const studyRoomMenu = [
     { label: "홈", link: `/studyrooms/${roomId}` },
@@ -54,7 +68,11 @@ export default function StudyRoomdLayout({
   return (
     <OuterContainer>
       <InnerContainer>
-        <MovingMenu menu={studyRoomMenu} title={studyRoomData.title} />
+        <MovingMenu
+          menu={studyRoomMenu}
+          title={studyRoomData.title}
+          isMember={isMember}
+        />
         <FlexBoxV $padding={"0.5rem 1rem 0 0.5rem"} $width={"100%"}>
           {children}
         </FlexBoxV>

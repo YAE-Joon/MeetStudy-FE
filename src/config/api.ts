@@ -72,8 +72,8 @@ export const apiPaths = {
   },
   userStudyrooms: {
     all: "/api/userstudyrooms",
-    join: (id: string) => `/api/userstudyrooms/add/${id}`,
-    leave: (id: string) => `/api/userstudyrooms/quit/${id}`,
+    join: (id: number) => `/api/userstudyrooms/add/${id}`,
+    leave: (id: number) => `/api/userstudyrooms/quit/${id}`,
   },
   chatroom: {
     detail: (chatRoomId: number) => `/api/chatroom/${chatRoomId}`,

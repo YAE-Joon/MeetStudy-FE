@@ -9,9 +9,7 @@ import dt from "@/lib/designToken/designTokens";
 import StyledStudyRoomIndex from "@/app/studyrooms/StudyRoomIndexClientComponents";
 import { Description } from "@/component/styled-components/TextBoxes";
 import { StudyRoom } from "@/types/StudyRoom";
-import { FlexBoxV } from "@/component/styled-components/FlexBoxes";
-
-const { SearchResultContainer } = StyledStudyRoomIndex;
+import { useState } from "react";
 
 const tokens = dt.DesignTokenVarNames;
 const mobileWidth = dt.DesignTokenExcept.media.mobile;
@@ -22,6 +20,8 @@ export default function Page({
   params: { id: number; slug: string };
 }) {
   console.log("[id] 메인 페이지 컴포넌트입니다.");
+  const userId = 1; //임시
+
   const roomId = params.id;
   const [studyRoomData, error] = useFetch<StudyRoom>(
     apiPaths.studyrooms.detail(roomId),
@@ -31,6 +31,14 @@ export default function Page({
   );
 
   const currentMemberNum = studyRoomData?.userStudyRooms.length;
+
+  const [isModalOpen, setIsModalOpen] = useState(false); //모달상태
+  const handleModalClose = () => setIsModalOpen(false);
+
+  const handleLogin = (e: React.FormEvent) => {
+    //e.preventDefault();
+    handleModalClose();
+  };
 
   return !studyRoomData ? (
     <div>목록 로딩중</div>

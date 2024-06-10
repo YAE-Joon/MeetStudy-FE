@@ -9,6 +9,10 @@ import dt from "@/lib/designToken/designTokens";
 import { TitleWrapper } from "@/component/styled-components/TextBoxes";
 import { Title } from "@/component/styled-components/TextBoxes";
 import StyledMenuComponent from "@/component/styled-components/MovingSideBars/StyledMenuComponent";
+import {
+  JoinStudyRoom,
+  LeaveStudyRoom,
+} from "@/app/studyrooms/[id]/UserComponents";
 const {
   NavigationContainer,
   CategoryNavigation,
@@ -23,9 +27,11 @@ const tokens = dt.DesignTokenVarNames;
 const MovingMenu = ({
   title,
   menu,
+  isMember,
 }: {
   title: string;
   menu: { label: string; link: string }[];
+  isMember: boolean;
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [navTopPos, setNavTopPos] = useState<string>("10%");
@@ -94,11 +100,23 @@ const MovingMenu = ({
             <CategoryLinksContainer
               $bgColor={`var(${tokens.colors.simple.secondary})`}
             >
-              {menu.map((menuItem, idx) => (
-                <Link key={idx} href={menuItem.link}>
-                  {menuItem.label}
-                </Link>
-              ))}
+              {isMember ? (
+                <>
+                  {menu.map((menuItem, idx) => (
+                    <Link key={idx} href={menuItem.link}>
+                      {menuItem.label}
+                    </Link>
+                  ))}
+                  <LeaveStudyRoom />
+                </>
+              ) : (
+                menu[0] && (
+                  <>
+                    <Link href={menu[0].link}>{menu[0].label}</Link>
+                    <JoinStudyRoom />
+                  </>
+                )
+              )}
             </CategoryLinksContainer>
           </CategoryList>
         </CategoryNavigation>

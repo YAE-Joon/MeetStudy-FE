@@ -1,9 +1,10 @@
 import { usePathname } from "next/navigation";
 // room id 추출
-// studyRooms 를 통해 들어오지 않는 경우를 대비
+// studyRooms 를 통해 들어오지 않는 경우를 대비(chatRoom 페이지에서 사용)
 export function getRoomId() {
   const currPath = usePathname();
-  const match = currPath.match(/\/studyrooms\/(\d+)\/chatRoom/);
+  const match = currPath.match(/\/studyrooms\/(\d+)\/?/);
+  //const match = currPath.match(/\/studyrooms\/(\d+)\/chatRoom/);
 
   if (match && match[1]) {
     const roomId = parseInt(match[1], 10);
@@ -26,6 +27,11 @@ export function getChatRoomId() {
   }
   console.log("채팅방 아이디를 찾을 수 없습니다.");
   return 0;
+}
+
+export function extractRoomId(path: string): number | null {
+  const match = path.match(/\/studyrooms\/(\d+)/);
+  return match ? parseInt(match[1], 10) : null;
 }
 
 // export function dataJSONParser(receivedData) {
