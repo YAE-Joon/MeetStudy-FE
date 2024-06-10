@@ -13,6 +13,7 @@ import { getChatRoomId } from "@/app/studyrooms/studyroomSub";
 
 import ChatStyled from "@/app/studyrooms/[id]/chatRoom/[chatId]/chatStyled";
 import Loading from "@/component/Loading/Loading";
+import { ChatTextArea } from "@/app/studyrooms/[id]/chatRoom/[chatId]/ChatTextArea";
 
 const {
   ChatRoomMain,
@@ -26,8 +27,8 @@ const {
 } = ChatStyled;
 
 export default function ChatRoom() {
+  console.log("[채칭방] 채팅방 컴포넌트입니다.");
   //const [messages, setMessages] = useState<ReceivedChatMessage[]>([]); //불러온 메시지
-  const [newMessage, setNewMessage] = useState(""); // 보낼 메시지 중 content
   const [error, setError] = useState<string | null>(null);
   const [isSending, setIsSending] = useState<boolean>(false);
   const msgEndRef = useRef<HTMLDivElement>(null);
@@ -67,30 +68,20 @@ export default function ChatRoom() {
     scrollToBottom();
   }, [messages]);
 
-  const handleSendMessage = async () => {
-    // 공백전송 방지용
-    if (newMessage.trim()) {
-      // 전송할 메시지
-      const sendMessageObj: SendingChatMessage = {
-        userId: currentUserId,
-        content: newMessage,
-        chatRoomId: chatRoomId,
-      };
+  const handleSendMessage = async (message: string) => {
+    const sendMessageObj: SendingChatMessage = {
+      userId: currentUserId,
+      content: message,
+      chatRoomId: chatRoomId,
+    };
 
-      // 서버로 전송할 메세지(body에 그대로 넣기만 하면 되는 걸 넣는다)
-      const res = sendMessage<SendingChatMessage>(sendMessageObj);
-      if (res.status) {
-        setIsSending(false);
-      } else {
-        setError("메시지 전송에 실패했습니다. 다시 시도해주세요.");
-        setIsSending(false);
-      }
+    const res = sendMessage<SendingChatMessage>(sendMessageObj);
+    if (res.status) {
+      setIsSending(false);
+    } else {
+      setError("메시지 전송에 실패했습니다. 다시 시도해주세요.");
+      setIsSending(false);
     }
-    setNewMessage("");
-  };
-  const onChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    // 입력한 새로운 메시지
-    setNewMessage(e.target.value);
   };
 
   if (isLoading) {
@@ -127,12 +118,13 @@ export default function ChatRoom() {
         <div ref={msgEndRef} />
       </ChatRoomMain>
       <Footer>
-        <StyledTextarea
+        {/* <StyledTextarea
           placeholder="메세지를 입력하세요"
           value={newMessage}
           onChange={onChange}
         />
-        <Button onClick={handleSendMessage}>보내기</Button>
+        <Button onClick={handleSendMessage}>보내기</Button> */}
+        <ChatTextArea onSendMessage={handleSendMessage} />
       </Footer>
     </>
   );

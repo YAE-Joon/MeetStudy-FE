@@ -33,11 +33,13 @@ const ChatRoomMain = styled.main`
     background: transparent;
     border-radius: 6px;
   }
+
+  //반응형
 `;
 
 const Header = styled.header`
   width: 100%;
-  background-color: #1a1a1a;
+  background-color: var(${tokens.colors.simple.primarydeeper});
   color: white;
   padding: 16px 24px;
   display: flex;
@@ -106,7 +108,7 @@ const MessageText = styled.p`
 
 const Footer = styled.div`
   width: 100%;
-  background-color: var(${tokens.colors.simple.grayfortext});
+  background-color: var(${tokens.colors.simple.primarydeeper});
   padding: 16px;
   display: flex;
   align-items: center;
@@ -120,6 +122,13 @@ const StyledTextarea = styled.textarea`
   border: 1px solid "#555";
   background-color: "#333";
   color: black;
+
+  min-width: 200px;
+  max-width: 100%;
+  min-height: 100px;
+  max-height: 300px;
+  resize: vertical; /* 사용자가 세로 방향으로 크기 조절 가능 */
+
   &:focus {
     outline: none;
     border-color: #3b82f6;
@@ -127,7 +136,7 @@ const StyledTextarea = styled.textarea`
 `;
 
 const Button = styled.button`
-  background-color: var(${tokens.colors.simple.secondary});
+  background-color: var(${tokens.colors.simple.primary});
   color: white;
   border: none;
   padding: 8px 16px;

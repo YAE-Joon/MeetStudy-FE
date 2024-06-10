@@ -48,12 +48,12 @@ const ChatRoom = () => {
         <FlexBoxV $justifyContent={"center"}>
           <SearchBarWarpper>
             <Title
-              $htype={3}
+              $htype={2}
               $align={"left"}
               $color={tokens.colors.simple.blackbasic}
-              $fontSize={tokens.fontSize.web.medium}
+              $fontSize={tokens.fontSize.web.large}
             >
-              채팅방입니당
+              채팅방
             </Title>
           </SearchBarWarpper>
           <ChatRoomList chatRoomList={chatRoomList} />

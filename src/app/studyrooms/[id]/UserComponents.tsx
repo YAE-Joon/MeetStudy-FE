@@ -13,6 +13,7 @@ import {
 } from "@/component/styled-components/Button/Buttons";
 import { usePathname } from "next/navigation";
 import { getRoomId } from "@/app/studyrooms/studyroomSub";
+import { useRouter } from "next/navigation";
 
 interface AlertModalProps {
   isOpen: boolean;
@@ -41,7 +42,7 @@ export const JoinStudyRoom = () => {
       handleFinish();
       window.location.reload();
       /* 
-      가입 성공시 isMemeber (layout -> MovingMenu-> this button)의 값을 바꾸어주려고, reload를 통해 layout에서 다시 fetch해와서 거기서 isMember를 다시 세팅한다.
+      가입 성공시 isMemeber (layout -> MovingMenu-> this button)의 값을 바꾸어주려고, reload를 통해 layout에서 다시 fetch해와서 거기서 isMember를 다시 세팅한다. 혹은 router를 통해 studyroom/해당스터디룸번호로 보낸다던가
       */
     } catch (err) {
       console.error("Failed to join the study room", err);
@@ -81,6 +82,7 @@ export const LeaveStudyRoom = () => {
   const [isDone, setIsDone] = useState(false);
 
   const roomdId = getRoomId();
+  const router = useRouter();
 
   const handleSignOut = async () => {
     try {
@@ -98,7 +100,8 @@ export const LeaveStudyRoom = () => {
     }
   };
 
-  const handleFinish = () => setIsDone((prev) => !prev);
+  const handleFinish = () => router.push("/");
+  //임시. 탈퇴 완료 후 메인 페이지로 리다이렉션.
 
   return (
     <>
