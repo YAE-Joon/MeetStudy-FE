@@ -58,16 +58,18 @@ const board = () => {
           $color={tokens.colors.simple.blackbasic}
           $fontSize={tokens.fontSize.web.medium}
         >
-          게시판입니다.
+          스터디룸 게시판
         </Title>
       </SearchBarWarpper>
-      <div className="w-full">
-        <Board
-          title="정보공유 게시판"
-          posts={test}
-          popularPosts={popularPosts}
-          categories={testcategories}
-        />
+      <div style={{ height: "100%" }}>
+        <div className="w-full">
+          <Board
+            title="정보공유 게시판"
+            posts={test}
+            popularPosts={popularPosts}
+            categories={testcategories}
+          />
+        </div>
       </div>
     </>
   );

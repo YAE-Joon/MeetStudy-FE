@@ -1,5 +1,5 @@
 import { createContext, useContext } from "react";
-import { StudyRoom } from "@/lib/types";
+import { StudyRoom } from "@/types/StudyRoom";
 
 interface PackedStudyRoomData extends StudyRoom {
   currentMembers: number;

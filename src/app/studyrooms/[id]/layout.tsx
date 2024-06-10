@@ -2,16 +2,14 @@
 
 import { useParams } from "next/navigation";
 
-import { StudyRoom } from "@/lib/types";
+import { StudyRoom } from "@/types/StudyRoom";
 import { apiPaths } from "@/config/api";
 import useFetch from "@/hooks/useFetch";
-
-import { StudyRoomDataProvider } from "@/context/StudyRoomDataContext";
 
 import { OuterContainer } from "@/component/styled-components/Container";
 import { FlexBoxV } from "@/component/styled-components/FlexBoxes";
 import { InnerContainer } from "@/app/studyrooms/[id]/StyledComponents";
-import MovingMenu from "@/component/styled-components/MovingMenu";
+import MovingMenu from "@/component/styled-components/MovingSideBars/MovingMenu";
 import Loading from "@/component/Loading/Loading";
 
 export default function StudyRoomdLayout({
@@ -19,6 +17,8 @@ export default function StudyRoomdLayout({
 }: {
   children: React.ReactNode;
 }) {
+  console.log("[id ]스터디룸의 레이아웃입니다.");
+  const userEmail = "hayeong@elice.com"; //임시
   const params = useParams();
   const roomId = Number(params.id);
   //console.log("roomId", roomId);
@@ -31,6 +31,32 @@ export default function StudyRoomdLayout({
     false
   );
 
+  const userAccessControl = studyRoomData?.userStudyRooms?.map((member) => {
+    const { id, joinDate, permission, user } = member;
+    const memberInfo = {
+      id,
+      joinDate,
+      permission,
+      email: user.email,
+    };
+    return {
+      isUserInStudyRooms: memberInfo.email === userEmail,
+      isUserOwner: memberInfo.permission === "OWNER",
+      //isUserOwner: true,
+    };
+  });
+
+  const isMember =
+    userAccessControl?.some((access) => access.isUserInStudyRooms) || false;
+  const isOwner =
+    userAccessControl?.some((access) => access.isUserOwner) || false;
+
+  const userAccecssControl = {
+    isAdmin: false,
+    isOwner,
+    isMember,
+  };
+
   const studyRoomMenu = [
     { label: "홈", link: `/studyrooms/${roomId}` },
     { label: "채팅", link: `/studyrooms/${roomId}/chatRoom` },
@@ -38,32 +64,25 @@ export default function StudyRoomdLayout({
     { label: "참가자_리스트", link: `/studyrooms/${roomId}/members` },
     { label: "게시판", link: `/studyrooms/${roomId}/board` },
   ];
-
-  //  layout의 !studyroomData 의 로더가 더 laoder.tsx보다 우선한다?
-  if (!studyRoomData) {
-    return <Loading />;
+  if (isOwner) {
+    studyRoomMenu.push({
+      label: "스터디룸 관리",
+      link: `/studyrooms/${roomId}/admin`,
+    });
   }
 
-  //packing data
-
-  const currentMembers = studyRoomData.userStudyRooms.length;
-  const packedStudyRoomData = {
-    ...studyRoomData,
-    currentMembers,
-  };
-
-  return (
+  return !studyRoomData ? (
+    <Loading />
+  ) : (
     <OuterContainer>
       <InnerContainer>
         <MovingMenu
           menu={studyRoomMenu}
-          roomId={roomId.toString()}
           title={studyRoomData.title}
+          userAccecssControl={userAccecssControl}
         />
-        <FlexBoxV $padding={"0 1rem 0 0.5rem"}>
-          <StudyRoomDataProvider value={packedStudyRoomData}>
-            {children}
-          </StudyRoomDataProvider>
+        <FlexBoxV $padding={"0.5rem 1rem 0 0.5rem"} $width={"100%"}>
+          {children}
         </FlexBoxV>
       </InnerContainer>
     </OuterContainer>

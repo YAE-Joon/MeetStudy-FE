@@ -145,83 +145,6 @@ const SearchIcon = styled(MdSearch)`
   pointer-events: none;
 `;
 
-interface HamburgerProp {
-  $isopen: boolean;
-}
-
-interface StudyRoomCategoriesProps {
-  $isopen: boolean;
-}
-
-const StudyRoomCategories = styled(FlexBoxUlV).attrs<StudyRoomCategoriesProps>(
-  ({ $isopen, ...rest }) => ({
-    ...rest, // 다른 속성들을 유지
-    $isopen: $isopen ?? undefined, // DOM에 직접 전달되지 않도록 필터링
-  })
-)<StudyRoomCategoriesProps>`
-  align-items: flex-start;
-  gap: 1rem;
-  width: 100%;
-  height: 100%;
-
-  > li {
-    flex: 1;
-    font-size: var(${tokens.fontSize.web.small});
-    padding: 0.5rem 0 1rem 0.5rem;
-    width: 100%;
-    &:hover {
-      background-color: var(${tokens.colors.simple.tertiarygray});
-      font-weight: 700;
-      cursor: pointer;
-    }
-  }
-
-  @media only screen and (max-width: ${mobileWidth}) {
-    width: 100%;
-    height: auto;
-    flex-direction: column;
-
-    ${(props) =>
-      props.$isopen &&
-      css`
-        > li {
-          display: block;
-        }
-      `}
-    ${(props) =>
-      !props.$isopen &&
-      css`
-        > li {
-          display: none;
-        }
-      `}
-  }
-`;
-const HamburgerIcon = styled.div`
-  display: none;
-  @media only screen and (max-width: ${mobileWidth}) {
-    display: flex;
-    cursor: pointer;
-    font-size: 1rem;
-    justify-content: center;
-    align-items: center;
-    width: 2rem;
-    height: 2rem;
-  }
-`;
-
-const HamburgerMenu = styled.div.attrs<{ $isopen: boolean }>({
-  $isopen: undefined, // DOM에 직접 전달되지 않도록 필터링
-})<{ $isopen: boolean }>`
-  @media only screen and (max-width: ${mobileWidth}) {
-    padding-top: 1rem;
-    display: ${(props) => (props.$isopen ? "flex" : "none")};
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    font-size: 2rem;
-  }
-`;
 const SearchResultContainer = styled(StyledUl)`
   width: 80%;
   display: grid;
@@ -243,12 +166,10 @@ const SearchResultContainer = styled(StyledUl)`
 
 const StyledStudyRoomIndex = {
   InnerContainer,
-  StudyRoomCategories,
+  //tudyRoomCategories,
   SearchResultSection,
   SearchBarWarpper,
   InputContainer,
   SearchResultContainer,
-  HamburgerIcon,
-  HamburgerMenu,
 };
 export default StyledStudyRoomIndex;

@@ -15,6 +15,8 @@ export const BasicForm = styled.form`
   align-items: center;
 
   gap: 2rem;
+
+  width: 100%;
 `;
 
 export const BasicField = styled.fieldset`
@@ -37,8 +39,15 @@ export const BasicField = styled.fieldset`
     flex: 1;
   }
 `;
+
 export const BasicFieldRow = styled(BasicField)`
   flex-direction: row;
+  flex-wrap: nowrap;
+
+  @media (max-width: 300px) {
+    flex-direction: column;
+    flex-wrap: wrap;
+  }
 `;
 
 export const BasicFieldCol = styled(BasicField)`

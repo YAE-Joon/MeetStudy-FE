@@ -1,22 +1,19 @@
 "use client";
-// 개별 스터디룸의 멤버 리스트
 import { useState } from "react";
 
 import { apiPaths } from "@/config/api";
 import useFetch from "@/hooks/useFetch";
 import fetchDataBE from "@/lib/fetch";
 
-import { AdminUserData } from "@/types/Admin";
-
+import { PostBoard } from "@/types/PostBoard";
 import dt from "@/lib/designToken/designTokens";
 
-import StyledStudyRoomIndex from "@/app/studyrooms/StudyRoomIndexClientComponents";
-import { OuterContainer } from "@/component/styled-components/Container";
 import StyledAdminUserPage from "@/app/admin/UserStyled";
+import { OuterContainer } from "@/component/styled-components/Container";
 import { Title } from "@/component/styled-components/TextBoxes";
-
 import Loading from "@/component/Loading/Loading";
 import { Container } from "@/component/styled-components/Container";
+import { StudyRoom } from "@/types/StudyRoom";
 
 const tokens = dt.DesignTokenVarNames;
 const {
@@ -31,51 +28,48 @@ const {
   Button,
   QuitButton,
 } = StyledAdminUserPage;
-const UserPage = () => {
+
+const AdminBoards = () => {
   const [currPage, setCurrPage] = useState(0);
   const tableHeadList = [
     "No(id)",
-    "역할",
-    "이름",
-    "이메일",
-    "닉네임",
-    "관심분야",
+    "카테고리",
+    "글 제목",
+    "작성자",
+    "생성일",
+    "조회수",
   ];
 
-  const [AllUserData, error] = useFetch<AdminUserData[]>(
-    apiPaths.admin.users,
+  const [AllBoardPosts, error] = useFetch<PostBoard[]>(
+    apiPaths.admin.posts,
     {},
     true
   );
-  console.log("AllUserData", AllUserData);
 
-  // quit user
-  const handleRemove = async (userId: number) => {
-    if (confirm("정말로 이 사용자를 삭제하시겠습니까?")) {
+  const handleRemove = async (postId: number) => {
+    if (confirm("정말로 이 게시글을 삭제하시겠습니까?")) {
       try {
         const response = await fetchDataBE(
-          apiPaths.admin.quitUser(userId),
+          apiPaths.admin.rmPost(postId),
           {
             method: "DELETE",
           },
           true,
           false
         );
-        alert("회원 강퇴 완료!");
+        alert("게시글 삭제 완료!");
         return response;
       } catch (error) {
-        console.error("회원 탈퇴 중 오류 발생", error);
-        alert("회원 탈퇴 중 오류 발생!");
+        console.error("게시글 삭제 중 오류 발생", error);
+        alert("게시글 삭제 중 오류 발생!");
         throw error;
       }
     }
   };
 
-  //pagination
-
-  const usersPerPage = 10;
-  const totalPages = AllUserData
-    ? Math.ceil(AllUserData.length / usersPerPage)
+  const postsPerPage = 10;
+  const totalPages = AllBoardPosts
+    ? Math.ceil(AllBoardPosts.length / postsPerPage)
     : 0;
   const handlePrevPage = () => {
     setCurrPage((prevPage) => Math.max(prevPage - 1, 0));
@@ -83,11 +77,14 @@ const UserPage = () => {
   const handleNextPage = () => {
     setCurrPage((prevPage) => Math.min(prevPage + 1, totalPages - 1));
   };
-  const currentUserData = AllUserData
-    ? AllUserData.slice(currPage * usersPerPage, (currPage + 1) * usersPerPage)
+  const currentBoardPosts = AllBoardPosts
+    ? AllBoardPosts.slice(
+        currPage * postsPerPage,
+        (currPage + 1) * postsPerPage
+      )
     : [];
 
-  return !AllUserData ? (
+  return !AllBoardPosts ? (
     <>
       <Loading />
     </>
@@ -96,11 +93,14 @@ const UserPage = () => {
       <OuterContainer>
         <Container>
           <Header>
-            <Title $color={tokens.colors.simple.blackbasic}>회원 관리</Title>
+            <Title $color={tokens.colors.simple.blackbasic}>
+              게시글 리스트
+            </Title>
+            <p>최신순</p>
           </Header>
-          {AllUserData === null || AllUserData.length === 0 ? (
+          {currentBoardPosts === null || currentBoardPosts.length === 0 ? (
             <>
-              <div>유저가 존재하지 않습니다.</div>
+              <div>게시글이 존재하지 않습니다.</div>
             </>
           ) : (
             <>
@@ -114,16 +114,17 @@ const UserPage = () => {
                     </StyledTableRow>
                   </StyledTableHeader>
                   <StyledTableBody>
-                    {currentUserData.map((user) => (
-                      <StyledTableRow key={user.id}>
-                        <StyledTableCell>{user.id}</StyledTableCell>
-                        <StyledTableCell>{user.role}</StyledTableCell>
-                        <StyledTableCell>{user.username}</StyledTableCell>
-                        <StyledTableCell>{user.email}</StyledTableCell>
-                        <StyledTableCell>{user.nickname}</StyledTableCell>
-                        <StyledTableCell>{user.interests}</StyledTableCell>
+                    {currentBoardPosts.map((post) => (
+                      <StyledTableRow key={post.id}>
+                        <StyledTableCell>{post.id}</StyledTableCell>
+                        <StyledTableCell>{post.category}</StyledTableCell>
+                        <StyledTableCell>{post.title}</StyledTableCell>
+                        <StyledTableCell>{post.nickname}</StyledTableCell>
+                        <StyledTableCell>{post.createdAt}</StyledTableCell>
+                        <StyledTableCell>{post.hit}</StyledTableCell>
+
                         <StyledTableCell>
-                          <QuitButton onClick={() => handleRemove(user.id)}>
+                          <QuitButton onClick={() => handleRemove(post.id)}>
                             삭제
                           </QuitButton>
                         </StyledTableCell>
@@ -151,4 +152,4 @@ const UserPage = () => {
   );
 };
 
-export default UserPage;
+export default AdminBoards;

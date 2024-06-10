@@ -1,5 +1,5 @@
 "use client";
-import { StudyRoom } from "@/lib/types";
+import { StudyRoom } from "@/types/StudyRoom";
 
 import StyledStudyRoomIndex from "@/app/studyrooms/StudyRoomIndexClientComponents";
 
@@ -13,7 +13,7 @@ import { StudyRoomCard } from "@/component/styled-components/Card";
 
 import { apiPaths } from "@/config/api";
 import { FlexBoxV } from "@/component/styled-components/FlexBoxes";
-import MovingCategories from "@/component/styled-components/MovingCategories";
+import MovingCategories from "@/component/styled-components/MovingSideBars/MovingCategories";
 const tokens = dt.DesignTokenVarNames;
 
 const {
@@ -28,7 +28,10 @@ const SearchPageContainer = ({
 }: {
   categories: CategoriyOptions[];
 }) => {
+  console.log("[studyrooms] 가 랜더링되었습니다. categories? ", categories);
+
   const [searchQuery, setSearchQuery] = useState("");
+  // categiry 의 id 로 카테고리별 스터디룸을 가져와야 함
   const [studyRooms, error] = useFetch<StudyRoom[]>(
     apiPaths.studyrooms.all,
     {},
@@ -45,20 +48,16 @@ const SearchPageContainer = ({
   };
   return (
     <InnerContainer>
-      <MovingCategories categories={categories} />
-
       <FlexBoxV>
         <SearchBarWarpper>
           <Title
             $htype={3}
             $align={"left"}
             $color={tokens.colors.simple.blackbasic}
-            $fontSize={tokens.fontSize.web.medium}
+            $fontSize={tokens.fontSize.web.large}
           >
-            스터디룸 찾기
+            스터디룸 목록
           </Title>
-
-          <InputContainer value={searchQuery} onChange={handleInputChange} />
         </SearchBarWarpper>
         <SearchResultContainer>
           {studyRooms.map((studyRoom, idx) => (

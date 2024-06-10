@@ -19,10 +19,9 @@ import { apiPaths } from "@/config/api";
 const AdminCategoryPage = () => {
   const [categories, error] = useFetch<CategoriyOptions[]>(
     apiPaths.category.public,
-    // "/api/post/public",  // 테스트용, 공개된 api
     {},
-    false,
-    true
+    true,
+    false
   );
 
   if (!categories) {
