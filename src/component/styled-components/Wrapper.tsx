@@ -4,44 +4,61 @@ import React from "react";
 import styled from "styled-components";
 import dt from "@/lib/designToken/designTokens";
 
-const DesignTokenVarNames = dt.DesignTokenVarNames;
+const tokens = dt.DesignTokenVarNames;
 const mobileWidth = dt.DesignTokenExcept.media.mobile;
 
+interface WrapperProps {
+  children?: React.ReactNode;
+  $bgColor?: string | null;
+  $minHeight?: string | null;
+  flexDirection?: "column" | "row";
+  $padding?: string | null;
+}
 /** Styled */
 
-export const StyledWrapper = styled.main`
+export const Wrapper = styled.section<WrapperProps>`
   display: flex;
-  flex-direction: column;
+  flex-direction: ${({ flexDirection }) => flexDirection || "column"};
   justify-content: space-between;
   align-items: center;
 
-  //padding: var(--spacing-padding);
+  min-height: ${({ $minHeight }) => ($minHeight ? $minHeight : "100%")};
+  width: 100%;
+  min-width: var(${tokens.boxSizes.width.wrapperMax});
+  padding: ${({ $padding }) => ($padding ? $padding : "1.5rem")};
 
-  min-height: 100vh;
-  max-width: 100%;
-  width: var(${DesignTokenVarNames.boxSizes.width.wrapperMax});
-
-  background-color: var(--colors-simple-whitebg);
+  background-color: ${({ $bgColor }) =>
+    $bgColor || tokens.colors.simple.whitebg};
 
   @media only screen and (max-width: ${mobileWidth}) {
     grid-template-columns: 1fr;
     margin-bottom: 120px;
-    min-width: var(${DesignTokenVarNames.boxSizes.width.wrapperMinMobile});
+    min-width: var(${tokens.boxSizes.width.wrapperMinMobile});
     text-align: center;
   }
 `;
 
 /** Component  */
-interface WrapperProps {
-  children: React.ReactNode;
-}
-/**
- *
- * @param param0 React.ReactNode
- * @returns flex, main 태그를 반환
- */
-const Wrapper: React.FC<WrapperProps> = ({ children }) => {
-  return <StyledWrapper>{children}</StyledWrapper>;
-};
+// interface WrapperProps {
+//   children: React.ReactNode;
+//   $minHeight?: string;
+//   $bgColor?: string;
+// }
+// /**
+//  *
+//  * @param param0 React.ReactNode
+//  * @returns flex, main 태그를 반환
+//  */
+// const Wrapper: React.FC<WrapperProps> = ({
+//   children,
+//   $bgColor,
+//   $minHeight,
+// }) => {
+//   return (
+//     <StyledWrapper $bgColor={$bgColor} $minHeight={$minHeight}>
+//       {children}
+//     </StyledWrapper>
+//   );
+// };
 
 export default Wrapper;

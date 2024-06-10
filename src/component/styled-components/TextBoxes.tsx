@@ -20,11 +20,12 @@ interface StyledTextProps extends StyledProps {
 interface TextProps {
   content: string;
   color?: string;
-  fontSize?: keyof FontSizeOptions;
+  fontSize?: string; //token에서 지정되어 전달될 예정
   align?: "center" | "left";
-  htype?: 1 | 2 | 3 | 4 | 5 | 6;
+  $htype?: 1 | 2 | 3 | 4 | 5 | 6;
   isAuthor?: boolean;
   isBold?: boolean;
+  className?: string;
 }
 
 /** styled */
@@ -32,26 +33,17 @@ interface TextProps {
 /// Title ///
 
 const StyledTitle = styled.h1<StyledTextProps>`
-  text-align: ${({ $align }) => {
-    return $align ? $align : "center";
-  }};
-
+  text-align: ${({ $align }) => $align || "center"};
   font-size: var(
-    ${({ $fontSize }) => {
-      return $fontSize ? $fontSize : DesignTokenVarNames.fontSize.web.large;
-    }}
+    ${({ $fontSize }) => $fontSize || DesignTokenVarNames.fontSize.web.large}
   );
   color: var(
-    ${({ $color }) => {
-      return $color ? $color : DesignTokenVarNames.colors.simple.whitebg;
-    }}
+    ${({ $color }) => $color || DesignTokenVarNames.colors.simple.whitebg}
   );
-
-  padding: 1rem 1rem 1rem 1rem;
-
+  min-width: auto;
+  padding: 1rem;
   overflow-wrap: break-word;
   word-break: keep-all;
-
   font-weight: bold;
 
   @media only screen and (max-width: ${mobileWidth}) {
@@ -80,7 +72,6 @@ const StyledDesc = styled.p<StyledTextProps>`
     }}
   );
 
-  padding: 1rem;
   min-height: 4rem;
 
   overflow-wrap: break-word;
@@ -128,33 +119,37 @@ const StyledSpanOrCite = styled.span<StyledTextProps>`
 `;
 /** components  */
 
-/// Title ///
+interface TitleProps {
+  as?: keyof JSX.IntrinsicElements;
+  $align?: "center" | "left";
+  $fontSize?: string;
+  $color?: string;
+  $htype?: 1 | 2 | 3 | 4 | 5 | 6;
+  $padding?: string;
+  isAuthor?: boolean;
+  isBold?: boolean;
+  className?: string;
+  children: React.ReactNode;
+}
 
-/**
- * Title component(h1) : 타이틀에 쓰이는 컴포넌트입니다.
- * @param param0.
- * @param param0.content : 제목 내용(텍스트)
- * @param param0.color: (선택) 제목 색상
- * @param param0.fontSize: (선택) 제목 크기 | (xlarge, large, medium, small, xsmall 중 하나)
- * @param param0.htype: (선택)제목의 HTML 태그 타입 | h1~h6 중 택1
- *
- * @returns
- */
-export const Title: React.FC<TextProps> = ({
-  content,
-  color = null,
-  fontSize = null,
-  htype = 1,
-  align,
-}) => {
-  const Tag = `h${htype}` as keyof JSX.IntrinsicElements; // htype에 따른 태그 결정
-  return (
-    <StyledTitle as={Tag} $color={color} $fontSize={fontSize} $align={align}>
-      {content}
-    </StyledTitle>
-  );
-};
+export const Title = styled.h1.attrs<TitleProps>(({ as, $htype }) => ({
+  as: as || ($htype ? `h${$htype}` : "h1"),
+}))<TitleProps>`
+  text-align: ${({ $align }) => $align || "center"};
+  font-size: ${({ $fontSize }) =>
+    `var(${$fontSize || DesignTokenVarNames.fontSize.web.large})`};
+  color: ${({ $color }) =>
+    `var(${$color || DesignTokenVarNames.colors.simple.whitebg})`};
+  min-width: auto;
+  padding: ${({ $padding }) => $padding || "1rem"};
+  overflow-wrap: break-word;
+  word-break: keep-all;
+  font-weight: bold;
 
+  @media only screen and (max-width: ${mobileWidth}) {
+    font-size: var(${DesignTokenVarNames.fontSize.mobile.large});
+  }
+`;
 /// Description ///
 /**
  * description(p) : 긴 내용을 서술하는 p 태그용 컴포넌트입니다.
@@ -168,11 +163,17 @@ export const Description: React.FC<TextProps> = ({
   content,
   color = null,
   fontSize = null,
-  htype = null,
+  $htype = null,
   align = "left",
+  className,
 }) => {
   return (
-    <StyledDesc $color={color} $fontSize={fontSize} $align={align}>
+    <StyledDesc
+      $color={color}
+      $fontSize={fontSize}
+      $align={align}
+      className={className}
+    >
       {content}
     </StyledDesc>
   );
@@ -194,6 +195,7 @@ export const Span: React.FC<TextProps> = ({
   isAuthor = false,
   align,
   isBold,
+  className,
 }) => {
   const Tag = isAuthor ? "cite" : "span";
 
@@ -204,8 +206,18 @@ export const Span: React.FC<TextProps> = ({
       $fontSize={fontSize}
       $align={align}
       $isBold={isBold}
+      className={className}
     >
       {content}
     </StyledSpanOrCite>
   );
 };
+interface TitleWrapperProp {
+  $bgColor?: string | null;
+}
+export const TitleWrapper = styled.div<TitleWrapperProp>`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  background-color: ${({ $bgColor }) => $bgColor || "transparent"};
+`;

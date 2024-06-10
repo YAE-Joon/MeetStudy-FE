@@ -1,26 +1,17 @@
+import MainPage from "@/component/mainPage/MainPage";
 import {
-  FirstSectionLanding,
-  SecondSectionLanding,
-  ThirdSectionLanding,
-} from "@/component/Landing";
-import { Container } from "@/component/styled-components/Container";
-
-import Wrapper from "@/component/styled-components/Wrapper";
+  Container,
+  OuterContainer,
+} from "@/component/styled-components/Container";
 import dt from "@/lib/designToken/designTokens";
 
-export default function Home() {
+const tokens = dt.DesignTokenVarNames;
+
+// '/' 로 접속하고 로그인 상태일 시 해당 페이지로 연결됩니다. 로그인 상태가 아닐 시 랜딩 페이지로 연결됩니다.
+export default async function Main() {
   return (
-    <>
-      <h1>랜딩 페이지(개발중)</h1>
-
-      <FirstSectionLanding />
-      <SecondSectionLanding />
-      <ThirdSectionLanding />
-
-      <Wrapper>
-        <section>온라인에서도 함께 섹션3</section>
-        <section>온라인에서도 함께 섹션4</section>
-      </Wrapper>
-    </>
+    <OuterContainer>
+      <MainPage />
+    </OuterContainer>
   );
 }
