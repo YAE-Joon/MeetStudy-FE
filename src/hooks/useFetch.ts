@@ -44,7 +44,7 @@ const useFetch = <T>(
       }
     };
     loadData();
-  }, [apiUrl, isAdmin, isTest]);
+  }, [apiUrl]);
 
   console.log("[useFetch.ts] data?", data);
 

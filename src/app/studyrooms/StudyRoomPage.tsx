@@ -1,5 +1,5 @@
 "use client";
-import { StudyRoom } from "@/lib/types";
+import { StudyRoom } from "@/types/StudyRoom";
 
 import StyledStudyRoomIndex from "@/app/studyrooms/StudyRoomIndexClientComponents";
 

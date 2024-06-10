@@ -2,7 +2,7 @@
 
 import { useParams } from "next/navigation";
 
-import { StudyRoom } from "@/lib/types";
+import { StudyRoom } from "@/types/StudyRoom";
 import { apiPaths } from "@/config/api";
 import useFetch from "@/hooks/useFetch";
 
@@ -19,6 +19,7 @@ export default function StudyRoomdLayout({
 }: {
   children: React.ReactNode;
 }) {
+  console.log("[id ]스터디룸의 레이아웃입니다.");
   const params = useParams();
   const roomId = Number(params.id);
   //console.log("roomId", roomId);
@@ -61,9 +62,9 @@ export default function StudyRoomdLayout({
           title={studyRoomData.title}
         />
         <FlexBoxV $padding={"0 1rem 0 0.5rem"} $width={"100%"}>
-          <StudyRoomDataProvider value={packedStudyRoomData}>
-            {children}
-          </StudyRoomDataProvider>
+          {/* <StudyRoomDataProvider value={packedStudyRoomData}> */}
+          {children}
+          {/* </StudyRoomDataProvider> */}
         </FlexBoxV>
       </InnerContainer>
     </OuterContainer>

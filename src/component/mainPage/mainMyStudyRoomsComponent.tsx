@@ -2,7 +2,7 @@
 
 import { apiPaths } from "@/config/api";
 import useFetch from "@/hooks/useFetch";
-import { StudyRoom } from "@/lib/types";
+import { StudyRoom } from "@/types/StudyRoom";
 
 import dt from "@/lib/designToken/designTokens";
 import MainStyledPack from "@/component/mainPage/mainStyledComponents";

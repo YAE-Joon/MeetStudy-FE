@@ -1,48 +1,32 @@
 "use client";
-// 채팅방
-import { useState, ChangeEvent, useRef, useEffect } from "react";
-import ChatStyled from "@/app/studyrooms/[id]/chatRoom/[chatId]/chatStyled";
-import { ChatMessage, UserProfile } from "@/lib/types";
-import useWebSocket from "@/webSocket/client";
-import { getRoomId } from "@/app/studyrooms/studyroomSub";
+// 개별 스터디룸의 멤버 리스트
+import { useParams } from "next/navigation";
 import useFetch from "@/hooks/useFetch";
 import { apiPaths } from "@/config/api";
-import {
-  FlexBoxV,
-  FlexBox_H_ul,
-} from "@/component/styled-components/FlexBoxes";
+
+import { StudyRoom } from "@/types/StudyRoom";
+
 import { nullChecker } from "@/util/unllChecker";
-import { useStudyRoomData } from "@/context/StudyRoomDataContext";
-import { Li_card, MemberCard } from "@/component/styled-components/Card";
 import { setDateStr, convertISOToYMD } from "@/util/dateUtils";
+
+import { MemberCard } from "@/component/styled-components/Card";
 import { Container } from "@/component/styled-components/Container";
-
 import StyledStudyRoomIndex from "@/app/studyrooms/StudyRoomIndexClientComponents";
-const {
-  ChatRoomMain,
-  MessageContainer,
-  Message,
-  MessageAuthor,
-  MessageText,
-  Footer,
-  StyledTextarea,
-  Button,
-} = ChatStyled;
-
-const {
-  InnerContainer,
-  StudyRoomCategories,
-  SearchResultSection,
-  SearchBarWarpper,
-  InputContainer,
-  SearchResultContainer,
-  HamburgerIcon,
-  HamburgerMenu,
-} = StyledStudyRoomIndex;
+const { SearchResultContainer } = StyledStudyRoomIndex;
 
 export default function MemberLists() {
-  let membersInfo = [];
-  const studyRoomData = useStudyRoomData().userStudyRooms.map((member) => {
+  console.log("[id/memberlist] 멤버 페이지 컴포넌트입니다.");
+  const roomId = Number(useParams().id);
+  // 입장한 스터디룸에 대한 정보를 불러옵니다.
+  const [studyRoomData, error] = useFetch<StudyRoom>(
+    apiPaths.studyrooms.detail(roomId),
+    {},
+    false,
+    false
+  );
+
+  const currentMemberNum = studyRoomData?.userStudyRooms.length;
+  const currentMembers = studyRoomData?.userStudyRooms?.map((member) => {
     const { id, joinDate, permission, user } = member;
     const memberInfo = {
       id,
@@ -53,25 +37,25 @@ export default function MemberLists() {
     return memberInfo;
   });
 
-  if (!studyRoomData) {
-    return <div>목록 로딩중</div>;
-  }
-
-  return (
-    <Container $width={"100%"} $minWidth={"600px"}>
-      <SearchResultContainer>
-        {studyRoomData.map((member, index) => (
-          <MemberCard
-            key={member.id}
-            id={member.id}
-            email={member.email}
-            joinDate={nullChecker(member.joinDate, "string", (value) =>
-              setDateStr(convertISOToYMD(value))
-            )}
-            permission={member.permission}
-          />
-        ))}
-      </SearchResultContainer>
-    </Container>
+  return !studyRoomData ? (
+    <div>목록 로딩중</div>
+  ) : (
+    <>
+      <Container $width={"100%"} $minWidth={"600px"}>
+        <SearchResultContainer>
+          {currentMembers?.map((member, index) => (
+            <MemberCard
+              key={member.id}
+              id={member.id}
+              email={member.email}
+              joinDate={nullChecker(member.joinDate, "string", (value) =>
+                setDateStr(convertISOToYMD(value))
+              )}
+              permission={member.permission}
+            />
+          ))}
+        </SearchResultContainer>
+      </Container>
+    </>
   );
 }
