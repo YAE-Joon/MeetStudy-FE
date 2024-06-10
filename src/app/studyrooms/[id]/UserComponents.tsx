@@ -15,12 +15,6 @@ import { usePathname } from "next/navigation";
 import { getRoomId } from "@/app/studyrooms/studyroomSub";
 import { useRouter } from "next/navigation";
 
-interface AlertModalProps {
-  isOpen: boolean;
-  onRequestClose: () => void;
-  message: string;
-}
-
 // 스터디룸 가입 버튼 { roomId }: { roomId: number }
 export const JoinStudyRoom = () => {
   const [modalMessage, setModalMessage] =
@@ -73,10 +67,10 @@ export const JoinStudyRoom = () => {
   );
 };
 
-// 스터디룸 가입 버튼
+// 스터디룸 떠나기 버튼
 export const LeaveStudyRoom = () => {
   const [modalMessage, setModalMessage] =
-    useState("스터디룸에서 탈퇴하시겠습니까?");
+    useState("스터디룸에서 떠나시겠습니까?");
   const [isModalOpen, setIsModalOpen] = useState(false); //모달상태
   const handleModalClose = () => setIsModalOpen(false);
   const [isDone, setIsDone] = useState(false);
@@ -96,7 +90,7 @@ export const LeaveStudyRoom = () => {
     } catch (err) {
       console.error("Failed to leave the study room", err);
       setModalMessage("탈퇴 오류!");
-      setModalMessage("가입 오류!");
+      setModalMessage("탈퇴 오류!");
     }
   };
 

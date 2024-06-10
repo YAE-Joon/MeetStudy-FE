@@ -37,8 +37,27 @@ const CategoryNavigation = styled.nav<
 
   width: 250px;
   min-width: 100px;
-  max-height: 40%;
+  max-height: 70%;
   height: auto; // 자동으로 목록이 길어질 수 있도록!
+  overflow-y: auto; // 내용물이 넘칠때 스크롤이 생기게 하기
+
+  // 스크롤 커스텀
+  &::-webkit-scrollbar {
+    width: 20px;
+    height: 12px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: darkgrey;
+    border-radius: 6px;
+    border: 3px solid transparent;
+    background-clip: content-box;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 6px;
+  }
 
   background-color: #fff;
   border: 1px solid #ccc;
@@ -128,6 +147,7 @@ const CategoryLinksContainer = styled(FlexBoxUlV)`
       background-color: var(${tokens.colors.simple.tertiarygray});
       font-weight: 700;
       cursor: pointer;
+      color: var(${tokens.colors.simple.secondary});
     }
   }
 

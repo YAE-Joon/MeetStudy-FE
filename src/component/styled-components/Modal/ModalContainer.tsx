@@ -9,7 +9,7 @@ interface StudyRoomModalProps {
   mode: string;
   buttonMessage: string;
   modalMessage: string;
-  isDone: boolean;
+  isDone?: boolean;
   onClick: () => void;
 }
 

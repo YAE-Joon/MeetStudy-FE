@@ -66,7 +66,7 @@ export const Container = styled(
       },
       ref
     ) => {
-      if ((as = "main")) {
+      if (as === "main") {
         return (
           <main ref={ref} {...rest}>
             {children}

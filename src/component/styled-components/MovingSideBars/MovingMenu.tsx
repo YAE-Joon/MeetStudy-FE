@@ -24,17 +24,41 @@ const {
 
 const tokens = dt.DesignTokenVarNames;
 
+interface AccessControl {
+  isAdmin: boolean;
+  isMember: boolean;
+  isOwner: boolean;
+}
+
+const basicAccecssControl = {
+  isAdmin: false,
+  isMember: false,
+  isOwner: false,
+};
+
 const MovingMenu = ({
   title,
   menu,
-  isMember,
+  userAccecssControl = basicAccecssControl,
+  roomId,
+  mainBgColor = `${tokens.colors.simple.secondary}`,
+  txtColor = `${tokens.colors.simple.blackbasic}`,
 }: {
   title: string;
   menu: { label: string; link: string }[];
-  isMember: boolean;
+  userAccecssControl: {
+    isAdmin: boolean;
+    isMember: boolean;
+    isOwner: boolean;
+  }; //admin은 없음
+  roomId?: number;
+  mainBgColor?: string;
+  txtColor?: string;
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [navTopPos, setNavTopPos] = useState<string>("10%");
+
+  const { isAdmin, isMember, isOwner } = userAccecssControl;
 
   useEffect(() => {
     let timeoutId: NodeJS.Timeout;
@@ -67,7 +91,7 @@ const MovingMenu = ({
   }, []);
 
   const toggleMenu = () => {
-    setIsOpen(!isOpen);
+    setIsOpen((prev) => !prev);
   };
 
   return (
@@ -75,8 +99,8 @@ const MovingMenu = ({
       <NavigationContainer>
         <CategoryNavigation
           $navTopPos={navTopPos}
-          $bgColor={`var(${tokens.colors.simple.secondary})`}
-          $txtColor={`var(${tokens.colors.simple.blackbasic})`}
+          $bgColor={`var(${mainBgColor})`}
+          $txtColor={`var(${txtColor})`}
         >
           <CategoryList
             $isOpen={isOpen}
@@ -107,7 +131,7 @@ const MovingMenu = ({
                       {menuItem.label}
                     </Link>
                   ))}
-                  <LeaveStudyRoom />
+                  {!isOwner ? <LeaveStudyRoom /> : <></>}
                 </>
               ) : (
                 menu[0] && (

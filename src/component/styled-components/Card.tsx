@@ -18,6 +18,7 @@ import {
 } from "@/component/styled-components/TextBoxes";
 
 import dt from "@/lib/designToken/designTokens";
+import convertDateTime from "@/util/dateTimeUtil";
 const mobileWidth = dt.DesignTokenExcept.media.mobile;
 const tokens = dt.DesignTokenVarNames;
 
@@ -87,6 +88,8 @@ export const StudyRoomCard: React.FC<StudyRoomCardProps> = ({ item, root }) => {
     pathname = `studyrooms`;
   }
 
+  console.log("item", item);
+
   return (
     <StyledLink href={`${pathname}/${item.id}`}>
       <CardContent>
@@ -101,9 +104,7 @@ export const StudyRoomCard: React.FC<StudyRoomCardProps> = ({ item, root }) => {
             {item.title}
           </Title>
 
-          <Span
-            content={`생성일: ${setDateStr(convertISOToYMD(item.createdDate))}`}
-          />
+          <Span content={`생성일: ${convertDateTime(item.createdDate)}`} />
         </CardUpper_ul>
 
         <Description

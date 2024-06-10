@@ -13,10 +13,13 @@ export const apiPaths = {
   },
   admin: {
     posts: "/api/admin/posts",
-    post: (postId: string) => `/api/admin/posts/${postId}`,
-    userPosts: (userId: string) => `/api/admin/posts/user/${userId}`,
+    rmPost: (postId: number) => `/api/admin/posts/${postId}`,
+    userPosts: (userId: number) => `/api/admin/posts/user/${userId}`,
     users: "/api/admin/users",
-    user: (id: string) => `/api/admin/users/${id}`,
+    user: (id: number) => `/api/admin/users/${id}`,
+    quitUser: (id: number) => `/api/admin/users/${id}`,
+    getAllstudyRooms: `/api/admin/studyrooms`,
+    rmStudyRoom: (id: number) => `/api/admin/studyrooms/${id}`,
   },
   category: {
     create: "/api/admin/categories",

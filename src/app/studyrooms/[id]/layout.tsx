@@ -31,7 +31,7 @@ export default function StudyRoomdLayout({
     false
   );
 
-  const isUserInStudyRooms = studyRoomData?.userStudyRooms?.map((member) => {
+  const userAccessControl = studyRoomData?.userStudyRooms?.map((member) => {
     const { id, joinDate, permission, user } = member;
     const memberInfo = {
       id,
@@ -39,10 +39,23 @@ export default function StudyRoomdLayout({
       permission,
       email: user.email,
     };
-    return memberInfo.email === userEmail;
+    return {
+      isUserInStudyRooms: memberInfo.email === userEmail,
+      isUserOwner: memberInfo.permission === "OWNER",
+      //isUserOwner: true,
+    };
   });
 
-  const isMember = isUserInStudyRooms?.some((isMember) => isMember) || false;
+  const isMember =
+    userAccessControl?.some((access) => access.isUserInStudyRooms) || false;
+  const isOwner =
+    userAccessControl?.some((access) => access.isUserOwner) || false;
+
+  const userAccecssControl = {
+    isAdmin: false,
+    isOwner,
+    isMember,
+  };
 
   const studyRoomMenu = [
     { label: "홈", link: `/studyrooms/${roomId}` },
@@ -51,27 +64,22 @@ export default function StudyRoomdLayout({
     { label: "참가자_리스트", link: `/studyrooms/${roomId}/members` },
     { label: "게시판", link: `/studyrooms/${roomId}/board` },
   ];
-
-  //  layout의 !studyroomData 의 로더가 더 laoder.tsx보다 우선한다?
-  if (!studyRoomData) {
-    return <Loading />;
+  if (isOwner) {
+    studyRoomMenu.push({
+      label: "스터디룸 관리",
+      link: `/studyrooms/${roomId}/admin`,
+    });
   }
 
-  //packing data
-
-  const currentMembers = studyRoomData.userStudyRooms.length;
-  const packedStudyRoomData = {
-    ...studyRoomData,
-    currentMembers,
-  };
-
-  return (
+  return !studyRoomData ? (
+    <Loading />
+  ) : (
     <OuterContainer>
       <InnerContainer>
         <MovingMenu
           menu={studyRoomMenu}
           title={studyRoomData.title}
-          isMember={isMember}
+          userAccecssControl={userAccecssControl}
         />
         <FlexBoxV $padding={"0.5rem 1rem 0 0.5rem"} $width={"100%"}>
           {children}

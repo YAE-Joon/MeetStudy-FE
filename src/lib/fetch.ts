@@ -72,8 +72,23 @@ async function fetchDataBE(
       throw new Error(`❗response is not OK: ${errorMessage}`);
     }
 
-    const fetchedData = await response.json();
-    return fetchedData;
+    //check response body
+    const contentLength = response.headers.get("Content-Length");
+    const contentType = response.headers.get("Content-Type");
+
+    if (
+      contentLength !== "0" &&
+      contentType &&
+      contentType.includes("application/json")
+    ) {
+      const fetchedData = await response.json();
+      console.log("🙆‍♂️ [fetchDataBE] 최종 데이터 ", fetchedData);
+      return fetchedData;
+    }
+    console.log(
+      "🙆‍♂️ [fetchDataBE] req.body가 비어있습니다! 빈 객체를 반환합니다."
+    );
+    return {};
   } catch (error) {
     console.error("❗데이터 패칭 중 오류가 발생했습니다:", error);
     throw error;

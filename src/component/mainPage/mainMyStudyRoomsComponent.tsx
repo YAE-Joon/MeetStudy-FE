@@ -60,7 +60,7 @@ const MyStudyRooms = () => {
           flexDirection: "row-reverse",
         }}
       >
-        {myStudyRoomsData ? (
+        {myStudyRoomsData?.length === 0 ? (
           <MyStudyRoomsContainer>
             {myStudyRoomsData.map((studyRoom, idx) => (
               <StudyRoomCard
