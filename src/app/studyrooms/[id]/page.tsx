@@ -1,4 +1,6 @@
 "use client";
+import useFetch from "@/hooks/useFetch";
+import { apiPaths } from "@/config/api";
 import { useStudyRoomData } from "@/context/StudyRoomDataContext";
 import Image from "next/image";
 import { ImageWrapper } from "@/component/ImageConainer";
@@ -6,6 +8,8 @@ import titleImg from "../../../../public/images/1. landing-01.png";
 import dt from "@/lib/designToken/designTokens";
 import StyledStudyRoomIndex from "@/app/studyrooms/StudyRoomIndexClientComponents";
 import { Description } from "@/component/styled-components/TextBoxes";
+import { StudyRoom } from "@/types/StudyRoom";
+import { FlexBoxV } from "@/component/styled-components/FlexBoxes";
 
 const { SearchResultContainer } = StyledStudyRoomIndex;
 
@@ -17,11 +21,20 @@ export default function Page({
 }: {
   params: { id: number; slug: string };
 }) {
+  console.log("[id] 메인 페이지 컴포넌트입니다.");
   const roomId = params.id;
+  const [studyRoomData, error] = useFetch<StudyRoom>(
+    apiPaths.studyrooms.detail(roomId),
+    {},
+    false,
+    false
+  );
 
-  const studyRoomData = useStudyRoomData();
+  const currentMemberNum = studyRoomData?.userStudyRooms.length;
 
-  return (
+  return !studyRoomData ? (
+    <div>목록 로딩중</div>
+  ) : (
     <>
       <ImageWrapper position="relative" width="500px" height="500px">
         <Image
@@ -32,13 +45,18 @@ export default function Page({
           placeholder="blur"
           blurDataURL={"../../../../public/images/1. landing-01.png"}
         />
+        <div style={{ backgroundColor: "yellow" }}>테스트 </div>
       </ImageWrapper>
-      <SearchResultContainer>
+      <div style={{ height: "100%" }}>
         <Description
-          content={studyRoomData.description}
+          content={studyRoomData?.description}
           color={tokens.colors.simple.blackbasic}
         />
-      </SearchResultContainer>
+        <Description
+          content={`현재 인원: ${currentMemberNum}`}
+          color={tokens.colors.simple.blackbasic}
+        />
+      </div>
     </>
   );
 }

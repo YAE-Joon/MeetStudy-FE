@@ -13,7 +13,7 @@ import { StudyRoomCard } from "@/component/styled-components/Card";
 
 import { apiPaths } from "@/config/api";
 import { FlexBoxV } from "@/component/styled-components/FlexBoxes";
-import MovingCategories from "@/component/styled-components/MovingCategories";
+import MovingCategories from "@/component/styled-components/MovingSideBars/MovingCategories";
 const tokens = dt.DesignTokenVarNames;
 
 const {

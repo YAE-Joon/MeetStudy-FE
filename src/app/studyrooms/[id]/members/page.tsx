@@ -25,7 +25,6 @@ export default function MemberLists() {
     false
   );
 
-  const currentMemberNum = studyRoomData?.userStudyRooms.length;
   const currentMembers = studyRoomData?.userStudyRooms?.map((member) => {
     const { id, joinDate, permission, user } = member;
     const memberInfo = {

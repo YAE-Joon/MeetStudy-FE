@@ -10,7 +10,7 @@ import dt from "@/lib/designToken/designTokens";
 import { OuterContainer } from "@/component/styled-components/Container";
 import { InnerContainer } from "@/app/studyrooms/[id]/StyledComponents";
 import { FlexBoxV } from "@/component/styled-components/FlexBoxes";
-import MovingMenu from "@/component/styled-components/MovingMenu";
+import MovingMenu from "@/component/styled-components/MovingSideBars/MovingMenu";
 
 const tokens = dt.DesignTokenVarNames;
 

@@ -3,7 +3,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import styled from "styled-components";
 
-import { StudyRoom, StudyRoomMember } from "@/lib/types";
+import { StudyRoom, StudyRoomMember } from "@/types/StudyRoom";
 import { setDateStr, convertISOToYMD } from "@/util/dateUtils";
 import { getRandomEmoji } from "@/util/getEmoji";
 

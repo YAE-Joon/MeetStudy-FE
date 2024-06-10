@@ -6,12 +6,10 @@ import { StudyRoom } from "@/types/StudyRoom";
 import { apiPaths } from "@/config/api";
 import useFetch from "@/hooks/useFetch";
 
-import { StudyRoomDataProvider } from "@/context/StudyRoomDataContext";
-
 import { OuterContainer } from "@/component/styled-components/Container";
 import { FlexBoxV } from "@/component/styled-components/FlexBoxes";
 import { InnerContainer } from "@/app/studyrooms/[id]/StyledComponents";
-import MovingMenu from "@/component/styled-components/MovingMenu";
+import MovingMenu from "@/component/styled-components/MovingSideBars/MovingMenu";
 import Loading from "@/component/Loading/Loading";
 
 export default function StudyRoomdLayout({
@@ -56,15 +54,9 @@ export default function StudyRoomdLayout({
   return (
     <OuterContainer>
       <InnerContainer>
-        <MovingMenu
-          menu={studyRoomMenu}
-          roomId={roomId.toString()}
-          title={studyRoomData.title}
-        />
-        <FlexBoxV $padding={"0 1rem 0 0.5rem"} $width={"100%"}>
-          {/* <StudyRoomDataProvider value={packedStudyRoomData}> */}
+        <MovingMenu menu={studyRoomMenu} title={studyRoomData.title} />
+        <FlexBoxV $padding={"0.5rem 1rem 0 0.5rem"} $width={"100%"}>
           {children}
-          {/* </StudyRoomDataProvider> */}
         </FlexBoxV>
       </InnerContainer>
     </OuterContainer>
