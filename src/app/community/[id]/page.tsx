@@ -108,7 +108,7 @@ export default function PostDetail() {
   }
 
   return (
-    <div className="w-full max-w-4xl mx-auto py-8 px-4 md:px-6">
+    <div className="w-full max-w-4xl mx-auto py-8 px-4 md:px-6 h-screen">
       <div className="space-y-4">
         <div>
           <h1 className="text-2xl font-bold">{post.title}</h1>

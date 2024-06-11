@@ -95,7 +95,7 @@ const Board: React.FC<Props> = ({ title, posts, popularPosts, categories }) => {
   };
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-screen">
       <header className="bg-gray-100 dark:bg-gray-900 py-5 px-10">
         <h1 className="text-2xl font-bold">{title}</h1>
       </header>

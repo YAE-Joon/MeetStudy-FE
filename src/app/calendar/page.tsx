@@ -15,6 +15,7 @@ const localizer = momentLocalizer(moment);
 interface Event {
   id: number;
   title: string;
+  content: string;
   start: Date;
   end: Date;
   startDay: string; // 추가된 부분
@@ -65,8 +66,8 @@ const NewEventForm: React.FC<{ onSubmit: (data: EventFormData) => void }> = ({
       content: formData.content,
       startDay: formData.startDay.replace(/-/g, ""), // 날짜 형식에서 '-' 제거
       endDay: formData.endDay.replace(/-/g, ""), // 날짜 형식에서 '-' 제거
-      startTime: formData.startTime,
-      endTime: formData.endTime,
+      startTime: formData.startTime + ":00", // 시간을 "HH:mm:ss" 형식으로 변환
+      endTime: formData.endTime + ":00", // 시간을 "HH:mm:ss" 형식으로 변환
     };
 
     const token = Cookies.get("accessToken"); // Get the token from cookies
@@ -86,7 +87,7 @@ const NewEventForm: React.FC<{ onSubmit: (data: EventFormData) => void }> = ({
       })
       .then((response) => {
         console.log("New event submitted successfully:", response.data);
-        // 여기서 추가적인 작업을 수행할 수 있습니다.
+        onSubmit(formData); // 부모 컴포넌트에서 추가 작업을 수행할 수 있도록 formData 전달
       })
       .catch((error) => {
         console.error("Error submitting new event:", error);
@@ -181,23 +182,37 @@ export default function ReactBigCalendar() {
   }>({ year: new Date().getFullYear(), month: new Date().getMonth() + 1 });
 
   const convertEventData = (data: any) => {
-    const start = moment(
-      `${data.startDay} ${data.startTime}`,
-      "YYYYMMDD HH:mm:ss"
-    ).toDate();
-    const end = moment(
-      `${data.endDay} ${data.endTime}`,
-      "YYYYMMDD HH:mm:ss"
-    ).toDate();
+    // 응답에서 받은 날짜와 시간을 Date 객체로 변환
+    const start = parseDateAndTime(data.startDate);
+    const end = parseDateAndTime(data.endDate);
 
     return {
-      id: Math.random(), // 임시로 유일한 ID 생성
+      id: data.id,
       title: data.title,
+      content: data.content,
       start,
       end,
     };
   };
 
+  // "DD.MM.YY HH:mm" 형식의 날짜와 시간을 파싱하여 Date 객체로 변환하는 함수
+  function parseDateAndTime(dateString: string): Date {
+    if (!dateString) {
+      console.error("Invalid date string");
+      return new Date(); // 현재 시간으로 기본값 설정
+    }
+
+    // "DD.MM.YY HH:mm" 형식의 날짜와 시간을 파싱하여 Date 객체로 변환
+    const [dayMonthYear, time] = dateString.split(" ");
+    const [year, month, day] = dayMonthYear.split(".");
+    const fullYear = `20${year}`;
+    const formattedDate = `${fullYear}-${month}-${day} ${time}`;
+
+    // Date 객체 생성
+    const parsedDate = new Date(formattedDate);
+
+    return parsedDate;
+  }
   useEffect(() => {
     // Simulate a delay for loading, for example 2 seconds
     const timer = setTimeout(() => {
@@ -213,6 +228,8 @@ export default function ReactBigCalendar() {
       console.error("No token found");
       return;
     }
+
+    console.log(token);
 
     axios
       .get("http://34.47.79.59:8080/api/calendar", {
@@ -246,7 +263,7 @@ export default function ReactBigCalendar() {
     setIsModalOpen(false);
   };
 
-  const handleSubmit = (formData: EventFormData) => {
+  const modalHandleSubmit = (formData: EventFormData) => {
     const newEvent: Event = {
       id: Math.random(),
       ...formData,
@@ -259,7 +276,7 @@ export default function ReactBigCalendar() {
         "YYYY-MM-DD HH:mm"
       ).toDate(),
     };
-    setEventsData([...(eventsData || []), newEvent]);
+    setEventsData((prevEvents) => [...(prevEvents || []), newEvent]); // 이전 이벤트 데이터에 새 이벤트 추가
     setIsModalOpen(false); // 모달 닫기
   };
 
@@ -282,9 +299,11 @@ export default function ReactBigCalendar() {
             style={{ height: "100vh" }}
             onSelectEvent={(event) =>
               alert(
-                `${event.title} - ${moment(event.start).format(
+                `${event.title} - ${event.content} - ${moment(
+                  event.start
+                ).format("YYYYMMDD HH:mm:ss")} - ${moment(event.end).format(
                   "YYYYMMDD HH:mm:ss"
-                )} - ${moment(event.end).format("YYYYMMDD HH:mm:ss")}`
+                )}`
               )
             }
             onSelectSlot={handleSelect}
@@ -293,7 +312,7 @@ export default function ReactBigCalendar() {
           <Modal isVisible={isModalOpen} onClose={handleModalClose}>
             {" "}
             {/* Modal이 열려있는지 여부를 props로 전달합니다. */}
-            <NewEventForm onSubmit={handleSubmit} />
+            <NewEventForm onSubmit={modalHandleSubmit} />
           </Modal>
         </div>
       )}
