@@ -23,11 +23,10 @@ interface Categories {
 interface Props {
   title: string;
   posts: Post[];
-  popularPosts: string[];
   categories: Categories[];
 }
 
-const Board: React.FC<Props> = ({ title, posts, popularPosts, categories }) => {
+const Board: React.FC<Props> = ({ title, posts, categories }) => {
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지를 추적하는 상태
   const [searchQuery, setSearchQuery] = useState(""); // 검색어를 추적하는 상태
   const itemsPerPage = 5;
@@ -38,7 +37,8 @@ const Board: React.FC<Props> = ({ title, posts, popularPosts, categories }) => {
   }, [searchQuery, categoryPosts]);
 
   // 클릭한 게시글의 조회수를 증가시키고 상세 페이지로 이동하는 함수
-  const handlePostClick = async (postId: number) => {
+  const handlePostClick = async (event: React.MouseEvent, postId: number) => {
+    event.preventDefault(); // 기본 링크 동작 방지
     const token = Cookies.get("accessToken"); // 쿠키에서 토큰 가져오기
 
     if (!token) {
@@ -65,7 +65,7 @@ const Board: React.FC<Props> = ({ title, posts, popularPosts, categories }) => {
   const handleCategoryClick = async (categoryId: number) => {
     try {
       const response = await axios.get(
-        `http://34.47.79.59:8080/api/post/public/category/${categoryId}?page=0&size=15`
+        `http://34.47.79.59:8080/api/post/public/category/${categoryId}?page=0&size=100`
       );
       const data: Post[] = response.data; // 카테고리에 속하는 게시물 데이터 가져오기
 
@@ -90,12 +90,11 @@ const Board: React.FC<Props> = ({ title, posts, popularPosts, categories }) => {
 
   // 새로운 게시글 작성 클릭 시 동작 함수
   const handleNewPostClick = () => {
-    console.log("새로운 게시글 작성 버튼이 클릭되었습니다.");
-    // 여기에 새로운 게시글 작성 페이지로 이동하는 코드를 추가할 수 있습니다.
+    window.location.href = "/community/createPost";
   };
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-screen">
       <header className="bg-gray-100 dark:bg-gray-900 py-5 px-10">
         <h1 className="text-2xl font-bold">{title}</h1>
       </header>
@@ -138,10 +137,16 @@ const Board: React.FC<Props> = ({ title, posts, popularPosts, categories }) => {
             <div
               key={index}
               className="bg-white dark:bg-gray-950 rounded-lg shadow p-4"
-              onClick={() => handlePostClick(post.id)} // 클릭 시 handlePostClick 함수 호출
+              onClick={(event) => handlePostClick(event, post.id)}
             >
               <Link href={`/community/${post.id}`}>
-                <div className="grid grid-cols-[auto_1fr_auto] items-center gap-4">
+                <div
+                  className="grid grid-cols-[auto_1fr_auto] items-center gap-4"
+                  onClick={(event) => {
+                    // Capture click event here
+                    event.stopPropagation(); // Stop bubbling
+                  }}
+                >
                   <div className="font-medium text-lg">{post.title}</div>
                   <div className="text-sm text-gray-500 dark:text-gray-400">
                     <span>{post.nickname}</span>
@@ -162,19 +167,6 @@ const Board: React.FC<Props> = ({ title, posts, popularPosts, categories }) => {
           />
         </div>
         <div className="space-y-4">
-          <div className="bg-white dark:bg-gray-950 rounded-lg shadow p-4">
-            <h2 className="text-lg font-medium mb-2">인기 게시글</h2>
-            <div className="space-y-2">
-              {popularPosts.map((popularPost, index) => (
-                <div key={index} className="flex items-center gap-2">
-                  <span className="font-medium">{index + 1}.</span>
-                  <a href="#" className="text-sm hover:underline">
-                    {popularPost}
-                  </a>
-                </div>
-              ))}
-            </div>
-          </div>
           <div className="bg-white dark:bg-gray-950 rounded-lg shadow p-4">
             <h2 className="text-lg font-medium mb-2">카테고리</h2>
             <div className="space-y-2 flex flex-col">

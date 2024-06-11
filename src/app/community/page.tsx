@@ -17,12 +17,6 @@ export default function CommunityPage() {
     (state: RootState) => state.categories.categories
   ); // Accessing data from Redux store
 
-  const popularPosts = [
-    "짱 쉬운 자격증 SQLD",
-    "더 쉬운 자격증 정보처리기사",
-    "나처럼 해봐요 공인중개사",
-  ];
-
   useEffect(() => {
     axios
       .get("http://34.47.79.59:8080/api/post/public?page=0&size=100")
@@ -43,7 +37,6 @@ export default function CommunityPage() {
         },
       })
       .then((response) => {
-        console.log("Fetched data:", response.data); // 데이터를 콘솔에 출력
         dispatch(setCategories(response.data)); // Redux 스토어에 데이터 설정
       })
       .catch((error) => console.error("Error fetching posts:", error));
@@ -55,7 +48,6 @@ export default function CommunityPage() {
         <Board
           title="자격증 정보공유 게시판"
           posts={postData}
-          popularPosts={popularPosts}
           categories={categoryData}
         />
       </CertificateInfoBoard>
