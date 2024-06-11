@@ -19,7 +19,8 @@ async function fetchDataBE(
   apiUrl: string,
   options: FetchOptions = {},
   isAdmin: boolean | null = null,
-  isTest: boolean | null = null
+  isTest: boolean | null = null,
+  userNickname: string | null = null
 ) {
   const apiPath = getApiPath(apiUrl, isTest);
   const headers: HeadersInit = {
@@ -27,10 +28,15 @@ async function fetchDataBE(
     ...options.headers,
   };
   // Authorization
-  const token = process.env.NEXT_PUBLIC_TEST_TOKEN;
+  //const token = process.env.NEXT_PUBLIC_TEST_TOKEN;
   const adminToken = process.env.NEXT_PUBLIC_TEST_ADMIN;
 
+  const testerToken = process.env.NEXT_PUBLIC_TEST2_TOKEN;
+
+  const token = process.env.NEXT_PUBLIC_TEST_TOKEN_OTHER;
+
   // 일반유저 토큰이 존재할 때 Authorization 헤더 추가
+
   if (token) {
     //(headers as Record<string, string>)["Authorization"] = `Bearer ${token}`;
     (headers as Record<string, string>)["Authorization"] = `Bearer ${token}`;
@@ -41,6 +47,17 @@ async function fetchDataBE(
       "Authorization"
     ] = `Bearer ${adminToken}`;
   }
+
+  // console.log(userNickname);
+  // if (userNickname === "하영") {
+  //   (headers as Record<string, string>)["Authorization"] = `Bearer ${token}`;
+  // }
+
+  // if (userNickname === "학습냥이") {
+  //   (headers as Record<string, string>)[
+  //     "Authorization"
+  //   ] = `Bearer ${testerToken}`;
+  // }
 
   // 헤더 체크
   if ("Authorization" in headers) {
@@ -82,7 +99,7 @@ async function fetchDataBE(
       contentType.includes("application/json")
     ) {
       const fetchedData = await response.json();
-      console.log("🙆‍♂️ [fetchDataBE] 최종 데이터 ", fetchedData);
+      // console.log("🙆‍♂️ [fetchDataBE] 최종 데이터 ", fetchedData);
       return fetchedData;
     }
     console.log(

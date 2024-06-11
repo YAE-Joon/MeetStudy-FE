@@ -25,7 +25,7 @@ export default function ChatRoomLayout({
       $padding={"0.5rem"}
     >
       <Container
-        $bgColor={tokens.colors.simple.secondary}
+        $bgColor={tokens.colors.simple.whitebg}
         $height={"100%"}
         $borderRadius={"15px"}
         // $padding={"1rem"}

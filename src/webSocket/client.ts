@@ -15,9 +15,10 @@ const useWebSocket = (
   chatRoomId: number,
   chatRecords: ReceivedChatMessage[]
 ) => {
-  const [socket, setSocket] = useState<WebSocket | null>(null);
+  const [socket, setSocket] = useState<WebSocket | null>(new WebSocket(wsUrl));
+
   const [messages, setMessages] = useState<ReceivedChatMessage[]>(chatRecords);
-  const [stompClient, setStompClient] = useState<Client | null>(null);
+  const [wsStompClient, setWsStompClient] = useState<Client | null>(null);
 
   // Authorization
   const userToken = process.env.NEXT_PUBLIC_TEST_TOKEN;
@@ -31,7 +32,17 @@ const useWebSocket = (
 
   useEffect(() => {
     //ws로 통신하기 위해 웹소켓으로 만듦
-    const webSocketFactory = () => new WebSocket(wsUrl);
+    console.log(
+      "🙆‍♂️ useWebsocket의 useEffect가 실행됩니다! wsStompClient 존재?",
+      wsStompClient
+    );
+    if (wsStompClient && wsStompClient.connected) {
+      console.log("🙆‍♂️ 이미 wsStompClient가 존재하고 연결되어 있습니다!");
+      // 이미 stomp 연결이 되어 있음
+      return;
+    }
+    console.log("🙆‍♂️ wsStompClient가 없습니다. 연결을 시도합니다!");
+    const webSocketFactory = () => socket;
 
     const stompClient = new Client({
       webSocketFactory,
@@ -53,9 +64,9 @@ const useWebSocket = (
         stompClient.publish({
           destination: enterRoomDestination, //`/enter/${chatRoomId}`;
           body: JSON.stringify({
-            userId: 1, // 임시
+            // userId: 1, // 임시
             content: "🙆‍♂️ room에 연결을 시도합니다.",
-            chatRoomId: chatRoomId,
+            //chatRoomId: chatRoomId,
           }),
         });
 
@@ -78,7 +89,7 @@ const useWebSocket = (
     });
 
     stompClient.activate();
-    setStompClient(stompClient);
+    setWsStompClient(stompClient);
 
     return () => {
       if (stompClient && stompClient.connected) {
@@ -97,12 +108,12 @@ const useWebSocket = (
 
   // 클라이언트 컴포넌트에서 메시지를 보낼 때 사용함!
   const sendMessage = <T>(messageObj: T) => {
-    console.log("🙆‍♂️➡️➡️🙆:", messageObj, "| stompClient:", stompClient);
+    console.log("🙆‍♂️➡️➡️🙆:", messageObj, "| stompClient:", wsStompClient);
     let response = { status: false, message: "" };
     let msg = "";
-    if (stompClient && stompClient.connected) {
+    if (wsStompClient && wsStompClient.connected) {
       try {
-        stompClient.publish({
+        wsStompClient.publish({
           destination: sendMessageDestination,
           body: JSON.stringify(messageObj),
           headers: {
@@ -125,7 +136,7 @@ const useWebSocket = (
     return response;
   };
 
-  return { messages, sendMessage };
+  return { messages, sendMessage, setMessages };
 };
 
 export default useWebSocket;

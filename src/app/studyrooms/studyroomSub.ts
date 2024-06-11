@@ -22,7 +22,7 @@ export function getChatRoomId() {
   const match = currPath.match(/\/(\d+)(?!.*\/\d+)/);
   if (match) {
     const chatRoomId = parseInt(match[1], 10);
-    console.log("현재 참가중인 채팅방 아이디:", chatRoomId);
+    //console.log("현재 참가중인 채팅방 아이디:", chatRoomId);
     return chatRoomId;
   }
   console.log("채팅방 아이디를 찾을 수 없습니다.");

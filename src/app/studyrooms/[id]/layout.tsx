@@ -17,7 +17,7 @@ export default function StudyRoomdLayout({
 }: {
   children: React.ReactNode;
 }) {
-  console.log("[id ]스터디룸의 레이아웃입니다.");
+  //console.log("[id ]스터디룸의 레이아웃입니다.");
   const userEmail = "hayeong@elice.com"; //임시
   const params = useParams();
   const roomId = Number(params.id);
@@ -81,7 +81,7 @@ export default function StudyRoomdLayout({
           title={studyRoomData.title}
           userAccecssControl={userAccecssControl}
         />
-        <FlexBoxV $padding={"0.5rem 1rem 0 0.5rem"} $width={"100%"}>
+        <FlexBoxV $padding={"0.5rem 0 1rem 0.5rem"} $width={"100%"}>
           {children}
         </FlexBoxV>
       </InnerContainer>

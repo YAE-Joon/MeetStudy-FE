@@ -46,7 +46,7 @@ const useFetch = <T>(
     loadData();
   }, [apiUrl]);
 
-  console.log("[useFetch.ts] data?", data);
+  //console.log("[useFetch.ts] data?", data);
 
   return [data, error, loading] as const;
 };
