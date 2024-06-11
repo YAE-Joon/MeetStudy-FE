@@ -34,7 +34,6 @@ export default function PostDetail() {
   useEffect(() => {
     fetchPost(postId);
     fetchComments(postId);
-    console.log(comments);
   }, [postId]);
 
   const fetchPost = async (postId: number) => {
@@ -117,7 +116,7 @@ export default function PostDetail() {
             <div>|</div>
             <div>{post.createdAt}</div>
             <div>|</div>
-            <div>{post.hit}</div>
+            <div>{post.hit} views</div>
           </div>
         </div>
         <div className="prose prose-gray dark:prose-invert">
