@@ -151,7 +151,9 @@ const MyCalendar = () => {
                         <GhostButton
                           onClick={() => toggleDescription(userCalendar.id)}
                         >
-                          <IconWrapper rotate={expandedId === userCalendar.id}>
+                          <IconWrapper
+                            rotate={`${expandedId === userCalendar.id}`}
+                          >
                             <IoIosArrowDown />
                           </IconWrapper>
                         </GhostButton>

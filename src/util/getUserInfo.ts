@@ -1,9 +1,11 @@
 import { apiPaths } from "@/config/api";
+import fetchDataBE from "@/lib/fetch";
 import getApiPath from "@/lib/settingUrl";
 
 import { FetchOptions } from "@/lib/types";
 import { UserProfile } from "@/types/User";
-import getTokenByClient from "@/util/getTokenByClient";
+
+import { fetchExternalImage } from "next/dist/server/image-optimizer";
 
 /**
  *
@@ -13,23 +15,18 @@ import getTokenByClient from "@/util/getTokenByClient";
  *
  */
 export async function getUserInfoFromToken(
-  givenToken: string | null,
-  requiredFields: string[] | string
+  token: string | null,
+  requiredFields: string[] | string,
+  isServer: boolean | null = null //미들웨어용
 ) {
-  let token = givenToken;
-
   if (token === null || token === undefined) {
     return "토큰이 올바르지 않습니다.";
   }
 
-  if (token === "client") {
-    try {
-      token = getTokenByClient();
-    } catch (error) {
-      return "Client에서 토큰 가져오기 실패!";
-    }
-  }
-  const data = await WillfetchDataBE(apiPaths.mypage.info, {}, token);
+  const data = isServer
+    ? await fetchDataBE(apiPaths.mypage.info, {}, token)
+    : await fetchDataBE(apiPaths.mypage.info, {}, token);
+
   if (Array.isArray(requiredFields)) {
     const userInfo: Partial<UserProfile> = {};
     requiredFields.forEach((field) => {

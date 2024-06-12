@@ -60,7 +60,7 @@ export const CreateChatRoom = ({ roomId }: { roomId: number }) => {
         apiPaths.studyrooms.create,
         {
           method: "POST",
-          body: JSON.stringify(newData),
+          body: newData,
         },
         token
       );

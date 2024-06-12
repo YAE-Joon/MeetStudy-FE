@@ -1,9 +1,7 @@
 "use client";
-import { OuterContainer } from "@/component/styled-components/Container";
 import styled from "styled-components";
 import dt from "@/lib/designToken/designTokens";
-import { FlexBoxV } from "@/component/styled-components/FlexBoxes";
-import { Title } from "@/component/styled-components/TextBoxes";
+
 const tokens = dt.DesignTokenVarNames;
 
 const Background = styled.div`

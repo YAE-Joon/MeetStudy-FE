@@ -58,7 +58,7 @@ async function fetchDataBE(
       contentType.includes("application/json")
     ) {
       const fetchedData = await response.json();
-      console.log("🙆‍♂️ [fetchDataBE] 최종 데이터 ", fetchedData);
+      //console.log("🙆‍♂️ [fetchDataBE] 최종 데이터 ", fetchedData);
       return fetchedData;
     }
     console.log(

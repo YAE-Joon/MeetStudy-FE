@@ -52,12 +52,13 @@ export default function FormForNewStudyRoom({
         apiPaths.studyrooms.create,
         {
           method: "POST",
-          body: JSON.stringify(newData),
+          body: newData,
         },
         token
       );
 
-      const result = await response.json();
+      const result = await response;
+      console.log("result", result);
       alert("성공적으로 생성하였습니다.");
     } catch (error) {
       console.error("❗Error:", error);

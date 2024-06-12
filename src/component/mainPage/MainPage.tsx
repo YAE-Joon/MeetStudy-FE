@@ -11,6 +11,9 @@ import { apiPaths } from "@/config/api";
 import MyCalendar from "@/component/mainPage/mainCalendarComponent";
 import MyStudyRooms from "@/component/mainPage/mainMyStudyRoomsComponent";
 
+import Cookies from "js-cookie";
+import { useEffect } from "react";
+
 const tokens = dt.DesignTokenVarNames;
 
 const { SectionContainerH, SectionContainerV, PartContainerV, PartContainerH } =
@@ -19,6 +22,15 @@ const { SectionContainerH, SectionContainerV, PartContainerV, PartContainerH } =
 const MainPage = () => {
   //일정과 내가 참가한 스터디룸 목록
   //내가 스크렙한 게시글들 같은 거
+
+  useEffect(() => {
+    const alertMessage = Cookies.get("alretMessage");
+    console.log("alertMessage?", alertMessage);
+    if (alertMessage !== undefined) {
+      alert(alertMessage);
+      Cookies.remove("alretMessage");
+    }
+  }, []);
   return (
     <>
       <MainNavBar mode={"mypage"} />

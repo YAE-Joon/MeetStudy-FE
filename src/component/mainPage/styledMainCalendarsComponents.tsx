@@ -49,11 +49,11 @@ const StyledDescription = styled.div<Expandedprops>`
   margin-top: ${(props) => (props.$expanded ? "1rem" : "0")}; /* 간격 추가 */
 `;
 
-const IconWrapper = styled.div<{ rotate: boolean }>`
+const IconWrapper = styled.div<{ rotate: string }>`
   width: 1.25rem; /* equivalent to w-5 in Tailwind */
   height: 1.25rem; /* equivalent to h-5 in Tailwind */
   transition: transform 0.3s ease;
-  transform: rotate(${(props) => (props.rotate ? "180deg" : "0deg")});
+  transform: rotate(${(props) => (props.rotate == "true" ? "180deg" : "0deg")});
 `;
 
 const GhostButton = styled.button`

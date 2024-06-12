@@ -35,7 +35,7 @@ const EditSections: React.FC<MyaccountProps> = ({ UserProfile }) => {
   const [error, setError] = useState<Error | null>(null);
   const [loading, setLoading] = useState(true);
   const [selectedInterests, setSelectedInterests] = useState<
-    string[] | null | undefined
+    Category[] | null | undefined
   >(UserProfile.interests);
 
   // 이건 어디서 부르던 상관 없음
@@ -113,7 +113,7 @@ const EditSections: React.FC<MyaccountProps> = ({ UserProfile }) => {
     if (selectedInterests) {
       const { value } = event.target;
       const newSelectedInterests = [...selectedInterests];
-      newSelectedInterests[idx] = value;
+      // newSelectedInterests[idx].name = value; 체크 필요
       setSelectedInterests(newSelectedInterests);
       setMyUserInfo({
         ...myUserInfo,
@@ -141,7 +141,7 @@ const EditSections: React.FC<MyaccountProps> = ({ UserProfile }) => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: editedData,
+          body: JSON.stringify(editedData),
         },
         token
       );
@@ -177,11 +177,11 @@ const EditSections: React.FC<MyaccountProps> = ({ UserProfile }) => {
             </li>
             <li>
               <span style={{ fontWeight: "bold" }}>관심분야</span>{" "}
-              <span>
+              {/* <span>
                 {myUserInfo.interests.map((inter: string, idx) => (
                   <span key={idx}>{inter}</span>
                 ))}
-              </span>
+              </span> */}
             </li>
             <ButtonWrapper>
               <PrimaryButton onClick={handleEditClick} content={"수정하기"} />
@@ -225,7 +225,7 @@ const EditSections: React.FC<MyaccountProps> = ({ UserProfile }) => {
               </BasicFieldRow>
               <BasicFieldCol>
                 <BasicFieldRow>
-                  {selectedInterests?.map((interest, idxSelected) => {
+                  {/* {selectedInterests?.map((interest, idxSelected) => {
                     const newInterestLists = [interest, ...interestLists];
                     return (
                       <BasicSelect
@@ -244,7 +244,7 @@ const EditSections: React.FC<MyaccountProps> = ({ UserProfile }) => {
                         ))}
                       </BasicSelect>
                     );
-                  })}
+                  })} */}
                 </BasicFieldRow>
               </BasicFieldCol>
             </BasicForm>
