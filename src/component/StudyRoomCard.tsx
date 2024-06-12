@@ -47,30 +47,32 @@ export const StudyRoomCard: React.FC<StudyRoomCardProps> = ({ item, root }) => {
   if (error) return <div>Error: {error.message}</div>;
 
   return (
-    <StyledLink href={`${pathname}/${item.id}`}>
-      <CardContent>
-        <CardUpper_ul>
-          <Emoji>{getRandomEmoji()}</Emoji>
+    <li>
+      <StyledLink href={`${pathname}/${item.id}`}>
+        <CardContent>
+          <CardUpper_ul>
+            {/* <Emoji>{getRandomEmoji()}</Emoji> */}
 
-          <Title
-            $htype={3}
-            $fontSize={tokens.fontSize.web.medium}
-            $color={tokens.colors.simple.blackbasic}
-          >
-            {item.title}
-          </Title>
+            <Title
+              $htype={3}
+              $fontSize={tokens.fontSize.web.medium}
+              $color={tokens.colors.simple.blackbasic}
+            >
+              {item.title}
+            </Title>
 
-          <Span content={`생성일: ${convertDateTime(item.createdDate)}`} />
-        </CardUpper_ul>
+            <Span content={`생성일: ${convertDateTime(item.createdDate)}`} />
+          </CardUpper_ul>
 
-        <Description
-          content={item.description}
-          color={tokens.colors.simple.grayfortext}
-        />
-        {myEmail && isEmailInStudyRoom(item, myEmail) && (
-          <JoinTag>참가중</JoinTag>
-        )}
-      </CardContent>
-    </StyledLink>
+          <Description
+            content={item.description}
+            color={tokens.colors.simple.grayfortext}
+          />
+          {myEmail && isEmailInStudyRoom(item, myEmail) && (
+            <JoinTag>참가중</JoinTag>
+          )}
+        </CardContent>
+      </StyledLink>
+    </li>
   );
 };

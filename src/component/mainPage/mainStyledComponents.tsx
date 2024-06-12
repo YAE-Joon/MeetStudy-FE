@@ -43,7 +43,7 @@ const SectionContainerV = styled(FlexBoxV)`
 `;
 
 const PartContainerV = styled(FlexBoxV)`
-  padding: 3rem;
+  padding: 1rem;
   background-color: var(${tokens.colors.simple.whitebg});
   border-radius: 20px;
   border: thick double var(${tokens.colors.simple.tertiarygray});
@@ -388,8 +388,16 @@ const MyStudyRoomsContainer = styled(StyledUl)`
   }
 `;
 
+const MainTableWrapper = styled.div`
+  position: relative;
+  width: 100%;
+  min-width: 200;
+  overflow: auto;
+`;
+
 export const StyledStudyRoomsPack = {
   MyStudyRoomsContainer,
+  MainTableWrapper,
 };
 
 export const StyledCalendarPack = {

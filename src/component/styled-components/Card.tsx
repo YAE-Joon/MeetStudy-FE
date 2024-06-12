@@ -142,6 +142,7 @@ const StyledLink = styled(Link)<Styled_li_card_props>`
   flex-wrap: wrap;
   flex-direction: column;
   justify-content: space-between;
+  //justify-content: center;
   //for same height
   align-items: center;
   // box-sizing: border-box;

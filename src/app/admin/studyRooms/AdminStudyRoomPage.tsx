@@ -33,21 +33,15 @@ const AdminStudyRooms = () => {
 
   const [AllStudyRooms, error] = useFetch<StudyRoom[]>(
     apiPaths.admin.getAllstudyRooms,
-    {},
-    true
+    {}
   );
 
   const handleRemove = async (userId: number) => {
     if (confirm("정말로 이 카테고리를 삭제하시겠습니까?")) {
       try {
-        const response = await fetchDataBE(
-          apiPaths.admin.rmStudyRoom(userId),
-          {
-            method: "DELETE",
-          },
-          true,
-          false
-        );
+        const response = await fetchDataBE(apiPaths.admin.rmStudyRoom(userId), {
+          method: "DELETE",
+        });
         alert("카테고리 삭제 완료!");
         return response;
       } catch (error) {

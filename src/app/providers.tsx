@@ -39,7 +39,7 @@ export const NextLayout = ({ children }: Props) => {
       <div className="layout">
         <Navbar />
         <Suspense fallback={<MainLoading />}>{children}</Suspense>
-        <Footer />
+        {/* <Footer /> */}
       </div>
     </Provider>
   );

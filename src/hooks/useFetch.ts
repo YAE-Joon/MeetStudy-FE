@@ -20,7 +20,7 @@ const useFetch = <T>(apiUrl: string, options: FetchOptions = {}) => {
       try {
         const token = getTokenByClient();
         console.log(
-          "useFetch에서 데이터를 호출합니다: apiUrl, options, isAdmin, isTest",
+          "useFetch에서 데이터를 호출합니다: apiUrl, options,token",
           apiUrl,
           options,
           token

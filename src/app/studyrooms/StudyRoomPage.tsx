@@ -1,5 +1,5 @@
 "use client";
-
+import { useState, useEffect } from "react";
 import useFetch from "@/hooks/useFetch";
 import { apiPaths } from "@/config/api";
 import { StudyRoom } from "@/types/StudyRoom";
@@ -12,6 +12,15 @@ import { StudyRoomCard } from "@/component/StudyRoomCard";
 import StyledStudyRoomIndex from "@/app/studyrooms/StudyRoomIndexClientComponents";
 import { PrimaryButton } from "@/component/styled-components/Button/Buttons";
 import Loading from "@/component/Loading/Loading";
+import {
+  Container,
+  GridContainer,
+  FlexContainer,
+  GridContainerFull,
+  FlexContainerFull,
+} from "@/component/styled-components/Container";
+import ChatStyled from "@/app/studyrooms/[id]/chatRoom/[chatId]/chatStyled";
+const { Announcement } = ChatStyled;
 const tokens = dt.DesignTokenVarNames;
 
 const {
@@ -23,11 +32,33 @@ const {
 
 const StudyRoomPage = ({ categories }: { categories: CategoriyOptions[] }) => {
   console.log("[studyrooms] 가 랜더링되었습니다. categories? ", categories);
-
+  // 스터디룸 목록을 불러옵니다.
   const [studyRooms, error] = useFetch<StudyRoom[]>(
     apiPaths.studyrooms.all,
     {}
   );
+
+  const [visibleRooms, setVisibleRooms] = useState<StudyRoom[]>([]);
+  const [showMore, setShowMore] = useState(false);
+  const [index, setIndex] = useState(0);
+  const increment = 6;
+
+  useEffect(() => {
+    if (studyRooms) {
+      setVisibleRooms(studyRooms.slice(0, increment));
+      setIndex(increment);
+    }
+  }, [studyRooms]);
+
+  const loadMoreRooms = () => {
+    const newIndex = index + increment;
+    if (!studyRooms || studyRooms.length === 0) {
+      return;
+    }
+    const newVisibleRooms = studyRooms.slice(0, newIndex);
+    setVisibleRooms(newVisibleRooms);
+    setIndex(newIndex);
+  };
 
   if (!studyRooms) {
     return <Loading />;
@@ -47,11 +78,33 @@ const StudyRoomPage = ({ categories }: { categories: CategoriyOptions[] }) => {
           </Title>
           <PrimaryButton content={"스터디룸 생성"} href={"studyrooms/new"} />
         </SearchBarWarpperH>
-        <SearchResultContainer>
-          {studyRooms.map((studyRoom, idx) => (
-            <StudyRoomCard key={studyRoom.id} item={studyRoom} />
-          ))}
-        </SearchResultContainer>
+        <FlexContainerFull>
+          <GridContainerFull>
+            {visibleRooms.map((studyRoom, idx) => (
+              <StudyRoomCard key={studyRoom.id} item={studyRoom} />
+            ))}
+          </GridContainerFull>
+        </FlexContainerFull>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            margin: "1rem 0 1rem 0",
+            width: "100%",
+            paddingBottom: "1rem",
+            backgroundColor: "transparent",
+          }}
+        >
+          {index < studyRooms.length ? (
+            <PrimaryButton onClick={loadMoreRooms} content={"더보기"} />
+          ) : (
+            <Announcement>
+              <strong>마지막 목록입니다.</strong>
+              <p>더 이상 불러올 스터디룸이 없습니다.</p>
+            </Announcement>
+          )}
+        </div>
       </FlexBoxV>
     </InnerContainer>
   );

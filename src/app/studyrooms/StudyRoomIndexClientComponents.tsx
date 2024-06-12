@@ -112,7 +112,7 @@ const SearchBarWarpperH = styled(FlexBoxH)`
 
   gap: 200px;
 
-  /* background-color: red;
+  //background-color: red;
 
   > *:first-child {
     flex: 8 1 0;
@@ -120,7 +120,7 @@ const SearchBarWarpperH = styled(FlexBoxH)`
 
   > *:nth-child(2) {
     flex: 2 1 0;
-  } */
+  }
 
   @media only screen and (max-width: ${mobileWidth}) {
     width: 100%;
@@ -201,7 +201,7 @@ const SearchResultContainer = styled(StyledUl)`
   // 추가수정
   flex-grow: 1;
   width: 100%;
-  //padding-bottom: 10px;
+  padding-bottom: 10px;
 `;
 
 const StyledStudyRoomIndex = {

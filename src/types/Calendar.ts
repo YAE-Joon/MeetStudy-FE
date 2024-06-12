@@ -1,8 +1,6 @@
 export interface CalendarPeriod {
-  startDay: string;
-  endDay: string;
-  startTime: string;
-  endTime: string;
+  startDate: string;
+  endDate: string;
 }
 export interface UserCalendar extends CalendarPeriod {
   id: number;
