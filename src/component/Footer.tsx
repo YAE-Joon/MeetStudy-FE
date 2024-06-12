@@ -11,6 +11,9 @@ const FooterContainer = styled.footer`
   color: white;
   text-align: center;
   padding: 10px 0;
+
+  position: relative; /* Ensure it is relative positioned */
+  bottom: 0; /* Remove if it is causing issues */
 `;
 
 const FooterUl = styled.ul`

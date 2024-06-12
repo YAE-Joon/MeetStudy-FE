@@ -10,8 +10,13 @@ import { nullChecker } from "@/util/unllChecker";
 import { setDateStr, convertISOToYMD } from "@/util/dateUtils";
 
 import { MemberCard } from "@/component/styled-components/Card";
-import { Container } from "@/component/styled-components/Container";
+import {
+  Container,
+  GridContainer,
+  FlexContainer,
+} from "@/component/styled-components/Container";
 import StyledStudyRoomIndex from "@/app/studyrooms/StudyRoomIndexClientComponents";
+import { processDateTime } from "@/util/dateUtilsFinal";
 const { SearchResultContainer } = StyledStudyRoomIndex;
 
 export default function MemberLists() {
@@ -34,25 +39,29 @@ export default function MemberLists() {
     return memberInfo;
   });
 
+  console.log("currentMembers???", currentMembers);
+
   return !studyRoomData ? (
     <div>목록 로딩중</div>
   ) : (
     <>
-      <Container $width={"100%"} $minWidth={"600px"}>
-        <SearchResultContainer>
+      <FlexContainer>
+        <GridContainer>
           {currentMembers?.map((member, index) => (
             <MemberCard
               key={member.id}
               id={member.id}
               email={member.email}
-              joinDate={nullChecker(member.joinDate, "string", (value) =>
-                setDateStr(convertISOToYMD(value))
+              joinDate={nullChecker(
+                member.joinDate,
+                "string",
+                (value) => processDateTime(value).formattedDate
               )}
               permission={member.permission}
             />
           ))}
-        </SearchResultContainer>
-      </Container>
+        </GridContainer>
+      </FlexContainer>
     </>
   );
 }

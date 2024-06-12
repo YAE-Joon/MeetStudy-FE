@@ -92,7 +92,7 @@ export default function StudyRoomdLayout({
         },
       ]);
     }
-  }, [myEmail]);
+  }, [studyRoomData, myEmail]);
 
   return !studyRoomData ? (
     <Loading />

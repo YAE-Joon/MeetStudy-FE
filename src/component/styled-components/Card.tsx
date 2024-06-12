@@ -222,6 +222,7 @@ const StudyRoomMemberCard = styled.div`
 
   max-width: 300px;
   margin: 10px;
+  max-height: 400px;
 `;
 
 const ImageContainer = styled.div`

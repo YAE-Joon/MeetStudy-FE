@@ -198,6 +198,10 @@ const SearchResultContainer = styled(StyledUl)`
     grid-template-columns: 1fr;
     width: 100%;
   }
+  // 추가수정
+  flex-grow: 1;
+  width: 100%;
+  //padding-bottom: 10px;
 `;
 
 const StyledStudyRoomIndex = {

@@ -110,4 +110,32 @@ export const Container = styled(
   }
 
   //background-color: red;
+  // 수정
+  justify-content: flex-start;
+  min-height: ${(props) => (props.$height ? props.$height : "100vh")};
+`;
+
+export const GridContainer = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  width: 100%;
+  flex-grow: 1;
+  overflow: visible;
+
+  @media only screen and (max-width: ${mobileWidth}) {
+    grid-template-columns: 1fr;
+    width: 100%;
+    min-width: 200px;
+
+    text-align: center;
+  }
+`;
+
+export const FlexContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100%;
+  flex-grow: 1;
 `;
