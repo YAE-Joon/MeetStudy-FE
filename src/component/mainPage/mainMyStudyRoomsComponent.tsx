@@ -13,7 +13,7 @@ import { Title } from "@/component/styled-components/TextBoxes";
 import { MainSkleton } from "@/component/mainPage/mainStyledComponents";
 
 import { FlexBoxV } from "@/component/styled-components/FlexBoxes";
-import { StudyRoomCard } from "@/component/styled-components/Card";
+import { StudyRoomCard } from "@/component/StudyRoomCard";
 import StyledStudyRoomIndex from "@/app/studyrooms/StudyRoomIndexClientComponents";
 import { StyledStudyRoomsPack } from "@/component/mainPage/mainStyledComponents";
 const {
@@ -35,9 +35,7 @@ const MyStudyRooms = () => {
   const [myStudyRoomsData, error, isLoading] = useFetch<StudyRoom[]>(
     //apiPaths.mypage.info,
     apiPaths.studyrooms.byUser(userEmail),
-    {},
-    false,
-    false
+    {}
   );
 
   if (isLoading) {

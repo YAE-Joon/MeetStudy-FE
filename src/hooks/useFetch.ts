@@ -2,21 +2,15 @@
 import { useState, useEffect } from "react";
 import { FetchOptions } from "@/lib/types";
 import fetchDataBE from "@/lib/fetch";
+import getTokenByClient from "@/util/getTokenByClient";
 
 /**
  *
  * @param apiUrl
  * @param options
- * @param isAdmin (비워두어도 됨) admin 으로 요청하고 싶을 때 true
- * @param isTest (비워두어도 됨) next서버로 테스트하고 싶을 때 true
  * @returns
  */
-const useFetch = <T>(
-  apiUrl: string,
-  options: FetchOptions = {},
-  isAdmin: boolean | null = null,
-  isTest: boolean | null = null
-) => {
+const useFetch = <T>(apiUrl: string, options: FetchOptions = {}) => {
   const [data, setData] = useState<T | null>(null);
   const [error, setError] = useState<Error | null>(null);
   const [loading, setLoading] = useState(true);
@@ -24,14 +18,14 @@ const useFetch = <T>(
   useEffect(() => {
     const loadData = async () => {
       try {
+        const token = getTokenByClient();
         console.log(
           "useFetch에서 데이터를 호출합니다: apiUrl, options, isAdmin, isTest",
           apiUrl,
           options,
-          isAdmin,
-          isTest
+          token
         );
-        const data = await fetchDataBE(apiUrl, options, isAdmin, isTest);
+        const data = await fetchDataBE(apiUrl, options, token);
         setData(data);
       } catch (err) {
         if (err instanceof Error) {

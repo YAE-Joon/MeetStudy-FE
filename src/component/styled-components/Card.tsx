@@ -1,11 +1,11 @@
 "use client";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+
 import styled from "styled-components";
 
-import { StudyRoom, StudyRoomMember } from "@/types/StudyRoom";
-import { setDateStr, convertISOToYMD } from "@/util/dateUtils";
+import { StudyRoomMember } from "@/types/StudyRoom";
 import { getRandomEmoji } from "@/util/getEmoji";
+import { setDateStr, convertISOToYMD } from "@/util/dateUtils";
 
 import {
   StyledProps,
@@ -18,7 +18,7 @@ import {
 } from "@/component/styled-components/TextBoxes";
 
 import dt from "@/lib/designToken/designTokens";
-import convertDateTime from "@/util/dateTimeUtil";
+
 const mobileWidth = dt.DesignTokenExcept.media.mobile;
 const tokens = dt.DesignTokenVarNames;
 
@@ -71,48 +71,6 @@ export const Li_card: React.FC<LiCardProps> = ({ item, styles = {} }) => {
         )}
       </CardContent>
     </Styled_li>
-  );
-};
-
-///// cards for studyroom list
-interface StudyRoomCardProps {
-  item: StudyRoom;
-  root?: string | null;
-}
-
-export const StudyRoomCard: React.FC<StudyRoomCardProps> = ({ item, root }) => {
-  let pathname;
-  if (root === null) {
-    pathname = usePathname();
-  } else if ((root = "main")) {
-    pathname = `studyrooms`;
-  }
-
-  console.log("item", item);
-
-  return (
-    <StyledLink href={`${pathname}/${item.id}`}>
-      <CardContent>
-        <CardUpper_ul>
-          <Emoji>{getRandomEmoji()}</Emoji>
-
-          <Title
-            $htype={3}
-            $fontSize={tokens.fontSize.web.medium}
-            $color={tokens.colors.simple.blackbasic}
-          >
-            {item.title}
-          </Title>
-
-          <Span content={`생성일: ${convertDateTime(item.createdDate)}`} />
-        </CardUpper_ul>
-
-        <Description
-          content={item.description}
-          color={tokens.colors.simple.grayfortext}
-        />
-      </CardContent>
-    </StyledLink>
   );
 };
 
@@ -296,3 +254,16 @@ const Position = styled.p`
   color: gray;
   margin-bottom: 8px;
 `;
+
+export const JoinTag = styled.div`
+  display: inline-block;
+  padding: 4px 8px;
+  border: 1px solid green;
+  color: green;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: bold;
+`;
+
+const StyledCard = { StyledLink, CardContent, CardUpper_ul, Emoji };
+export default StyledCard;

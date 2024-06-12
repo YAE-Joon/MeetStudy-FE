@@ -1,55 +1,42 @@
 "use client";
+
+import useFetch from "@/hooks/useFetch";
+import { apiPaths } from "@/config/api";
 import { StudyRoom } from "@/types/StudyRoom";
-
-import StyledStudyRoomIndex from "@/app/studyrooms/StudyRoomIndexClientComponents";
-
-import { Title } from "@/component/styled-components/TextBoxes";
 import { CategoriyOptions } from "@/lib/types";
 
 import dt from "@/lib/designToken/designTokens";
-import { ChangeEvent, useEffect, useState } from "react";
-import useFetch from "@/hooks/useFetch";
-import { StudyRoomCard } from "@/component/styled-components/Card";
-
-import { apiPaths } from "@/config/api";
+import { Title } from "@/component/styled-components/TextBoxes";
 import { FlexBoxV } from "@/component/styled-components/FlexBoxes";
-import MovingCategories from "@/component/styled-components/MovingSideBars/MovingCategories";
+import { StudyRoomCard } from "@/component/StudyRoomCard";
+import StyledStudyRoomIndex from "@/app/studyrooms/StudyRoomIndexClientComponents";
+import { PrimaryButton } from "@/component/styled-components/Button/Buttons";
+import Loading from "@/component/Loading/Loading";
 const tokens = dt.DesignTokenVarNames;
 
 const {
   InnerContainer,
-
   SearchBarWarpper,
-  InputContainer,
+  SearchBarWarpperH,
   SearchResultContainer,
 } = StyledStudyRoomIndex;
-const SearchPageContainer = ({
-  categories,
-}: {
-  categories: CategoriyOptions[];
-}) => {
+
+const StudyRoomPage = ({ categories }: { categories: CategoriyOptions[] }) => {
   console.log("[studyrooms] 가 랜더링되었습니다. categories? ", categories);
 
-  const [searchQuery, setSearchQuery] = useState("");
-  // categiry 의 id 로 카테고리별 스터디룸을 가져와야 함
   const [studyRooms, error] = useFetch<StudyRoom[]>(
     apiPaths.studyrooms.all,
-    {},
-    false,
-    false
+    {}
   );
 
   if (!studyRooms) {
-    return <div>로딩 중 - studyrooms loader</div>;
+    return <Loading />;
   }
 
-  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(e.target.value);
-  };
   return (
     <InnerContainer>
       <FlexBoxV>
-        <SearchBarWarpper>
+        <SearchBarWarpperH>
           <Title
             $htype={3}
             $align={"left"}
@@ -58,7 +45,8 @@ const SearchPageContainer = ({
           >
             스터디룸 목록
           </Title>
-        </SearchBarWarpper>
+          <PrimaryButton content={"스터디룸 생성"} href={"studyrooms/new"} />
+        </SearchBarWarpperH>
         <SearchResultContainer>
           {studyRooms.map((studyRoom, idx) => (
             <StudyRoomCard key={studyRoom.id} item={studyRoom} />
@@ -69,4 +57,4 @@ const SearchPageContainer = ({
   );
 };
 
-export default SearchPageContainer;
+export default StudyRoomPage;

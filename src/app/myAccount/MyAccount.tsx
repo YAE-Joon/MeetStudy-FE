@@ -1,7 +1,7 @@
 "use client";
 
 import { ChangeEvent, useState, useEffect } from "react";
-import { MyaccountProps, UserProfile } from "@/lib/types";
+import { MyaccountProps, UserProfile } from "@/types/User";
 import getAPIendPoint from "@/lib/settingUrl";
 
 import { PrimaryButton } from "@/component/styled-components/Button/Buttons";

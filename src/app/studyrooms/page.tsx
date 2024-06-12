@@ -1,40 +1,45 @@
-// 현존 스터디룸 목록을 띄우는 화면
-// 스터디룸 -> 카테고리별
 import fetchDataBE from "@/lib/fetch";
 import { CategoriyOptions } from "@/lib/types";
-
 import { OuterContainer } from "@/component/styled-components/Container";
-import SearchPageContainer from "@/app/studyrooms/StudyRoomPage";
 import { apiPaths } from "@/config/api";
-
-let categories: CategoriyOptions[];
+import getTokenByServer from "@/util/getTokenByServer";
+import StudyRoomPage from "@/app/studyrooms/StudyRoomPage";
 
 async function GetCategories() {
-  // studyrooms 페이지에 진입 시 서버에서 카테고리 정보를 불러옵니다.
-  //console.log("studyrooms에서 카테고리 API를 호출합니다");
-
   try {
-    const loadData = await fetchDataBE(
-      apiPaths.category.public,
-      {},
-      false, //관리자 아님
-      false
-    );
-    categories = loadData;
-    //console.log("스터디룸 페이지에서 불러오는 카테고리 :", categories);
+    const token = getTokenByServer();
+    console.log("[스터디룸 목록] token?", token);
+    const loadData = await fetchDataBE(apiPaths.category.public, {}, token);
+    return { categories: loadData, error: null };
   } catch (err) {
-    new Error("알 수 없는 에러가 발생했습니다.");
+    if (
+      err instanceof Error &&
+      err.message === "액세스 토큰을 가져오지 못했습니다: 쿠키가 없습니다"
+    ) {
+      throw new Error("로그인 상태가 아닙니다.");
+    } else {
+      throw new Error(
+        `액세스 토큰을 가져오는 동안 예상치 못한 오류가 발생했습니다(3): ${
+          (err as Error).message
+        }`
+      );
+    }
   }
 }
 
-GetCategories();
+export default async function StudyRoomsIndexPage() {
+  const { categories, error } = await GetCategories();
+  if (error) {
+    return (
+      <OuterContainer $height="100vh">
+        <div>오류가 발생했습니다: {error}</div>
+      </OuterContainer>
+    );
+  }
 
-function StudyRoomsIndexPage() {
   return (
     <OuterContainer $height="100vh">
-      {categories && <SearchPageContainer categories={categories} />}
+      <StudyRoomPage categories={categories} />
     </OuterContainer>
   );
 }
-
-export default StudyRoomsIndexPage;

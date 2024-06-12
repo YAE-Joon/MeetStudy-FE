@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { UserCalendar, UserProfile } from "@/lib/types";
+import { UserCalendar } from "@/types/Calendar";
 // fetching from backend or
 // user login info from server
-import { UserData } from "@/lib/types";
+import { UserData, UserProfile } from "@/types/User";
 
 const getUserData = async () => {
   console.log("👩‍💻 Client>Next.server:  데이터를 가져옵니다..");

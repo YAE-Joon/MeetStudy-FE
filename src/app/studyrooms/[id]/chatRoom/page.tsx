@@ -29,9 +29,7 @@ const ChatRoom = () => {
 
   const [chatRoomList, error] = useFetch<ChatRoomInfoProps[]>(
     apiPaths.chatroom.byStudyRoom(roomId),
-    {},
-    false,
-    false
+    {}
   );
 
   if (error) {

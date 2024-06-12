@@ -1,21 +1,43 @@
+import { apiPaths } from "@/config/api";
 import getApiPath from "@/lib/settingUrl";
-import { FetchOptions } from "@/lib/types";
 
+import { FetchOptions } from "@/lib/types";
+import { UserProfile } from "@/types/User";
+
+/**
+ *
+ * @param token
+ * @param requiredFields string | [email, username, nickname, password, interests]
+ * @returns
+ *
+ */
+export async function getUserInfoFromToken(
+  token: string,
+  requiredFields: string[] | string
+) {
+  const data = await WillfetchDataBE(apiPaths.mypage.info, {}, token);
+  if (Array.isArray(requiredFields)) {
+    const userInfo: Partial<UserProfile> = {};
+    requiredFields.forEach((field) => {
+      if (field in data) {
+        userInfo[field as keyof UserProfile] = data[field];
+      }
+    });
+    return userInfo;
+  }
+  console.log("data[requiredFields]", data[requiredFields]);
+  return data[requiredFields];
+}
+
+// 단순 함수, fetchDataBE를 나중에 싹 바꿀 거임.
 /**
  *
  * @param apiUrl
  * @param options
- * @param isAdmin
- * @param isTest
+ * @param token
  * @returns
- * 
- * interface FetchOptions {
-  method?: string;
-  headers?: HeadersInit;
-  body?: any;
-}
  */
-async function fetchDataBE(
+export default async function WillfetchDataBE(
   apiUrl: string,
   options: FetchOptions = {},
   token: string
@@ -25,20 +47,12 @@ async function fetchDataBE(
     "Content-Type": "application/json",
     ...options.headers,
   };
-
   const headersWithToken = setTokenIntoHeader(initialHeaders, token);
+  console.log(
+    `🙆‍♂️ [fetchDataBE] fetch를 시작합니다. 요청받은 옵션: \napiUrl:${apiUrl} | options:${options}`
+  );
 
   try {
-    console.log(
-      `🙆‍♂️ [fetchDataBE] fetch를 시작합니다. 요청받은 옵션: \napiUrl: ${apiUrl} \nmethod: ${
-        options.method || "GET"
-      } \nheaders: ${JSON.stringify(headersWithToken, null, 2)} \nbody: ${
-        typeof options.body === "object"
-          ? JSON.stringify(options.body, null, 2)
-          : options.body
-      }`
-    );
-
     const response = await fetch(apiPath, {
       method: options.method || "GET",
       body: options.body ? JSON.stringify(options.body) : null,
@@ -46,7 +60,7 @@ async function fetchDataBE(
     });
 
     console.log(
-      "🙆‍♂️ [fetchDataBE] fetch가 종료되었습니다. 상태: ",
+      "🙆‍♂️ [WillfetchDataBE] fetch가 종료되었습니다. 상태: ",
       response.status
     );
 
@@ -65,11 +79,11 @@ async function fetchDataBE(
       contentType.includes("application/json")
     ) {
       const fetchedData = await response.json();
-      console.log("🙆‍♂️ [fetchDataBE] 최종 데이터 ", fetchedData);
+      console.log("🙆‍♂️ [WillfetchDataBE] 최종 데이터 ", fetchedData);
       return fetchedData;
     }
     console.log(
-      "🙆‍♂️ [fetchDataBE] req.body가 비어있습니다! 빈 객체를 반환합니다."
+      "🙆‍♂️ [WillfetchDataBE] req.body가 비어있습니다! 빈 객체를 반환합니다."
     );
     return {};
   } catch (error) {
@@ -77,8 +91,6 @@ async function fetchDataBE(
     throw error;
   }
 }
-
-export default fetchDataBE;
 
 function setTokenIntoHeader(
   headers: Record<string, string>,
@@ -93,14 +105,13 @@ function setTokenIntoHeader(
 
   // 헤더 체크
   if ("Authorization" in headers) {
-    console.log(
-      `🙆‍♂️ [fetchDataBE] Authorization 헤더가 존재합니다: ${headers["Authorization"]}`
-    );
+    //console.log(
+    //   `🙆‍♂️ [fetchDataBE] Authorization 헤더가 존재합니다: ${headers["Authorization"]}`
+    // );
+    console.log(`🙆‍♂️ [fetchDataBE] Authorization 헤더가 존재합니다`);
   } else {
     console.log("🙆‍♂️ [fetchDataBE] Authorization 헤더가 존재하지 않습니다.");
   }
-
-  console.log("headers 너 뭐야", headers);
 
   return headers;
 }

@@ -1,5 +1,9 @@
 "use client";
+import { ChangeEvent } from "react";
+
 import styled from "styled-components";
+import { MdSearch } from "react-icons/md";
+
 import dt from "@/lib/designToken/designTokens";
 import {
   FlexBoxH,
@@ -8,11 +12,10 @@ import {
   StyledUl,
 } from "@/component/styled-components/FlexBoxes";
 import { BasicInput } from "@/component/styled-components/Forms";
-import { MdSearch } from "react-icons/md";
-import { ChangeEvent } from "react";
+
 const tokens = dt.DesignTokenVarNames;
 const mobileWidth = dt.DesignTokenExcept.media.mobile;
-import { css } from "styled-components";
+
 // nav + results/categories
 const InnerContainer = styled(FlexBoxH)`
   align-items: flex-start;
@@ -84,6 +87,38 @@ const SearchBarWarpper = styled(FlexBoxUlV)`
 
   > *:last-child {
     height: 40%;
+  }
+
+  @media only screen and (max-width: ${mobileWidth}) {
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+
+    min-width: 400px;
+  }
+`;
+
+const SearchBarWarpperH = styled(FlexBoxH)`
+  align-items: flex-start;
+  height: 10vh;
+  min-height: 30px;
+  width: 90%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 0.5rem 0 1rem 1rem;
+  margin-bottom: 1rem;
+
+  gap: 2rem;
+
+  > *:first-child {
+    width: 80%;
+  }
+
+  > *:last-child {
+    width: 20%;
   }
 
   @media only screen and (max-width: ${mobileWidth}) {
@@ -169,6 +204,7 @@ const StyledStudyRoomIndex = {
   //tudyRoomCategories,
   SearchResultSection,
   SearchBarWarpper,
+  SearchBarWarpperH,
   InputContainer,
   SearchResultContainer,
 };

@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 
-import { UserCalendar } from "@/lib/types";
+import { UserCalendar } from "@/types/Calendar";
 import routeLinks from "@/lib/routeLinks";
 
 import { standardizeDate } from "@/util/dateUtils";

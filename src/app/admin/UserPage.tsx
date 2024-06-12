@@ -17,6 +17,7 @@ import { Title } from "@/component/styled-components/TextBoxes";
 
 import Loading from "@/component/Loading/Loading";
 import { Container } from "@/component/styled-components/Container";
+import getTokenByClient from "@/util/getTokenByClient";
 
 const tokens = dt.DesignTokenVarNames;
 const {
@@ -44,13 +45,14 @@ const UserPage = () => {
 
   const [AllUserData, error] = useFetch<AdminUserData[]>(
     apiPaths.admin.users,
-    {},
-    true
+    {}
   );
   console.log("AllUserData", AllUserData);
 
   // quit user
   const handleRemove = async (userId: number) => {
+    const token = getTokenByClient();
+
     if (confirm("정말로 이 사용자를 삭제하시겠습니까?")) {
       try {
         const response = await fetchDataBE(
@@ -58,8 +60,7 @@ const UserPage = () => {
           {
             method: "DELETE",
           },
-          true,
-          false
+          token
         );
         alert("회원 강퇴 완료!");
         return response;

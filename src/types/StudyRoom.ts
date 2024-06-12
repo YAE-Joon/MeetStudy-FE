@@ -20,16 +20,23 @@ export interface StudyRoomMember {
 }
 
 export interface Category {
+  id: number;
   name: string;
   description: string;
 }
 
 export interface StudyRoom {
-  id: number;
+  id?: number;
   title: string;
   description: string;
   createdDate: string;
   userCapacity: number | null;
   category: Category;
-  userStudyRooms: UserStudyRoom[];
+  userStudyRooms?: UserStudyRoom[];
+}
+
+export interface StudyRoomTableData {
+  category: string;
+  description: string;
+  memberNum: number;
 }

@@ -46,7 +46,12 @@ export interface RequestOptions {
   headers?: Record<string, string>;
   body?: Record<string, any>;
 }
-
+/**
+ *
+ * @param path
+ * @param isNextTest (옵션: next.js 웹서버용)
+ * @returns
+ */
 const getApiPath = (path: string, isNextTest: boolean | null = null) => {
   const baseUrl = buildBaseUrl(isNextTest);
   const endPoint = path;

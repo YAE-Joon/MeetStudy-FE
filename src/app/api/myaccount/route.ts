@@ -1,6 +1,6 @@
 //테스트용, 임시
 import { NextRequest, NextResponse } from "next/server";
-import { UserProfile } from "@/lib/types";
+import { UserProfile } from "@/types/User";
 // fetching from backend or
 // user login info from server
 

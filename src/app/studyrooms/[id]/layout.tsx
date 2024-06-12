@@ -26,9 +26,7 @@ export default function StudyRoomdLayout({
   // 입장한 스터디룸에 대한 정보를 불러옵니다.
   const [studyRoomData, error] = useFetch<StudyRoom>(
     apiPaths.studyrooms.detail(roomId),
-    {},
-    false,
-    false
+    {}
   );
 
   const userAccessControl = studyRoomData?.userStudyRooms?.map((member) => {

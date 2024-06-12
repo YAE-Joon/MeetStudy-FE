@@ -2,7 +2,7 @@
 
 import { apiPaths } from "@/config/api";
 import useFetch from "@/hooks/useFetch";
-import { UserCalendar } from "@/lib/types";
+import { UserCalendar } from "@/types/Calendar";
 
 import dt from "@/lib/designToken/designTokens";
 import MainStyledPack from "@/component/mainPage/mainStyledComponents";
@@ -34,9 +34,7 @@ const MyCalendar = () => {
         year: currentYear,
         month: currentMonth,
       },
-    },
-    false,
-    false
+    }
   );
 
   if (isLoading) {

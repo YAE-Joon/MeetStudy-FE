@@ -42,8 +42,7 @@ const AdminBoards = () => {
 
   const [AllBoardPosts, error] = useFetch<PostBoard[]>(
     apiPaths.admin.posts,
-    {},
-    true
+    {}
   );
 
   const handleRemove = async (postId: number) => {

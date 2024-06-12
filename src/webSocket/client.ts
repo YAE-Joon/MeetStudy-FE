@@ -96,9 +96,9 @@ const useWebSocket = (
         stompClient.publish({
           destination: exitRoomDestination,
           body: JSON.stringify({
-            userId: 1, // 임시
+            // userId: 1, // 임시
             content: "🙆‍♂️ 접속이 종료되었습니다",
-            chatRoomId: chatRoomId,
+            // chatRoomId: chatRoomId,
           }),
         });
         stompClient.deactivate();
