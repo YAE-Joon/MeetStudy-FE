@@ -8,7 +8,7 @@ import getTokenByClient from "@/util/getTokenByClient";
  *
  * @param apiUrl
  * @param options
- * @returns
+ * @returns [data, error, loading]
  */
 const useFetch = <T>(apiUrl: string, options: FetchOptions = {}) => {
   const [data, setData] = useState<T | null>(null);

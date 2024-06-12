@@ -15,72 +15,92 @@ import {
   BasicSelect,
 } from "@/component/styled-components/Forms";
 
+import { apiPaths } from "@/config/api";
+import getTokenByClient from "@/util/getTokenByClient";
+
+import useFetch from "@/hooks/useFetch";
+import { Category } from "@/types/StudyRoom";
+
 import StyledAccounts from "@/app/myAccount/myAccountClientComponents";
+
+import fetchDataBE from "@/lib/fetch";
+import { getUserInfoFromToken } from "@/util/getUserInfo";
+
 const { FristSectionContainer, FirstSectionUl, ButtonWrapper, DeleteThisUser } =
   StyledAccounts;
 
-const categoryList = ["국어", "영어", "수학", "과학", "사회", "정보와컴퓨터"];
-
 const EditSections: React.FC<MyaccountProps> = ({ UserProfile }) => {
   const [isEditing, setIsEditing] = useState(false);
-  const [userInfo, setUserInfo] = useState<UserProfile | null>(UserProfile);
-
+  const [myUserInfo, setMyUserInfo] = useState<UserProfile | null>(null);
+  const [error, setError] = useState<Error | null>(null);
+  const [loading, setLoading] = useState(true);
   const [selectedInterests, setSelectedInterests] = useState<
     string[] | null | undefined
   >(UserProfile.interests);
-  const [interestLists, setInterestLists] = useState<string[]>(categoryList);
 
-  /////// handlers //////////
+  // 이건 어디서 부르던 상관 없음
+  const [categoryList, categoryErrors, categoryLoading] = useFetch<Category[]>(
+    apiPaths.category.public,
+    {}
+  );
+
+  useEffect(() => {
+    //클라이언트에서 유저의 정보를 불러옴
+    const loadData = async () => {
+      try {
+        const token = getTokenByClient();
+        const data = await getUserInfoFromToken(token, [
+          "email",
+          "username",
+          "nickname",
+          "password",
+          "interests",
+        ]);
+        setMyUserInfo(data);
+      } catch (err) {
+        if (err instanceof Error) {
+          setError(err);
+        } else {
+          setError(new Error("알 수 없는 에러가 발생했습니다."));
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadData();
+  }, []);
+
+  useEffect(() => {
+    if (!isEditing) {
+      setMyUserInfo(myUserInfo);
+    }
+  }, [isEditing]);
+
+  // handlers //
   const handleEditClick = () => {
-    setIsEditing((prv) => !prv);
+    setIsEditing((prev) => !prev);
   };
 
-  // 나중에 구현
   const handleDeleteUser = () => {
     alert("정말 탈퇴하시겠습니까? / 이후 구현 예정");
-  };
-
-  const updateUserInfo = async (editedData: UserProfile) => {
-    console.log("🙆‍♂️ Try update(upt) Data from MyAccount(CC): ");
-    const { username, nickname, password, interests } = editedData;
-    const apiEndpoint = getAPIendPoint(`/api/myaccount`);
-    try {
-      const response = await fetch(apiEndpoint, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ username, nickname, password, interests }),
-      });
-
-      if (!response.ok) {
-        throw new Error("❌ 데이터 수정에 실패하였습니다.");
-      }
-
-      const result = await response.json();
-      alert("성공적으로 수정하였습니다.");
-    } catch (error) {
-      console.error("❗Error:", error);
-      alert(`❗수정 중 오류가 발생하였습니다!${error}`);
-    }
   };
   const handleFormSubmit = (
     event?: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     if (event) {
       event.preventDefault();
-      if (userInfo) {
-        updateUserInfo(userInfo);
+      if (myUserInfo) {
+        updateUserInfo(myUserInfo);
       }
     }
-
     setIsEditing(false);
   };
+
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
-    if (userInfo) {
-      setUserInfo({
-        ...userInfo,
+    if (myUserInfo) {
+      setMyUserInfo({
+        ...myUserInfo,
         [name]: value,
       });
     }
@@ -91,32 +111,53 @@ const EditSections: React.FC<MyaccountProps> = ({ UserProfile }) => {
     idx: number
   ) => {
     if (selectedInterests) {
-      //console.log("event.target.value", event.target.value);
       const { value } = event.target;
-
       const newSelectedInterests = [...selectedInterests];
       newSelectedInterests[idx] = value;
-
       setSelectedInterests(newSelectedInterests);
-
-      const updatedUserInfo = {
-        ...userInfo,
+      setMyUserInfo({
+        ...myUserInfo,
         interests: newSelectedInterests,
-      };
-      setUserInfo(updatedUserInfo as UserProfile);
+      } as UserProfile);
     }
   };
 
-  useEffect(() => {
-    if (!isEditing) {
-      setUserInfo(userInfo);
-    }
-  }, [isEditing]);
+  // Convert
+  const interestLists: string[] = categoryList
+    ? categoryList.map((category) => category.name)
+    : [];
 
-  if (!userInfo) {
-    console.log("userInfo? (3)", userInfo);
+  //// fetching : update, delete /////
+
+  const updateUserInfo = async (editedData: UserProfile) => {
+    console.log("[🐸🐸🐸🐸 내 정보를 수정합니다!] ");
+    console.log("[🐸🐸🐸🐸] 수정될 정보는?  editedData", editedData);
+    const token = getTokenByClient();
+    try {
+      const response = await fetchDataBE(
+        apiPaths.mypage.edit,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: editedData,
+        },
+        token
+      );
+
+      alert("성공적으로 수정하였습니다.");
+    } catch (error) {
+      console.error("❗Error:", error);
+      alert(`❗수정 중 오류가 발생하였습니다! ${error}`);
+    }
+  };
+
+  if (!myUserInfo) {
+    console.log("userInfo? (3)", myUserInfo);
     return <h1>유저 정보 받기에 실패했습니다</h1>;
   }
+
   return (
     <FristSectionContainer>
       <FirstSectionUl>
@@ -124,25 +165,24 @@ const EditSections: React.FC<MyaccountProps> = ({ UserProfile }) => {
           <>
             <li>
               <span style={{ fontWeight: "bold" }}>이름</span>{" "}
-              <span>{userInfo.username}</span>
+              <span>{myUserInfo.username}</span>
             </li>
             <li>
               <span style={{ fontWeight: "bold" }}>닉네임</span>{" "}
-              <span>{userInfo.nickname}</span>
+              <span>{myUserInfo.nickname}</span>
             </li>
             <li>
               <span style={{ fontWeight: "bold" }}>비밀번호</span>{" "}
-              <span>{"*".repeat(Math.min(userInfo.password.length, 6))}</span>
+              <span>{"*".repeat(Math.min(myUserInfo.password.length, 6))}</span>
             </li>
             <li>
               <span style={{ fontWeight: "bold" }}>관심분야</span>{" "}
               <span>
-                {userInfo.interests.map((inter, idx) => (
+                {myUserInfo.interests.map((inter: string, idx) => (
                   <span key={idx}>{inter}</span>
                 ))}
               </span>
             </li>
-
             <ButtonWrapper>
               <PrimaryButton onClick={handleEditClick} content={"수정하기"} />
             </ButtonWrapper>
@@ -159,7 +199,7 @@ const EditSections: React.FC<MyaccountProps> = ({ UserProfile }) => {
                   type="text"
                   name="username"
                   placeholder="이름"
-                  value={userInfo.username}
+                  value={myUserInfo.username}
                   onChange={handleInputChange}
                 />
               </BasicFieldRow>
@@ -169,7 +209,7 @@ const EditSections: React.FC<MyaccountProps> = ({ UserProfile }) => {
                   type="text"
                   name="nickname"
                   placeholder="닉네임"
-                  value={userInfo.nickname}
+                  value={myUserInfo.nickname}
                   onChange={handleInputChange}
                 />
               </BasicFieldRow>
@@ -179,16 +219,14 @@ const EditSections: React.FC<MyaccountProps> = ({ UserProfile }) => {
                   type="password"
                   name="password"
                   placeholder="비밀번호"
-                  value={userInfo.password}
+                  value={myUserInfo.password}
                   onChange={handleInputChange}
                 />
               </BasicFieldRow>
               <BasicFieldCol>
                 <BasicFieldRow>
                   {selectedInterests?.map((interest, idxSelected) => {
-                    const temp = [];
-                    temp.push(interest);
-                    const newInterestLists = temp.concat(interestLists);
+                    const newInterestLists = [interest, ...interestLists];
                     return (
                       <BasicSelect
                         key={idxSelected}
@@ -199,13 +237,11 @@ const EditSections: React.FC<MyaccountProps> = ({ UserProfile }) => {
                         }
                         value={interest}
                       >
-                        {newInterestLists.map((interDonw, idx) => {
-                          return (
-                            <option key={idx} value={interDonw}>
-                              {interDonw}
-                            </option>
-                          );
-                        })}
+                        {newInterestLists.map((interDown, idx) => (
+                          <option key={idx} value={interDown}>
+                            {interDown}
+                          </option>
+                        ))}
                       </BasicSelect>
                     );
                   })}

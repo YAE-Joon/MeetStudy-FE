@@ -142,7 +142,7 @@ const StyledTextarea = styled.textarea`
   max-width: 100%;
   min-height: 100px;
   max-height: 300px;
-  resize: vertical; /* 사용자가 세로 방향으로 크기 조절 가능 */
+  resize: vertical;
 
   &:focus {
     outline: none;

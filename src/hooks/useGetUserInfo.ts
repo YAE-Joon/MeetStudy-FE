@@ -5,7 +5,7 @@ import { getUserInfoFromToken } from "@/util/getUserInfo";
 /**
  *
  * @param requiredFields
- * @returns
+ * @returns [myData, error, loading]
  */
 const useFetchUserInfo = <T>(requiredFields: string[] | string) => {
   const [myData, setMyData] = useState<T | null>(null);
