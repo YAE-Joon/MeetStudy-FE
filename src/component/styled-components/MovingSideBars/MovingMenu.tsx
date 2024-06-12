@@ -20,6 +20,7 @@ const {
   CategoryList,
   HamburgerIcon,
   CategoryLinksContainer,
+  Underline,
 } = StyledMenuComponent;
 
 const tokens = dt.DesignTokenVarNames;
@@ -116,6 +117,7 @@ const MovingMenu = ({
                 >
                   {title}
                 </Title>
+                <Underline />
               </TitleWrapper>
               {/* <HamburgerIcon onClick={toggleMenu}>
                 <MdMenu />

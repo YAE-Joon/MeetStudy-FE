@@ -27,9 +27,11 @@ interface StudyRoomCardProps {
 
 export const StudyRoomCard: React.FC<StudyRoomCardProps> = ({ item, root }) => {
   // 유저 이메일을 불러옵니다.
+
   const [myEmail, error, loading] = useFetchUserInfo<string>("email");
-  const pathname =
-    root === null ? usePathname() : root === "main" ? "studyrooms" : "";
+  const pathname = root ? (root === "main" ? "studyrooms" : "") : usePathname();
+
+  console.log("pathname???", pathname);
 
   function isEmailInStudyRoom(
     studyRoom: StudyRoom | undefined,
@@ -43,6 +45,7 @@ export const StudyRoomCard: React.FC<StudyRoomCardProps> = ({ item, root }) => {
   }
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
+
   return (
     <StyledLink href={`${pathname}/${item.id}`}>
       <CardContent>

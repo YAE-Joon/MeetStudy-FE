@@ -14,7 +14,12 @@ import { Container } from "@/component/styled-components/Container";
 import { useEffect } from "react";
 import { CreateChatRoom } from "@/app/studyrooms/[id]/chatRoom/CreateNewChatRoom";
 
-const { SearchBarWarpper } = StyledStudyRoomIndex;
+const {
+  InnerContainer,
+  SearchBarWarpper,
+  SearchBarWarpperH,
+  SearchResultContainer,
+} = StyledStudyRoomIndex;
 
 const tokens = dt.DesignTokenVarNames;
 // studyrooms/{roomId}/chatRoom
@@ -36,8 +41,8 @@ const ChatRoom = () => {
   return (
     <>
       <Container $width={"100%"} $minWidth={"600px"}>
-        <FlexBoxV $justifyContent={"center"}>
-          <SearchBarWarpper>
+        <FlexBoxV $width={"90%"} $justifyContent={"center"}>
+          <SearchBarWarpperH>
             <Title
               $htype={2}
               $align={"left"}
@@ -46,8 +51,9 @@ const ChatRoom = () => {
             >
               채팅방
             </Title>
+
             <CreateChatRoom roomId={roomId} />
-          </SearchBarWarpper>
+          </SearchBarWarpperH>
           <ChatRoomList chatRoomList={chatRoomList} />
         </FlexBoxV>
       </Container>

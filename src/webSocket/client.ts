@@ -5,6 +5,7 @@ import { Client } from "@stomp/stompjs";
 import { SendingChatMessage, ReceivedChatMessage } from "@/types/Chatroom";
 
 import { ChatRecordsResponse } from "@/types/Chat";
+import getTokenByClient from "@/util/getTokenByClient";
 
 //🙆‍♂️ 클라이언트
 //❤️ next 서버
@@ -21,7 +22,7 @@ const useWebSocket = (
   const [wsStompClient, setWsStompClient] = useState<Client | null>(null);
 
   // Authorization
-  const userToken = process.env.NEXT_PUBLIC_TEST_TOKEN;
+  const userToken = getTokenByClient();
   const token = `Bearer ${userToken}`;
 
   const subscribeRoom = `/room/${chatRoomId}`;

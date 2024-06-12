@@ -24,8 +24,8 @@ export default function StudyRoomdLayout({
   const initialValue = [
     { label: "홈", link: `/studyrooms/${roomId}` },
     { label: "채팅", link: `/studyrooms/${roomId}/chatRoom` },
-    { label: "스터디룸_캘린더", link: `/studyrooms/${roomId}/calendar` },
-    { label: "참가자_리스트", link: `/studyrooms/${roomId}/members` },
+    { label: "캘린더", link: `/studyrooms/${roomId}/calendar` },
+    { label: "멤버란", link: `/studyrooms/${roomId}/members` },
     { label: "게시판", link: `/studyrooms/${roomId}/board` },
   ];
 
@@ -72,6 +72,15 @@ export default function StudyRoomdLayout({
       isMember,
     };
 
+    console.log(
+      "[🙆 개별 스터디룸에 들어왔습니다. 참가 자격을 확인합니다\n Admin?:",
+      userAccecssControl.isAdmin,
+      "member?",
+      userAccecssControl.isMember,
+      "owner?",
+      userAccecssControl.isOwner
+    );
+
     setUserAccControl(userAccecssControl);
 
     if (isOwner) {
@@ -95,7 +104,7 @@ export default function StudyRoomdLayout({
           title={studyRoomData.title}
           userAccecssControl={userAccessControl}
         />
-        <FlexBoxV $padding={"0.5rem 0 1rem 0.5rem"} $width={"100%"}>
+        <FlexBoxV $padding={"0.5rem 0 1rem 0.2rem"} $width={"80%"}>
           {children}
         </FlexBoxV>
       </InnerContainer>

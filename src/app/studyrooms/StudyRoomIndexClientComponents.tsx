@@ -99,27 +99,28 @@ const SearchBarWarpper = styled(FlexBoxUlV)`
 `;
 
 const SearchBarWarpperH = styled(FlexBoxH)`
-  align-items: flex-start;
   height: 10vh;
   min-height: 30px;
-  width: 90%;
+  width: 100%;
 
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
 
   padding: 0.5rem 0 1rem 1rem;
   margin-bottom: 1rem;
 
-  gap: 2rem;
+  gap: 200px;
+
+  /* background-color: red;
 
   > *:first-child {
-    width: 80%;
+    flex: 8 1 0;
   }
 
-  > *:last-child {
-    width: 20%;
-  }
+  > *:nth-child(2) {
+    flex: 2 1 0;
+  } */
 
   @media only screen and (max-width: ${mobileWidth}) {
     width: 100%;

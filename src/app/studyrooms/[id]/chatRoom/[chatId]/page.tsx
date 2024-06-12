@@ -18,6 +18,9 @@ import ChatStyled from "@/app/studyrooms/[id]/chatRoom/[chatId]/chatStyled";
 
 import { checkEnterOrExitFromMessages } from "@/util/checkChatText";
 import { fetchData } from "next-auth/client/_utils";
+import useFetch from "@/hooks/useFetch";
+import useFetchUserInfo from "@/hooks/useGetUserInfo";
+import getTokenByClient from "@/util/getTokenByClient";
 const {
   ChatRoomMain,
   MessageContainer,
@@ -30,7 +33,7 @@ const {
 
 export default function ChatRoom() {
   console.log("[채칭방] 🧊 채팅방 컴포넌트입니다.");
-  const [myCurrNickName, setMyCurrNickName] = useState<string>("");
+  //const [myCurrNickName, setMyCurrNickName] = useState<string>("");
   // const [nickname, setNickname] = useState<string>("");
 
   const [error, setError] = useState<string | null>(null);
@@ -54,44 +57,45 @@ export default function ChatRoom() {
 
   const debounceTimeout = useRef<NodeJS.Timeout | null>(null);
 
+  const [isEnd, setIsEnd] = useState(false);
+
   // 기존 채팅 기록들을 불러옵니다. (첫번째 cursor)
+
+  const [myCurrNickName, errorFromNickname, loading] =
+    useFetchUserInfo("nickname");
   useEffect(() => {
-    const fetchUserInfo = async () => {
-      console.log("유저 데이터를 토큰으로 가져옵니다다");
-      const apiUrl = apiPaths.mypage.info;
-      const response = await fetchDataBE(apiUrl, {});
-      const fetchedUserNickname = response.nickname;
-      console.log("fethc해서 가져온 유저정보: response", response);
-      setMyCurrNickName(fetchedUserNickname);
-    };
+    // const fetchUserInfo = async () => {
+    //   console.log("유저 데이터를 토큰으로 가져옵니다다");
+    //   const apiUrl = apiPaths.mypage.info;
+    //   //const response = await fetchDataBE(apiUrl, {});
+    //   const response = await useFetch
+    //   const fetchedUserNickname = response.nickname;
+    //   console.log("fethc해서 가져온 유저정보: response", response);
+    //   setMyCurrNickName(fetchedUserNickname);
+    // };
+    const token = getTokenByClient();
     const fetchInitialChatRecords = async () => {
       console.log("이전 채팅 기록을 가져옵니다");
       try {
         const apiUrl = `${apiPaths.chatroom.getRecords(
           chatRoomId
         )}?cursor=${-1}`;
-        const response = await fetchDataBE(
-          apiUrl,
-          {},
-          false,
-          false,
-          myCurrNickName
-        );
+        const response = await fetchDataBE(apiUrl, {}, token);
         const fetchedNearRecords = [...response.content].reverse(); //copy !
         const newCursor = response.pageable.cursor;
+
+        if (fetchedNearRecords.length === 0) {
+          setIsEnd((prev) => !prev);
+          return;
+        }
 
         setOldRecords(fetchedNearRecords);
         setCursor(newCursor);
       } catch (error) {}
     };
 
-    const getUserInfo = async () => {
-      fetchUserInfo();
-      fetchInitialChatRecords();
-    };
-
-    getUserInfo();
-  }, []);
+    fetchInitialChatRecords();
+  }, [myCurrNickName]);
 
   // 불러온 기존 데이터를 webSockethook으로 넘겨줍니다
   // 왜? websocket에서 화면에서 그려지는 message를 통합으로 관리하기 때문에..
@@ -127,7 +131,8 @@ export default function ChatRoom() {
       const apiUrl = `${apiPaths.chatroom.getRecords(
         chatRoomId
       )}?cursor=${cursorVlaue}`;
-      const response = await fetchDataBE(apiUrl, {}, false, false);
+      const token = getTokenByClient();
+      const response = await fetchDataBE(apiUrl, {}, token);
       const fetchedOldRecords = response.content;
       const newCursor = response.pageable.cursor;
 
@@ -148,6 +153,11 @@ export default function ChatRoom() {
         `🧊🧊🧊fetch 한 이전 기록들 / cursor=${cursor}| 메시지 갯수:${fetchedOldRecords.length} | 메시지 내용: `,
         fetchedOldRecords
       );
+
+      if (fetchedOldRecords.length === 0) {
+        setIsEnd((prev) => !prev);
+        return;
+      }
     } catch (error) {}
   }
 
@@ -223,7 +233,11 @@ export default function ChatRoom() {
       <button onClick={handleButton}>닉네임 입력하기</button> */}
       <ChatRoomMain>
         <Announcement>
-          <button onClick={hanldeMessageReq}>이전 기록 불러오기</button>
+          {!isEnd ? (
+            <button onClick={hanldeMessageReq}>이전 기록 불러오기</button>
+          ) : (
+            <p>마지막 기록입니다.</p>
+          )}
         </Announcement>
 
         <div ref={msgContainerRef}>
