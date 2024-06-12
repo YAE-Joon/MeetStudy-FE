@@ -14,6 +14,8 @@ import {
 import { usePathname } from "next/navigation";
 import { getRoomId } from "@/app/studyrooms/studyroomSub";
 import { useRouter } from "next/navigation";
+import getTokenByClient from "@/util/getTokenByClient";
+import { useRoomId } from "@/hooks/useGetRoomId";
 
 // 스터디룸 가입 버튼 { roomId }: { roomId: number }
 export const JoinStudyRoom = () => {
@@ -23,14 +25,19 @@ export const JoinStudyRoom = () => {
   const handleModalClose = () => setIsModalOpen(false);
   const [isDone, setIsDone] = useState(false);
 
-  const roomdId = getRoomId();
+  const roomId = useRoomId();
 
   const handleSignUp = async () => {
     try {
-      // const response = await fetchDataBE(apiPaths.userStudyrooms.join(roomId), {
-      //   method: "POST",
-      // });
-      const response = "가입처리 임시- 테스트 필요";
+      const token = getTokenByClient();
+      console.log("[스터디룸/가입하기] 토큰을 조회합니다.", token);
+      const response = await fetchDataBE(
+        apiPaths.userStudyrooms.join(roomId),
+        {
+          method: "POST",
+        },
+        token
+      );
       console.log("[스터디룸] 성공적으로 가입하였습니다.", response);
       setModalMessage("성공적으로 가입하였습니다.");
       handleFinish();
@@ -75,15 +82,20 @@ export const LeaveStudyRoom = () => {
   const handleModalClose = () => setIsModalOpen(false);
   const [isDone, setIsDone] = useState(false);
 
-  const roomdId = getRoomId();
   const router = useRouter();
+  const roomId = useRoomId();
 
   const handleSignOut = async () => {
     try {
-      //   const response = await fetchDataBE(apiPaths.userStudyrooms.leave(roomId), {
-      //     method: "DELETE",
-      //   });
-      const response = "탈퇴처리 임시- 테스트 필요";
+      const token = getTokenByClient();
+      console.log("[스터디룸/탈퇴하기] 토큰을 조회합니다.", token);
+      const response = await fetchDataBE(
+        apiPaths.userStudyrooms.leave(roomId),
+        {
+          method: "POST",
+        },
+        token
+      );
       console.log("[스터디룸] 성공적으로 스터디룸을 떠났습니다.", response);
       setModalMessage("성공적으로 스터디룸을 떠났습니다.");
       handleFinish();

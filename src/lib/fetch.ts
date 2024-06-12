@@ -5,15 +5,8 @@ import { FetchOptions } from "@/lib/types";
  *
  * @param apiUrl
  * @param options
- * @param isAdmin
- * @param isTest
+ * @param token
  * @returns
- * 
- * interface FetchOptions {
-  method?: string;
-  headers?: HeadersInit;
-  body?: any;
-}
  */
 async function fetchDataBE(
   apiUrl: string,

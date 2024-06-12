@@ -1,18 +1,13 @@
-import { useEffect, useState } from "react";
 import { StudyRoom } from "@/types/StudyRoom";
 import { usePathname } from "next/navigation";
+import useFetchUserInfo from "@/hooks/useGetUserInfo";
 import convertDateTime from "@/util/dateTimeUtil";
-import { getUserInfoFromToken } from "@/util/getUserInfo";
-import getTokenByClient from "@/util/getTokenByClient";
 
 import dt from "@/lib/designToken/designTokens";
 import { getRandomEmoji } from "@/util/getEmoji";
 import { JoinTag } from "@/component/styled-components/Card";
 import StyledCard from "@/component/styled-components/Card";
-import {
-  StyledProps,
-  StyledComponentsProps,
-} from "@/component/styled-components/styledProps";
+
 import {
   Span,
   Description,
@@ -23,27 +18,18 @@ const mobileWidth = dt.DesignTokenExcept.media.mobile;
 const tokens = dt.DesignTokenVarNames;
 
 const { StyledLink, CardContent, CardUpper_ul, Emoji } = StyledCard;
-///// cards for studyroom list
+
+/// 카드 컴포넌트에 대한 인터페이스 정의
 interface StudyRoomCardProps {
   item: StudyRoom;
   root?: string | null;
 }
 
 export const StudyRoomCard: React.FC<StudyRoomCardProps> = ({ item, root }) => {
-  const [myEmail, setMyEmail] = useState<string | null>(null);
-  const pathname = root === null ? usePathname() : "main" ? "studyrooms" : "";
-
-  useEffect(() => {
-    const fetchEmail = async () => {
-      const token = getTokenByClient();
-      const email = await getUserInfoFromToken(token, "email");
-      setMyEmail(email);
-
-      console.log("[studyRoomCard] 참가중?", isEmailInStudyRoom(item, email));
-    };
-
-    fetchEmail();
-  }, []);
+  // 유저 이메일을 불러옵니다.
+  const [myEmail, error, loading] = useFetchUserInfo<string>("email");
+  const pathname =
+    root === null ? usePathname() : root === "main" ? "studyrooms" : "";
 
   function isEmailInStudyRoom(
     studyRoom: StudyRoom | undefined,
@@ -55,7 +41,8 @@ export const StudyRoomCard: React.FC<StudyRoomCardProps> = ({ item, root }) => {
       ) ?? false
     );
   }
-
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.message}</div>;
   return (
     <StyledLink href={`${pathname}/${item.id}`}>
       <CardContent>

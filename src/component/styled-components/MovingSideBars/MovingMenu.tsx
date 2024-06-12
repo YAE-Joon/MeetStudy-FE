@@ -137,6 +137,7 @@ const MovingMenu = ({
                 menu[0] && (
                   <>
                     <Link href={menu[0].link}>{menu[0].label}</Link>
+                    {/* <JoinStudyRoom roomId={roomId}/> */}
                     <JoinStudyRoom />
                   </>
                 )

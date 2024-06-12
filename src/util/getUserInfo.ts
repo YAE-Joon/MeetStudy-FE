@@ -3,6 +3,7 @@ import getApiPath from "@/lib/settingUrl";
 
 import { FetchOptions } from "@/lib/types";
 import { UserProfile } from "@/types/User";
+import getTokenByClient from "@/util/getTokenByClient";
 
 /**
  *
@@ -12,9 +13,22 @@ import { UserProfile } from "@/types/User";
  *
  */
 export async function getUserInfoFromToken(
-  token: string,
+  givenToken: string | null,
   requiredFields: string[] | string
 ) {
+  let token = givenToken;
+
+  if (token === null || token === undefined) {
+    return "토큰이 올바르지 않습니다.";
+  }
+
+  if (token === "client") {
+    try {
+      token = getTokenByClient();
+    } catch (error) {
+      return "Client에서 토큰 가져오기 실패!";
+    }
+  }
   const data = await WillfetchDataBE(apiPaths.mypage.info, {}, token);
   if (Array.isArray(requiredFields)) {
     const userInfo: Partial<UserProfile> = {};

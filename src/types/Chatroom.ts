@@ -12,3 +12,9 @@ export interface ReceivedChatMessage {
   createdAt: string;
   isAnnounce?: boolean | null; //안내용
 }
+
+export interface CreateChatRoomProps {
+  title: string;
+  studyRoomId: number;
+  notice: string;
+}
