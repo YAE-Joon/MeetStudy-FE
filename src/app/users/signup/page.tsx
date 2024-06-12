@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { fetchWithCommonHeaders } from "@/lib/fetchWithCommonHeaders";
+import { signIn } from "next-auth/react";
 
 const interestsOptions = [
   "이름1",
@@ -28,7 +28,6 @@ const SignupPage = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const initialEmail = searchParams.get("email") || "";
-
   const [form, setForm] = useState<SignupForm>({
     password: "",
     confirmPassword: "",
@@ -55,6 +54,27 @@ const SignupPage = () => {
     });
   };
 
+  const handleSignIn = async (email: string, password: string) => {
+    try {
+      const result = await signIn("credentials", {
+        email,
+        password,
+        callbackUrl: "/", // 로그인 후 이동할 페이지
+      });
+
+      if (result?.error) {
+        console.error("로그인에 실패했습니다.", result.error);
+        return false;
+      }
+
+      console.log("로그인에 성공했습니다.");
+      return true;
+    } catch (error) {
+      console.error("로그인 중 오류가 발생했습니다.", error);
+      return false;
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -64,9 +84,35 @@ const SignupPage = () => {
     }
 
     try {
-      const response = await fetchWithCommonHeaders("/api/signup", {
+      const formattedInterests = form.interests.map(
+        (interest, index) => index + 1
+      );
+      const response = await fetch("http://34.47.79.59:8080/api/user/join", {
         method: "POST",
-        body: JSON.stringify({ ...form, email: initialEmail }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: initialEmail,
+          password: form.password,
+          username: form.name,
+          nickname: form.nickname,
+          interests: [3, 4],
+        }),
+      });
+      console.log({
+        email: "teee01@gmail.com",
+        password: "test5678!@",
+        username: "teee001",
+        nickname: "teeee001",
+        interests: [3, 4],
+      });
+      console.log({
+        email: initialEmail,
+        password: form.password,
+        username: form.name,
+        nickname: form.nickname,
+        interests: formattedInterests,
       });
 
       const data = await response.json();
@@ -75,8 +121,14 @@ const SignupPage = () => {
         throw new Error(data.message || "회원가입에 실패했습니다.");
       }
 
-      setStatus("회원가입에 성공했습니다.");
-      router.push("/login");
+      // 회원가입 후 로그인 상태로 변경
+      const signInSuccess = await handleSignIn(initialEmail, form.password);
+      if (signInSuccess) {
+        setStatus("회원가입 및 로그인에 성공했습니다.");
+        router.push("/");
+      } else {
+        setStatus("로그인에 실패했습니다.");
+      }
     } catch (error) {
       console.error("회원가입 실패:", error);
       setStatus("회원가입에 실패했습니다.");
@@ -84,7 +136,7 @@ const SignupPage = () => {
   };
 
   return (
-    <div className="flex flex-col justify-center mt-[5rem] px-6 lg:px-8 h-[90vh]">
+    <div className="flex flex-col justify-center m-[5rem] px-6 lg:px-8 h-screen">
       <div className="mx-auto w-full max-w-sm">
         <h1 className="text-center text-2xl font-bold text-gray-600">
           회원가입
@@ -208,14 +260,12 @@ const SignupPage = () => {
           </div>
           <button
             type="submit"
-            className="text-white mt-[20px] flex gap-2 bg-[#52C233] hover:bg-[#5abe3e]/90 font-medium rounded-lg w-full px-5 py-4 text-center items-center justify-center"
+            className="text-white mt-[20px] flex gap-2 bg-[#52C233] hover:bg-[#5abe3e]/90 font-medium rounded-lg w-full px-5 py-4 text-center items-center"
           >
             회원가입
           </button>
+          {status && <p className="text-center text-red-500 mt-4">{status}</p>}
         </form>
-        {status && (
-          <p className="mt-4 text-center text-sm text-red-500">{status}</p>
-        )}
       </div>
     </div>
   );

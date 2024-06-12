@@ -57,17 +57,7 @@ const initialEvents: Event[] = [
   },
 ];
 
-const {
-  // InnerContainer,
-  // CategoryNav,
-  //StudyRoomCategories,
-  SearchResultSection,
-  SearchBarWarpper,
-  InputContainer,
-  SearchResultContainer,
-  HamburgerIcon,
-  CategoryTitleWrapper,
-} = StyledStudyRoomIndex;
+const { SearchResultSection, SearchBarWarpper } = StyledStudyRoomIndex;
 
 import dt from "@/lib/designToken/designTokens";
 const tokens = dt.DesignTokenVarNames;
@@ -104,7 +94,7 @@ const calender = () => {
           $color={tokens.colors.simple.blackbasic}
           $fontSize={tokens.fontSize.web.medium}
         >
-          캘린더입니다
+          스터디룸 캘린더
         </Title>
       </SearchBarWarpper>
       <div className="w-full">

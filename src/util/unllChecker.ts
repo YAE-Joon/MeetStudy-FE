@@ -13,9 +13,10 @@ export function nullChecker(
   let result = target;
   if (target === null || target === undefined) {
     result = dummyDataByTypes[targetType];
+    return result;
   }
 
-  // 콜백 함수가 있을 경우
+  // target이 null도 아니고 undefined도 아닌데 콜백 함수가 있을 경우
   if (callback) {
     return callback(result);
   } else {

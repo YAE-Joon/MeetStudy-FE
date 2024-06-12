@@ -7,8 +7,8 @@ import fetchDataBE from "@/lib/fetch";
  *
  * @param apiUrl
  * @param options
- * @param isAdmin
- * @param isTest
+ * @param isAdmin (비워두어도 됨) admin 으로 요청하고 싶을 때 true
+ * @param isTest (비워두어도 됨) next서버로 테스트하고 싶을 때 true
  * @returns
  */
 const useFetch = <T>(
@@ -44,7 +44,7 @@ const useFetch = <T>(
       }
     };
     loadData();
-  }, [apiUrl, isAdmin, isTest]);
+  }, [apiUrl]);
 
   console.log("[useFetch.ts] data?", data);
 

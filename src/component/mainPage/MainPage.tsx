@@ -22,7 +22,7 @@ const MainPage = () => {
   return (
     <>
       <MainNavBar mode={"mypage"} />
-      <Container $bgColor={`${tokens.colors.simple.primary}`} $height={"90vh"}>
+      <Container $bgColor={`${tokens.colors.simple.primary}`} $height={"100vh"}>
         <FirstSectionMain />
       </Container>
     </>

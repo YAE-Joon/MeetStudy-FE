@@ -9,12 +9,7 @@ const {
   // InnerContainer,
   // CategoryNav,
   //StudyRoomCategories,
-  SearchResultSection,
   SearchBarWarpper,
-  InputContainer,
-  SearchResultContainer,
-  HamburgerIcon,
-  CategoryTitleWrapper,
 } = StyledStudyRoomIndex;
 
 import dt from "@/lib/designToken/designTokens";
@@ -58,20 +53,23 @@ const board = () => {
     <>
       <SearchBarWarpper>
         <Title
-          htype={3}
-          align={"left"}
-          content={"게시판입니다"}
-          color={tokens.colors.simple.blackbasic}
-          fontSize={tokens.fontSize.web.medium}
-        />
+          $htype={3}
+          $align={"left"}
+          $color={tokens.colors.simple.blackbasic}
+          $fontSize={tokens.fontSize.web.medium}
+        >
+          스터디룸 게시판
+        </Title>
       </SearchBarWarpper>
-      <div className="w-full">
-        <Board
-          title="정보공유 게시판"
-          posts={test}
-          popularPosts={popularPosts}
-          categories={testcategories}
-        />
+      <div style={{ height: "100%" }}>
+        <div className="w-full">
+          <Board
+            title="정보공유 게시판"
+            posts={test}
+            popularPosts={popularPosts}
+            categories={testcategories}
+          />
+        </div>
       </div>
     </>
   );

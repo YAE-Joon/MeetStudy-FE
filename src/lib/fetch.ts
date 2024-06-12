@@ -22,7 +22,7 @@ async function fetchDataBE(
   isTest: boolean | null = null
 ) {
   const apiPath = getApiPath(apiUrl, isTest);
-  const headers = {
+  const headers: HeadersInit = {
     "Content-Type": "application/json",
     ...options.headers,
   };
@@ -55,25 +55,44 @@ async function fetchDataBE(
     `🙆‍♂️ [fetchDataBE] fetch를 시작합니다. 요청받은 옵션: apiUrl:${apiUrl} | options:${options} | isAdmin:${isAdmin} | isTest:${isTest}`
   );
 
-  const response = await fetch(apiPath, {
-    method: options.method || "GET",
-    body: options.body ? JSON.stringify(options.body) : null,
-    headers: headers,
-  }); //fetch 함수의 응답 객체,
+  try {
+    const response = await fetch(apiPath, {
+      method: options.method || "GET",
+      body: options.body ? JSON.stringify(options.body) : null,
+      headers: headers,
+    });
 
-  console.log(
-    "🙆‍♂️ [fetchDataBE] fetch가 종료되었습니다. 상태: ",
-    response.status
-  );
+    console.log(
+      "🙆‍♂️ [fetchDataBE] fetch가 종료되었습니다. 상태: ",
+      response.status
+    );
 
-  if (!response.ok) {
-    const errorMessage = await response.text();
-    throw new Error(`❗데이터 패칭에 실패하였습니다: ${errorMessage}`);
+    if (!response.ok) {
+      const errorMessage = await response.text();
+      throw new Error(`❗response is not OK: ${errorMessage}`);
+    }
+
+    //check response body
+    const contentLength = response.headers.get("Content-Length");
+    const contentType = response.headers.get("Content-Type");
+
+    if (
+      contentLength !== "0" &&
+      contentType &&
+      contentType.includes("application/json")
+    ) {
+      const fetchedData = await response.json();
+      console.log("🙆‍♂️ [fetchDataBE] 최종 데이터 ", fetchedData);
+      return fetchedData;
+    }
+    console.log(
+      "🙆‍♂️ [fetchDataBE] req.body가 비어있습니다! 빈 객체를 반환합니다."
+    );
+    return {};
+  } catch (error) {
+    console.error("❗데이터 패칭 중 오류가 발생했습니다:", error);
+    throw error;
   }
-  const fetchedData = await response.json(); // JSON으로 파싱된 응답 데이터
-  //console.log("🙆‍♂️ 데이터를 가져왔습니다!", apiPath, "/", fetchedData);
-
-  return fetchedData;
 }
 
 export default fetchDataBE;
