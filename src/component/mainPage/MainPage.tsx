@@ -16,19 +16,24 @@ import { useEffect } from "react";
 
 const tokens = dt.DesignTokenVarNames;
 
-const { SectionContainerH, SectionContainerV, PartContainerV, PartContainerH } =
-  MainStyledPack;
+const {
+  SectionContainerH,
+  SectionContainerV,
+  PartContainerV,
+  PartContainerH,
+  MainWrapper,
+} = MainStyledPack;
 
 const MainPage = () => {
   //일정과 내가 참가한 스터디룸 목록
   //내가 스크렙한 게시글들 같은 거
 
   useEffect(() => {
-    const alertMessage = Cookies.get("alretMessage");
+    const alertMessage = Cookies.get("alertMessage");
     console.log("alertMessage?", alertMessage);
     if (alertMessage !== undefined) {
       alert(alertMessage);
-      Cookies.remove("alretMessage");
+      Cookies.remove("alertMessage");
     }
   }, []);
   return (
@@ -45,16 +50,14 @@ const MainPage = () => {
 function FirstSectionMain() {
   return (
     <>
-      <Wrapper>
-        <SectionContainerH>
-          <PartContainerV>
-            <MyCalendar />
-          </PartContainerV>
-          <PartContainerV>
-            <MyStudyRooms />
-          </PartContainerV>
-        </SectionContainerH>
-      </Wrapper>
+      <MainWrapper>
+        <PartContainerV>
+          <MyCalendar />
+        </PartContainerV>
+        <PartContainerV>
+          <MyStudyRooms />
+        </PartContainerV>
+      </MainWrapper>
     </>
   );
 }

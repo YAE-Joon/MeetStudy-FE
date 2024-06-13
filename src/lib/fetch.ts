@@ -22,14 +22,17 @@ async function fetchDataBE(
   const headersWithToken = setTokenIntoHeader(initialHeaders, token);
 
   try {
+    // console.log(
+    //   `🙆‍♂️ [fetchDataBE] fetch를 시작합니다. 요청받은 옵션: \napiUrl: ${apiUrl} \nmethod: ${
+    //     options.method || "GET"
+    //   } \nheaders: ${JSON.stringify(headersWithToken, null, 2)} \nbody: ${
+    //     typeof options.body === "object"
+    //       ? JSON.stringify(options.body, null, 2)
+    //       : options.body
+    //   }`
+    // );
     console.log(
-      `🙆‍♂️ [fetchDataBE] fetch를 시작합니다. 요청받은 옵션: \napiUrl: ${apiUrl} \nmethod: ${
-        options.method || "GET"
-      } \nheaders: ${JSON.stringify(headersWithToken, null, 2)} \nbody: ${
-        typeof options.body === "object"
-          ? JSON.stringify(options.body, null, 2)
-          : options.body
-      }`
+      `🙆‍♂️ [fetchDataBE] fetch를 시작합니다. 요청받은 옵션: \napiUrl: ${apiUrl}`
     );
 
     const response = await fetch(apiPath, {
@@ -92,8 +95,6 @@ function setTokenIntoHeader(
   } else {
     console.log("🙆‍♂️ [fetchDataBE] Authorization 헤더가 존재하지 않습니다.");
   }
-
-  console.log("headers 너 뭐야", headers);
 
   return headers;
 }

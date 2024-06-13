@@ -56,7 +56,7 @@ const getApiPath = (path: string, isNextTest: boolean | null = null) => {
   const baseUrl = buildBaseUrl(isNextTest);
   const endPoint = path;
   const res = `${baseUrl}${endPoint}`;
-  console.log("최종 API path:", res);
+  //console.log("최종 API path:", res);
   return res;
 };
 export default getApiPath;

@@ -10,6 +10,7 @@ import {
 import { StyledProps } from "@/component/styled-components/styledProps";
 import { Description } from "@/component/styled-components/TextBoxes";
 import { Container } from "@/component/styled-components/Container";
+import Link from "next/link";
 
 const tokens = dt.DesignTokenVarNames;
 const mobileWidth = dt.DesignTokenExcept.media.mobile;
@@ -395,9 +396,45 @@ const MainTableWrapper = styled.div`
   overflow: auto;
 `;
 
+export const MainWrapper = styled.section`
+  display: flex;
+  flex-direction: "column";
+  justify-content: space-between;
+  align-items: center;
+
+  min-height: 100%;
+  width: 80%;
+  min-width: var(${tokens.boxSizes.width.wrapperMax});
+  padding: 1.5rem;
+
+  & > * {
+    flex: 1 1 50%;
+    max-width: 50%;
+  }
+
+  @media only screen and (max-width: ${mobileWidth}) {
+    grid-template-columns: 1fr;
+    margin-bottom: 120px;
+    min-width: var(${tokens.boxSizes.width.wrapperMinMobile});
+    text-align: center;
+  }
+`;
+
+const StyledLink = styled(Link)`
+  text-decoration: none;
+  color: inherit;
+  transition: color 0.3s, font-weight 0.3s;
+
+  &:hover {
+    color: green;
+    font-weight: bold;
+  }
+`;
+
 export const StyledStudyRoomsPack = {
   MyStudyRoomsContainer,
   MainTableWrapper,
+  StyledLink,
 };
 
 export const StyledCalendarPack = {
@@ -425,5 +462,6 @@ const MainStyledPack = {
   MainTitleWrapper,
   ErrorBox,
   StyledDescription,
+  MainWrapper,
 };
 export default MainStyledPack;

@@ -24,7 +24,6 @@ const StyledTable = styled.table`
 const StyledTableHeader = styled.thead``;
 const StyledTableRow = styled.tr``;
 const StyledTableHead = styled.th`
-  cursor: pointer;
   padding: 0.75rem;
   text-align: left;
   border-bottom: 1px solid #e5e7eb;

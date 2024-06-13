@@ -4,6 +4,8 @@ import { isLoggedIn } from "@/lib/middlewares";
 import { getUserInfoFromToken } from "@/util/getUserInfo";
 import { NextRequest, NextResponse } from "next/server";
 import { StudyRoom } from "@/types/StudyRoom";
+// 미들웨어의 req는 제각각의 클라이언트에게서 받는 요청이다.
+// 미들웨어가 return 하는 건 제각각의 클라이언트 입장에서는 request.
 export async function middleware(req: NextRequest) {
   const matchedPath = req.nextUrl.pathname;
   const response = NextResponse.next();

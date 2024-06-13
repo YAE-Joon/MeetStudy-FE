@@ -8,7 +8,7 @@ import StudyRoomPage from "@/app/studyrooms/StudyRoomPage";
 async function GetCategories() {
   try {
     const token = getTokenByServer();
-    console.log("[스터디룸 목록] token?", token);
+    //console.log("[스터디룸 목록] token?", token);
     const loadData = await fetchDataBE(apiPaths.category.public, {}, token);
     return { categories: loadData, error: null };
   } catch (err) {

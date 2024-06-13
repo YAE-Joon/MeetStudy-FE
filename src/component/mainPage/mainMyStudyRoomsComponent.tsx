@@ -30,7 +30,9 @@ const {
 } = StyledStudyRoomIndex;
 import StyledAdminUserPage from "@/app/admin/UserStyled";
 import { processDateTime } from "@/util/dateUtilsFinal";
-const { MyStudyRoomsContainer, MainTableWrapper } = StyledStudyRoomsPack;
+import Link from "next/link";
+const { MyStudyRoomsContainer, MainTableWrapper, StyledLink } =
+  StyledStudyRoomsPack;
 const {
   Header,
   TableWrapper,
@@ -97,7 +99,15 @@ const MyStudyRooms = () => {
           },
           token
         );
+        const removedStudyRoomData: StudyRoom[] =
+          myStudyRoomsData?.filter(
+            (studyroom) => studyroom.id !== studyRoomId
+          ) ?? [];
+        const result =
+          removedStudyRoomData.length === 0 ? [] : removedStudyRoomData;
         alert("스터디룸 탈퇴완료!");
+        setmyStudyRoomsData(result);
+
         return response;
       } catch (error) {
         console.error("스터디룸 탈퇴 중 오류 발생", error);
@@ -110,7 +120,7 @@ const MyStudyRooms = () => {
   if (loading) {
     return <MainSkleton />;
   }
-  const tableHeadList = ["스터디명", "생성일", "한줄설명"];
+  const tableHeadList = ["스터디명", "가입일", "관리"];
 
   console.log(
     "????????????? myStudyRoomsData ???????????????",
@@ -127,6 +137,7 @@ const MyStudyRooms = () => {
       </Title>
       <div
         style={{
+          width: "100%",
           height: "100%",
           display: "flex",
           flexDirection: "row-reverse",
@@ -157,13 +168,23 @@ const MyStudyRooms = () => {
                 {myStudyRoomsData.map((room) =>
                   room.id !== undefined ? (
                     <StyledTableRow key={room.id}>
-                      <StyledTableCell>{room.title}</StyledTableCell>
+                      <StyledTableCell>
+                        <StyledLink href={`/studyrooms/${room.id}`}>
+                          {room.title}{" "}
+                        </StyledLink>
+                      </StyledTableCell>
                       <StyledTableCell>
                         {processDateTime(room.createdDate).formattedDate}
                       </StyledTableCell>
-                      <StyledTableCell>{room.description}</StyledTableCell>
+                      {/* <StyledTableCell>{room.description}</StyledTableCell> */}
                       <StyledTableCell>
-                        <QuitButton onClick={() => handleRemove(room?.id)}>
+                        <QuitButton
+                          onClick={() =>
+                            room.id !== undefined
+                              ? handleRemove(room.id)
+                              : alert("오류 발생")
+                          }
+                        >
                           삭제
                         </QuitButton>
                       </StyledTableCell>
