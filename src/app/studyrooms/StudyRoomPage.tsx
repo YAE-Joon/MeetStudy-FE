@@ -18,6 +18,8 @@ import {
   FlexContainerFull,
 } from "@/component/styled-components/Container";
 import ChatStyled from "@/app/studyrooms/[id]/chatRoom/[chatId]/chatStyled";
+import { getUserFromToken } from "@/util/getUserFromToken";
+import getTokenByClient from "@/util/getTokenByClient";
 
 const { Announcement } = ChatStyled;
 const tokens = dt.DesignTokenVarNames;
@@ -31,6 +33,8 @@ const {
 
 const StudyRoomPage = ({ categories }: { categories: CategoriyOptions[] }) => {
   console.log("[studyrooms] 가 랜더링되었습니다.");
+
+  // 참가중 태그를 위해 유저 정보를 불러옴
   const [myEmail, mailError, loading] = useFetchUserInfo<string>("email");
   // 스터디룸 목록을 불러옵니다.
   const [studyRooms, error] = useFetch<StudyRoom[]>(

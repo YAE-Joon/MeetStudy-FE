@@ -1,3 +1,4 @@
+// not use
 "use client";
 import { useState } from "react";
 
@@ -12,6 +13,7 @@ import { Title } from "@/component/styled-components/TextBoxes";
 import Loading from "@/component/Loading/Loading";
 import { Container } from "@/component/styled-components/Container";
 import { StudyRoom } from "@/types/StudyRoom";
+import getTokenByClient from "@/util/getTokenByClient";
 
 const tokens = dt.DesignTokenVarNames;
 const {
@@ -37,21 +39,21 @@ const AdminCategories = () => {
   );
 
   const handleRemove = async (userId: number) => {
-    if (confirm("정말로 이 스터디룸을 삭제하시겠습니까?")) {
+    if (confirm("정말로 이 카테고리를 삭제하시겠습니까?")) {
       try {
+        const token = getTokenByClient();
         const response = await fetchDataBE(
           apiPaths.admin.rmStudyRoom(userId),
           {
             method: "DELETE",
           },
-          true,
-          false
+          token
         );
-        alert("스터디룸 삭제 완료!");
+        alert("카테고리 삭제 완료!");
         return response;
       } catch (error) {
-        console.error("스터디룸 삭제 중 오류 발생", error);
-        alert("스터디룸 삭제 중 오류 발생!");
+        console.error("카테고리를 삭제 중 오류 발생", error);
+        alert("카테고리 삭제 중 오류 발생!");
         throw error;
       }
     }
@@ -84,12 +86,12 @@ const AdminCategories = () => {
         <Container>
           <Header>
             <Title $color={tokens.colors.simple.blackbasic}>
-              스터디룸 리스트
+              카테고리를 리스트
             </Title>
           </Header>
           {AllStudyRooms === null || AllStudyRooms.length === 0 ? (
             <>
-              <div>스터디룸이 존재하지 않습니다.</div>
+              <div>카테고리를이 존재하지 않습니다.</div>
             </>
           ) : (
             <>
@@ -110,9 +112,9 @@ const AdminCategories = () => {
                         <StyledTableCell>{room.createdDate}</StyledTableCell>
                         <StyledTableCell>{room.userCapacity}</StyledTableCell>
                         <StyledTableCell>
-                          <QuitButton onClick={() => handleRemove(room.id)}>
+                          {/* <QuitButton onClick={() => handleRemove(room.id)}>
                             삭제
-                          </QuitButton>
+                          </QuitButton> */}
                         </StyledTableCell>
                       </StyledTableRow>
                     ))}

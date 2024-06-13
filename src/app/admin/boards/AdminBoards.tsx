@@ -57,6 +57,7 @@ const AdminBoards = () => {
           },
           token
         );
+        console.log("response", response);
         alert("게시글 삭제 완료!");
         const remainBoardData =
           AllBoardPosts?.filter((post) => post.id !== postId) || [];

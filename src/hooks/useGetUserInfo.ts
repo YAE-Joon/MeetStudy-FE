@@ -2,12 +2,15 @@
 import { useState, useEffect } from "react";
 import getTokenByClient from "@/util/getTokenByClient";
 import { getUserInfoFromToken } from "@/util/getUserInfo";
+import { getUserFromToken } from "@/util/getUserFromToken";
 /**
  *
  * @param requiredFields
  * @returns [myData, error, loading]
  */
-const useFetchUserInfo = <T>(requiredFields: string[] | string) => {
+const useFetchUserInfo = <T extends string | object>(
+  requiredFields: string[] | string
+) => {
   const [myData, setMyData] = useState<T | null>(null);
   const [error, setError] = useState<Error | null>(null);
   const [loading, setLoading] = useState(true);
@@ -16,11 +19,15 @@ const useFetchUserInfo = <T>(requiredFields: string[] | string) => {
     const loadData = async () => {
       try {
         const token = getTokenByClient();
+        const userAuth = getUserFromToken(token);
+        if (userAuth?.auth === "ADMIN") {
+          setMyData("ADMIN" as T); // 타입 단언
+        }
         console.log(
           "useGetUserInfo에서 데이터를 호출합니다: apiUrl, requiredFields, token",
-          requiredFields,
-          token
+          requiredFields
         );
+
         const data = await getUserInfoFromToken(token, requiredFields);
         setMyData(data);
       } catch (err) {

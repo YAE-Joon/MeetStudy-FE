@@ -27,3 +27,10 @@ export interface UserProfile {
   password: string;
   interests: Category[];
 }
+
+export interface UserPayload {
+  auth: string;
+  exp: number;
+  sub: string;
+  username: string;
+}

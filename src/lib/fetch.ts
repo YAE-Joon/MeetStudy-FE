@@ -94,6 +94,10 @@ function setTokenIntoHeader(
     throw new Error(`Token 을 확인해주세요 | token: ${token}`);
   }
 
+  if (token === "public") {
+    return headers;
+  }
+
   headers["Authorization"] = `Bearer ${token}`;
 
   // 헤더 체크

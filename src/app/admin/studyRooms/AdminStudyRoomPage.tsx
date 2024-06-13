@@ -38,7 +38,7 @@ const AdminStudyRooms = () => {
   );
 
   const handleRemove = async (roomId: number) => {
-    if (confirm("정말로 이 카테고리를 삭제하시겠습니까?")) {
+    if (confirm("[⚠️]정말로 이 스터디룸을 삭제하시겠습니까?")) {
       const token = getTokenByClient();
       try {
         const response = await fetchDataBE(
@@ -48,14 +48,14 @@ const AdminStudyRooms = () => {
           },
           token
         );
-        alert("카테고리 삭제 완료!");
+        alert("[📢] 카테고리 삭제 완료!");
         const remainData =
           AllStudyRooms?.filter((room) => room.id !== roomId) || [];
         setStudyRooms(remainData);
         return response;
       } catch (error) {
-        console.error("카테고리 삭제 중 오류 발생", error);
-        alert("카테고리 삭제 중 오류 발생!");
+        console.error("[❌] 스터디룸 삭제 중 오류 발생", error);
+        alert("[❌] 스터디룸 삭제 중 오류 발생!");
         throw error;
       }
     }
@@ -88,12 +88,12 @@ const AdminStudyRooms = () => {
         <Container>
           <Header>
             <Title $color={tokens.colors.simple.blackbasic}>
-              카테고리 리스트
+              스터디룸 리스트
             </Title>
           </Header>
           {AllStudyRooms === null || AllStudyRooms.length === 0 ? (
             <>
-              <div>카테고리가 존재하지 않습니다.</div>
+              <div>스터디룸이 존재하지 않습니다.</div>
             </>
           ) : (
             <>
