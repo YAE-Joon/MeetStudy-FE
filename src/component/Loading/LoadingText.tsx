@@ -1,28 +1,30 @@
 "use client";
 import styled, { keyframes } from "styled-components";
-
+import dt from "@/lib/designToken/designTokens";
+const tokens = dt.DesignTokenVarNames;
 const fadeInOut = keyframes`
   0%, 100% {
     opacity: 0;
   }
-  50% {
+  25%, 75% {
     opacity: 1;
   }
 `;
 
 const TextSpan = styled.span<{ $delay: number }>`
   display: inline-block;
-  animation: ${fadeInOut} 1.5s infinite;
+  animation: ${fadeInOut} 2s infinite;
   animation-delay: ${(props) => props.$delay}s;
 `;
 
 const Wrapper = styled.div`
   white-space: pre;
-  font-size: 15px;
+  font-size: var(${tokens.fontSize.web.medium});
+  color: var(${tokens.colors.simple.primary});
 `;
 
 const LoadingTextComponent = () => {
-  const text = "데이터를 불러오고 있습니다...";
+  const text = "■ ■ ■ ■ ■ ■ ■ ■ ■ ■";
   return (
     <Wrapper>
       {text.split("").map((char, index) => (

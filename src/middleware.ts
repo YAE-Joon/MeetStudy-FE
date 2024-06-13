@@ -21,6 +21,11 @@ export async function middleware(req: NextRequest) {
 
   /** 스터디룸 하위 페이지 진입 금지 */
   if (req.nextUrl.pathname.startsWith("/studyrooms/")) {
+    const regex = /^\/studyrooms\/\d+$/;
+
+    if (regex.test(req.nextUrl.pathname)) {
+      return response;
+    }
     // 로그인 상태를 확인한다.
     const token = req.cookies.get("accessToken")?.value;
     if (!token) {

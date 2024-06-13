@@ -53,6 +53,11 @@ export function setTimeStrFinal(time: string) {
 
 // 전체 문자열 처리 함수
 export function processDateTime(input: string) {
+  if (input == "") {
+    const formattedDate = "NULL";
+    const formattedTime = "NULL";
+    return { formattedDate, formattedTime };
+  }
   const [datePart, timePart] = input.split(" ");
 
   const formattedDate = setDateStrFinal(datePart.replaceAll(".", ""));

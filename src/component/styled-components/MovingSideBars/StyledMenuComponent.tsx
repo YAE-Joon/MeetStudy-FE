@@ -12,9 +12,7 @@ const NavigationContainer = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
-  /* position: relative; // 추가: CategoryNavigation의 위치를 상위 div 안에서 설정하기 위해 relative로 변경 */
-
-  padding: 1rem 0 1rem 1rem;
+  justify-content: flex-start;
 
   @media only screen and (max-width: ${mobileWidth}) {
     text-align: center;

@@ -11,8 +11,10 @@ import { Container } from "@/component/styled-components/Container";
 import { Title } from "@/component/styled-components/TextBoxes";
 import { TitleWrapper } from "@/component/styled-components/TextBoxes";
 import StyledAccounts from "@/app/myAccount/myAccountClientComponents";
-import ManageStudyRoom from "@/app/studyrooms/[id]/admin/EditSection";
-
+import ManageStudyRoom from "@/app/studyrooms/[id]/admin/ManageStudyRoom";
+import StyledStudyRoomIndex from "@/app/studyrooms/StudyRoomIndexClientComponents";
+const { SearchBarWarpperH } = StyledStudyRoomIndex;
+import { FlexBoxV } from "@/component/styled-components/FlexBoxes";
 const { PartContainerV } = StyledAccounts;
 
 const tokens = dt.DesignTokenVarNames;
@@ -27,33 +29,33 @@ const AdminStudyRoom = () => {
     {}
   );
 
-  if (error) {
-    return <div>Error: {error.message}</div>;
-  }
-
-  if (!studyRoomData) {
-    return <div>로딩중</div>;
-  }
-
   return (
     <>
-      <Container $width={"100%"} $minWidth={"600px"}>
+      <SearchBarWarpperH>
         {/* <FlexBoxV $justifyContent={"center"}> */}
-        <TitleWrapper>
-          <Title
-            $htype={2}
-            $align={"left"}
-            $color={tokens.colors.simple.blackbasic}
-            $fontSize={tokens.fontSize.web.large}
-          >
-            스터디룸 관리
-          </Title>
-        </TitleWrapper>
+
+        <Title
+          $htype={2}
+          $align={"left"}
+          $color={tokens.colors.simple.blackbasic}
+          $fontSize={tokens.fontSize.web.large}
+        >
+          스터디룸 관리
+        </Title>
+      </SearchBarWarpperH>
+
+      <FlexBoxV
+        // $padding={"0.5rem 0.5rem 0 0"}
+        $width={"100%"}
+        $height={"70vh"}
+      >
+        {" "}
         <PartContainerV>
-          <ManageStudyRoom initialData={studyRoomData} roomId={roomId} />
+          {studyRoomData ? (
+            <ManageStudyRoom initialData={studyRoomData} roomId={roomId} />
+          ) : null}
         </PartContainerV>
-        {/* </FlexBoxV> */}
-      </Container>
+      </FlexBoxV>
     </>
   );
 };

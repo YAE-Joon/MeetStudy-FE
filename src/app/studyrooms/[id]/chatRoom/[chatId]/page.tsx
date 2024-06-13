@@ -78,7 +78,8 @@ export default function ChatRoom() {
           chatRoomId
         )}?cursor=${-1}`;
         const response = await fetchDataBE(apiUrl, {}, token);
-        const fetchedNearRecords = [...response.content].reverse(); //copy !
+        //const fetchedNearRecords = [...response.content].reverse(); //copy !
+        const fetchedNearRecords = response.content;
         const newCursor = response.pageable.cursor;
 
         if (fetchedNearRecords.length === 0) {

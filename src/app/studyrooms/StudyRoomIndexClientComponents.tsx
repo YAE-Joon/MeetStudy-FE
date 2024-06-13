@@ -104,13 +104,12 @@ const SearchBarWarpperH = styled(FlexBoxH)`
   width: 100%;
 
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
 
-  padding: 0.5rem 0 1rem 1rem;
-  margin-bottom: 1rem;
-
-  gap: 200px;
+  //padding: 0.5rem 0 1rem 1rem;
+  margin-left: 1rem;
+  margin-right: 1rem;
 
   //background-color: red;
 
@@ -129,6 +128,7 @@ const SearchBarWarpperH = styled(FlexBoxH)`
 
     min-width: 400px;
   }
+  border-bottom: 1px solid rgba(128, 128, 128, 0.5);
 `;
 
 const StyledInputContainer = styled.div`

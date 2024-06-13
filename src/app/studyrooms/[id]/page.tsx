@@ -1,5 +1,4 @@
 "use client";
-import { useState } from "react";
 import Image from "next/image";
 
 import useFetch from "@/hooks/useFetch";
@@ -9,7 +8,6 @@ import { StudyRoomTableData } from "@/types/StudyRoom";
 
 import { ImageWrapper } from "@/component/ImageConainer";
 import { StudyRoom } from "@/types/StudyRoom";
-import { Description } from "@/component/styled-components/TextBoxes";
 
 import titleImg from "../../../../public/images/1. landing-01.png";
 import dt from "@/lib/designToken/designTokens";

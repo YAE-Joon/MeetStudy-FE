@@ -35,10 +35,6 @@ export const InnerContainer = styled(FlexBoxH)`
       height: 20%;
       max-width: none;
       margin-bottom: 1rem;
-      /* flex-grow: 2;
-      max-width: 20%;
-      height: 100vh;
-      overflow: auto; */
 
       height: auto;
     }

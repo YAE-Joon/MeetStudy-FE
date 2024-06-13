@@ -10,6 +10,7 @@ import { SiNaver } from "react-icons/si";
 import { RiKakaoTalkFill } from "react-icons/ri";
 import LoadingTextComponent from "@/component/Loading/LoadingText";
 import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
 
 export default function NavBar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -18,6 +19,8 @@ export default function NavBar() {
   const [password, setPassword] = useState("");
   const [loginError, setLoginError] = useState("");
   const { data, status } = useSession();
+
+  const router = useRouter();
 
   if (status === "loading") {
     //로딩 상태일 때에는 아무것도 보이지 않기
@@ -119,6 +122,7 @@ export default function NavBar() {
                 onClick={() => {
                   Cookies.remove("accessToken");
                   signOut();
+                  router.push("/landing");
                 }}
               >
                 로그아웃
@@ -175,6 +179,7 @@ export default function NavBar() {
               <button
                 type="button"
                 onClick={() => {
+                  alert("로그아웃 되었습니다.");
                   signOut();
                   setIsOpen(false);
                 }}
@@ -188,7 +193,6 @@ export default function NavBar() {
                 onClick={() => {
                   setIsModalOpen(true);
                   setIsOpen(false);
-                  alert("로그아웃 되었습니다.");
                 }}
                 className="navbar__list--item--mobile text-left"
               >

@@ -1,6 +1,7 @@
 "use client";
 import styled from "styled-components";
 import dt from "@/lib/designToken/designTokens";
+import { BasicButton } from "@/component/styled-components/Button/Buttons";
 const tokens = dt.DesignTokenVarNames;
 const MemberItem = styled.li`
   list-style: none;
@@ -15,17 +16,24 @@ const MemberItem = styled.li`
   }
 `;
 
-const RemoveButton = styled.button`
-  margin-left: 0.5rem;
-  padding: 0.1rem;
+export const RemoveButton = styled(BasicButton)`
+  box-sizing: border-box;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+
+  padding: 0.5rem;
+  margin: auto 0;
+
   background-color: var(${tokens.colors.simple.invalidred});
   color: white;
-  border: none;
+
   border-radius: 3px;
-  cursor: pointer;
 
   &:hover {
-    background-color: darkred;
+    background-color: var(${tokens.colors.simple.invalidred});
   }
 `;
 

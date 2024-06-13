@@ -62,13 +62,11 @@ export const SubmitButtons = styled(BasicButton)`
   align-items: center;
   text-align: center;
 
-  height: 100%;
-
-  padding: 0 1rem;
+  padding: 0.5rem;
   margin: auto 0;
 
   background-color: var(${tokens.colors.simple.tertiarygray});
-  border: 0.5px solid var(${tokens.colors.simple.primary});
+  /* border: 0.5px solid var(${tokens.colors.simple.primary}); */
   border-radius: 3px;
 
   &:hover {

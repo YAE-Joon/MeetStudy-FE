@@ -56,7 +56,7 @@ const Button = styled.button`
     background-color: #2563eb;
   }
 `;
-const QuitButton = styled.button`
+export const QuitButton = styled.button`
   padding: 0.2rem 0.2rem;
   border: none;
   border-radius: 0.25rem;
