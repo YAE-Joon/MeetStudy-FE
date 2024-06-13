@@ -8,6 +8,7 @@ import { signIn } from "next-auth/react";
 import { AiOutlineGoogle } from "react-icons/ai";
 import { SiNaver } from "react-icons/si";
 import { RiKakaoTalkFill } from "react-icons/ri";
+import LoadingTextComponent from "@/component/Loading/LoadingText";
 
 export default function NavBar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -17,7 +18,24 @@ export default function NavBar() {
   const [loginError, setLoginError] = useState("");
   const { data, status } = useSession();
 
-  console.log(data);
+  if (status === "loading") {
+    //로딩 상태일 때에는 아무것도 보이지 않기
+    return (
+      <div className="navbar">
+        <Link href="/" className="navbar__logo">
+          <img
+            alt="로고 이미지"
+            width={200}
+            height={40}
+            src="/images/logo.png"
+          />
+        </Link>
+        <div className="navbar__list">
+          <LoadingTextComponent />
+        </div>
+      </div>
+    );
+  }
 
   const handleModalClose = () => {
     setIsModalOpen(false);
@@ -45,8 +63,8 @@ export default function NavBar() {
 
       // 여기에서 로그인에 성공한 경우 처리할 코드 작성
       // 성공 시 로그인 세션 등을 처리할 수 있습니다.
-      console.log("로그인 성공!");
-      console.log(response);
+      //console.log("로그인 성공!");
+      //console.log(response);
       const responseData = await response.json();
 
       // accessToken과 accessTokenExpireTime 값을 가져옵니다.

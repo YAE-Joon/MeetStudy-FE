@@ -3,24 +3,21 @@
 //🙆‍♂️ 클라이언트
 //🙆 백엔드 서버
 // sending: 🙆‍♂️->🙆, received: 🙆->🙆‍♂️
-import { useState, useRef, useEffect, ChangeEvent } from "react";
-
+import { useState, useRef, useEffect } from "react";
 import { apiPaths } from "@/config/api";
 import fetchDataBE from "@/lib/fetch";
+import getTokenByClient from "@/util/getTokenByClient";
+import useFetchUserInfo from "@/hooks/useGetUserInfo";
 import useWebSocket from "@/webSocket/client";
+import { getChatRoomId } from "@/app/studyrooms/studyroomSub";
 
 import { SendingChatMessage, ReceivedChatMessage } from "@/types/Chatroom";
 import { ChatRecordsResponse } from "@/types/Chat";
-import { getChatRoomId } from "@/app/studyrooms/studyroomSub";
 
 import { ChatTextArea } from "@/app/studyrooms/[id]/chatRoom/[chatId]/ChatTextArea";
 import ChatStyled from "@/app/studyrooms/[id]/chatRoom/[chatId]/chatStyled";
-
 import { checkEnterOrExitFromMessages } from "@/util/checkChatText";
-import { fetchData } from "next-auth/client/_utils";
-import useFetch from "@/hooks/useFetch";
-import useFetchUserInfo from "@/hooks/useGetUserInfo";
-import getTokenByClient from "@/util/getTokenByClient";
+
 const {
   ChatRoomMain,
   MessageContainer,

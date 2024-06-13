@@ -35,9 +35,9 @@ const {
 } = MainStyledPack;
 
 const { Date } = StyledCalendarPack;
+
 export const MainNavBar = ({ mode }: { mode?: string }) => {
   const { data: session, status } = useSession();
-  console.log(session);
   const isLoggedIn = status === "authenticated";
   const [userNickName, setUserNickName] =
     useState("밋스터디에 오신걸 환영합니다.");
