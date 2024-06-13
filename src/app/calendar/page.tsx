@@ -299,11 +299,11 @@ export default function ReactBigCalendar() {
             style={{ height: "100vh" }}
             onSelectEvent={(event) =>
               alert(
-                `${event.title} - ${event.content} - ${moment(
+                `${event.title} : ${event.content}\n${moment(
                   event.start
-                ).format("YYYYMMDD HH:mm:ss")} - ${moment(event.end).format(
-                  "YYYYMMDD HH:mm:ss"
-                )}`
+                ).format("YYYY년 MM월 DD일 HH:mm")}\n~ ${moment(
+                  event.end
+                ).format("YYYY년 MM월 DD일 HH:mm")}`
               )
             }
             onSelectSlot={handleSelect}
