@@ -5,7 +5,7 @@ import { ChatRoomInfoProps } from "@/lib/types";
 import dt from "@/lib/designToken/designTokens";
 import PackedStyledChatrooms from "@/app/studyrooms/[id]/chatRoom/StyledChatRoomCompoents";
 import { CreateChatRoom } from "@/app/studyrooms/[id]/chatRoom/CreateNewChatRoom";
-
+import { useState } from "react";
 const {
   ChatRoomContainer,
   ChatRoomCard,
@@ -45,6 +45,8 @@ export const ChatRoomList = ({
   );
 };
 
+// 이렇게 했더니 createChatRoom 이 활성화된 동안 NochatRoom이 길어져서 보임
+
 export const NoChatRoom = ({ roomId }: { roomId: number }) => {
   return (
     <NoChatContainer>
@@ -53,7 +55,7 @@ export const NoChatRoom = ({ roomId }: { roomId: number }) => {
         <NoChatText>
           아직 채팅방을 만들지 않았습니다. 채팅방을 만들어보세요!
         </NoChatText>
-        <CreateChatRoom roomId={roomId} />
+        {/* <CreateChatRoom roomId={roomId} /> */}
       </NoChatCard>
     </NoChatContainer>
   );

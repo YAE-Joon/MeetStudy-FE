@@ -41,6 +41,8 @@ export const CreateChatRoom = ({ roomId }: { roomId: number }) => {
   const [isModalOpen, setIsModalOpen] = useState(false); //모달상태
   const handleModalClose = () => setIsModalOpen(false);
 
+  const router = useRouter();
+
   const initValue = {
     title: "",
     studyRoomId: roomId,
@@ -67,6 +69,8 @@ export const CreateChatRoom = ({ roomId }: { roomId: number }) => {
 
       const result = response;
       alert(`성공적으로 생성하였습니다. ${result}`);
+      setChatRoomSet(initValue);
+      window.location.reload(); // chatroom num을 모름, 새로고침 함
     } catch (error) {
       console.error("❗Error:", error);
       alert(`❗생성 중 오류가 발생하였습니다!${error}`);
@@ -93,7 +97,7 @@ export const CreateChatRoom = ({ roomId }: { roomId: number }) => {
   };
 
   return (
-    <SpanContainer>
+    <span>
       <PrimaryButton
         content={"새 채팅방"}
         onClick={() => setIsModalOpen(true)}
@@ -152,6 +156,6 @@ export const CreateChatRoom = ({ roomId }: { roomId: number }) => {
           </Modal>
         </div>
       )}
-    </SpanContainer>
+    </span>
   );
 };

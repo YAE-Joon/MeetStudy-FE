@@ -50,12 +50,13 @@ const ChatRoom = () => {
         >
           채팅방
         </Title>
-        {chatRoomList.length !== 0 ? <CreateChatRoom roomId={roomId} /> : null}
+        {/* {chatRoomList.length !== 0 ? <CreateChatRoom roomId={roomId} /> : null} */}
+        <CreateChatRoom roomId={roomId} />
       </SearchBarWarpperH>
       <FlexBoxV
         // $padding={"0.5rem 0.5rem 0 0"}
         $width={"100%"}
-        $height={"100vh"}
+        $height={"80vh"}
       >
         {chatRoomList.length !== 0 ? (
           <ChatRoomList chatRoomList={chatRoomList} />
