@@ -79,7 +79,7 @@ const MyStudyRooms = () => {
         if (err instanceof Error) {
           setError(err);
         } else {
-          setError(new Error("알 수 없는 에러가 발생했습니다."));
+          setError(new Error("[⚠️] 알 수 없는 에러가 발생했습니다."));
         }
       } finally {
         setLoading(false);
@@ -89,11 +89,11 @@ const MyStudyRooms = () => {
   }, [userEmail]);
 
   async function handleRemove(studyRoomId: number) {
-    if (confirm("정말로 이 스터디룸에서 탈퇴하시겠습니까?")) {
+    if (confirm("[⚠️] 정말로 이 스터디룸에서 탈퇴하시겠습니까?")) {
       try {
         const token = getTokenByClient();
         const response = await fetchDataBE(
-          apiPaths.studyrooms.delete(studyRoomId),
+          apiPaths.userStudyrooms.leave(studyRoomId),
           {
             method: "DELETE",
           },
@@ -105,13 +105,13 @@ const MyStudyRooms = () => {
           ) ?? [];
         const result =
           removedStudyRoomData.length === 0 ? [] : removedStudyRoomData;
-        alert("스터디룸 탈퇴완료!");
+        alert("[📢] 스터디룸 탈퇴를 완료하였습니다.");
         setmyStudyRoomsData(result);
 
         return response;
       } catch (error) {
         console.error("스터디룸 탈퇴 중 오류 발생", error);
-        alert("스터디룸 탈퇴 중 오류 발생!");
+        alert("[❌]  스터디룸 탈퇴 중 오류 발생!");
         throw error;
       }
     }

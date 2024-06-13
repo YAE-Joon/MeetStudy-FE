@@ -20,6 +20,7 @@ import { apiPaths } from "@/config/api";
 import getTokenByClient from "@/util/getTokenByClient";
 import { Title, TitleWrapper } from "@/component/styled-components/TextBoxes";
 import useFetch from "@/hooks/useFetch";
+import { useRouter } from "next/navigation";
 
 const { ButtonWrapper, PartContainerV, PageWrapper } = StyledAccounts;
 
@@ -39,6 +40,7 @@ export default function FormForNewStudyRoom({
 }) {
   const [studyRoomInfo, setStudyRoomInfo] = useState<StudyRoom>(initValue);
   const tokens = dt.DesignTokenVarNames;
+  const router = useRouter();
 
   const createNewStudyRoom = async (selectedData: StudyRoom) => {
     const { title, description, userCapacity, category } = selectedData;
@@ -57,9 +59,10 @@ export default function FormForNewStudyRoom({
         token
       );
 
-      const result = await response;
+      const result: StudyRoom = await response;
       console.log("result", result);
       alert("성공적으로 생성하였습니다.");
+      router.push(`/studyrooms`);
     } catch (error) {
       console.error("❗Error:", error);
       alert(`❗생성 중 오류가 발생하였습니다!${error}`);

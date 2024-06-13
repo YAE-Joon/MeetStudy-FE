@@ -28,6 +28,7 @@ export const StyledLink = styled(Link)<StyledButtonProps>`
   text-align: center;
 
   width: 100%;
+  height: 100%;
 
   overflow-wrap: break-word;
   word-break: keep-all;
@@ -46,6 +47,7 @@ export const StyledButton = styled.button<StyledButtonProps>`
   text-align: center;
 
   width: 100%;
+  height: 100%;
 
   overflow-wrap: break-word;
   word-break: keep-all;
@@ -101,6 +103,8 @@ const StyledLinkColorCustomed = styled(StyledLink)`
       }}
     );
 
+  border-radius: 3px;
+  margin: auto 0;
   padding: 0.5rem;
 
   &:hover {

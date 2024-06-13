@@ -45,45 +45,44 @@ export default function StudyRoomdLayout({
   // 유저 이메일을 불러옵니다.
   const [myEmail, setMyEmail] = useFetchUserInfo("email");
 
+  // 스터디룸의 멤버리스트 중 중 나의 정보를 불러옵니다.
+  // 동시에 권한을 확인합니다.
   useEffect(() => {
-    const userAccessControl = studyRoomData?.userStudyRooms?.map((member) => {
-      const { id, joinDate, permission, user } = member;
-      const memberInfo = {
-        id,
-        joinDate,
-        permission,
-        email: user.email,
-      };
-      return {
-        isUserInStudyRooms: memberInfo.email === myEmail,
-        isUserOwner: memberInfo.permission === "OWNER",
-        //isUserOwner: true,
-      };
-    });
-
-    const isMember =
-      userAccessControl?.some((access) => access.isUserInStudyRooms) || false;
-    const isOwner =
-      userAccessControl?.some((access) => access.isUserOwner) || false;
-
-    const userAccecssControl = {
+    let userRole = {
+      isMember: false,
+      isOwner: false,
       isAdmin: false,
-      isOwner,
-      isMember,
     };
+
+    // 입장과 동시에 어드민인지 확인
+    if (myEmail === process.env.NEXT_PUBLIC_ADMIN_EMAIL) {
+      userRole.isAdmin = true;
+      console.log("관리자 계정으로 입장하였습니다.");
+      setUserAccControl(userRole);
+      return;
+    }
+    userRole.isAdmin = false;
+
+    const myPermission =
+      studyRoomData?.userStudyRooms?.find(
+        (member) => member.user.email === myEmail
+      )?.permission || false;
+    userRole.isMember = myPermission ? true : false; //permission이 있다면 member가 맞음.
+    userRole.isOwner = myPermission === "OWNER" ? true : false;
 
     console.log(
       "[🙆 개별 스터디룸에 들어왔습니다. 참가 자격을 확인합니다\n Admin?:",
-      userAccecssControl.isAdmin,
+      userRole.isAdmin,
       "member?",
-      userAccecssControl.isMember,
+      userRole.isMember,
       "owner?",
-      userAccecssControl.isOwner
+      userRole.isOwner
     );
 
-    setUserAccControl(userAccecssControl);
+    setUserAccControl(userRole);
 
-    if (isOwner) {
+    if (userRole.isOwner) {
+      console.log("스터디룸 레이아웃 | 해당 스터디룸의 소유주입니다. ");
       setStudyRoomMenu((prev) => [
         ...prev,
         {
@@ -104,7 +103,11 @@ export default function StudyRoomdLayout({
           title={studyRoomData.title}
           userAccecssControl={userAccessControl}
         />
-        <FlexBoxV $padding={"0.5rem 0 1rem 0.2rem"} $width={"80%"}>
+        <FlexBoxV
+          $padding={"0.5rem 0.5rem 0 0"}
+          $width={"80%"}
+          $justifyContent={"center"}
+        >
           {children}
         </FlexBoxV>
       </InnerContainer>

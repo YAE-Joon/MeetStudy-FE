@@ -130,6 +130,8 @@ const ButtonWrapper = styled.div`
   margin-top: 2rem;
   gap: 1rem;
 
+  align-items: stretch;
+
   //max-width: var(${tokens.boxSizes.width.wrapperMinMobile});
 `;
 
@@ -161,6 +163,14 @@ const DeleteThisUser = styled(BasicButton)`
   }
 `;
 
+interface SpanProp {
+  $width?: string;
+}
+const SpanContainer = styled.span<SpanProp>`
+  width: ${(props) => (props.$width ? props.$width : "150px")};
+  border-radius: 5px;
+`;
+
 const StyledAccounts = {
   PartContainerV,
   PageWrapper,
@@ -168,5 +178,6 @@ const StyledAccounts = {
   FirstSectionUl,
   ButtonWrapper,
   DeleteThisUser,
+  SpanContainer,
 };
 export default StyledAccounts;

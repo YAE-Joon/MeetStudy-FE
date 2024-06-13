@@ -28,7 +28,7 @@ import {
 } from "@/component/styled-components/Forms";
 import StyledAccounts from "@/app/myAccount/myAccountClientComponents";
 
-const { ButtonWrapper, PartContainerV, PageWrapper } = StyledAccounts;
+const { ButtonWrapper, SpanContainer } = StyledAccounts;
 
 import StyledModal from "@/component/styled-components/Modal/ModalStyled";
 const { ModalWrapper, Logo, Title, Divider } = StyledModal;
@@ -57,7 +57,7 @@ export const CreateChatRoom = ({ roomId }: { roomId: number }) => {
     try {
       const token = getTokenByClient();
       const response = await fetchDataBE(
-        apiPaths.studyrooms.create,
+        apiPaths.chatroom.create,
         {
           method: "POST",
           body: newData,
@@ -65,8 +65,8 @@ export const CreateChatRoom = ({ roomId }: { roomId: number }) => {
         token
       );
 
-      const result = await response.json();
-      alert("성공적으로 생성하였습니다.");
+      const result = response;
+      alert(`성공적으로 생성하였습니다. ${result}`);
     } catch (error) {
       console.error("❗Error:", error);
       alert(`❗생성 중 오류가 발생하였습니다!${error}`);
@@ -93,63 +93,65 @@ export const CreateChatRoom = ({ roomId }: { roomId: number }) => {
   };
 
   return (
-    <>
+    <SpanContainer>
       <PrimaryButton
         content={"새 채팅방"}
         onClick={() => setIsModalOpen(true)}
       />
-      <div style={{ width: "100vw", height: "100vh" }}>
-        <Modal isVisible={isModalOpen} onClose={handleModalClose}>
-          <ModalWrapper>
-            <Logo
-              alt="로고 이미지"
-              width={200}
-              height={40}
-              src="/images/large-logo.svg"
-            />
-            <Divider>
-              <span></span>
-            </Divider>
-            <Title>채팅방 생성하기</Title>
-            <Description content={"채팅방을 생성하시겠습니까?"} />
+      {!isModalOpen ? null : (
+        <div style={{ width: "100vw", height: "100vh" }}>
+          <Modal isVisible={isModalOpen} onClose={handleModalClose}>
+            <ModalWrapper>
+              <Logo
+                alt="로고 이미지"
+                width={200}
+                height={40}
+                src="/images/large-logo.svg"
+              />
+              <Divider>
+                <span></span>
+              </Divider>
+              <Title>채팅방 생성하기</Title>
+              <Description content={"채팅방을 생성하시겠습니까?"} />
 
-            <>
-              <BasicForm id="create-new-studyRoom">
-                <BasicFieldRow>
-                  <BasicLabel>채팅방 이름: </BasicLabel>
-                  <BasicInput
-                    type="text"
-                    name="title"
-                    placeholder="이름을 입력해주세요"
-                    value={chatRoomSet.title}
-                    onChange={handleInputChange}
+              <>
+                <BasicForm id="create-new-studyRoom">
+                  <BasicFieldRow>
+                    <BasicLabel>채팅방 이름: </BasicLabel>
+                    <BasicInput
+                      type="text"
+                      name="title"
+                      placeholder="이름을 입력해주세요"
+                      value={chatRoomSet.title}
+                      onChange={handleInputChange}
+                    />
+                  </BasicFieldRow>
+                  <BasicFieldRow>
+                    <BasicLabel>채팅방 공지: </BasicLabel>
+                    <BasicInput
+                      type="text"
+                      name="notice"
+                      placeholder="채팅방의 공지사항을 입력해주세요"
+                      value={chatRoomSet.notice}
+                      onChange={handleInputChange}
+                    />
+                  </BasicFieldRow>
+                </BasicForm>
+                <ButtonWrapper>
+                  <SubmitButtons
+                    content={"생성 완료"}
+                    onClick={handleFormSubmit}
                   />
-                </BasicFieldRow>
-                <BasicFieldRow>
-                  <BasicLabel>채팅방 공지: </BasicLabel>
-                  <BasicInput
-                    type="text"
-                    name="notice"
-                    placeholder="채팅방의 공지사항을 입력해주세요"
-                    value={chatRoomSet.notice}
-                    onChange={handleInputChange}
+                  <PrimaryButton
+                    onClick={() => setChatRoomSet(initValue)}
+                    content={"초기화"}
                   />
-                </BasicFieldRow>
-              </BasicForm>
-              <ButtonWrapper>
-                <SubmitButtons
-                  content={"생성 완료"}
-                  onClick={handleFormSubmit}
-                />
-                <PrimaryButton
-                  onClick={() => setChatRoomSet(initValue)}
-                  content={"초기화"}
-                />
-              </ButtonWrapper>
-            </>
-          </ModalWrapper>
-        </Modal>
-      </div>
-    </>
+                </ButtonWrapper>
+              </>
+            </ModalWrapper>
+          </Modal>
+        </div>
+      )}
+    </SpanContainer>
   );
 };

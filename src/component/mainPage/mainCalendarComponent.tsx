@@ -139,7 +139,6 @@ const MyCalendar = () => {
                 return (
                   <StyledDetails key={userCalendar.id}>
                     <MainTitleWrapper>
-                      <CalDate>{currentPage * itemsPerPage + idx + 1}</CalDate>
                       <CalTitle $color={"#1a202c"}>
                         {userCalendar.title}
                       </CalTitle>
