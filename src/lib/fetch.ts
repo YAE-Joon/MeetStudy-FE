@@ -1,6 +1,10 @@
 import getApiPath from "@/lib/settingUrl";
 import { FetchOptions } from "@/lib/types";
 
+interface CustomError extends Error {
+  status?: number;
+}
+
 /**
  *
  * @param apiUrl
@@ -48,7 +52,12 @@ async function fetchDataBE(
 
     if (!response.ok) {
       const errorMessage = await response.text();
-      throw new Error(`❗response is not OK: ${errorMessage}`);
+      //에러 상태코드도 함께 보내기
+      const error = new Error(
+        `❗response가 OK하지 않음! ${errorMessage}`
+      ) as CustomError;
+      (error as any).status = response.status;
+      throw error;
     }
 
     // Check response body

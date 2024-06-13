@@ -18,6 +18,7 @@ import { Title } from "@/component/styled-components/TextBoxes";
 import Loading from "@/component/Loading/Loading";
 import { Container } from "@/component/styled-components/Container";
 import getTokenByClient from "@/util/getTokenByClient";
+import { useRouter } from "next/navigation";
 
 const tokens = dt.DesignTokenVarNames;
 const {
@@ -43,11 +44,16 @@ const UserPage = () => {
     "관심분야",
   ];
 
-  const [AllUserData, error] = useFetch<AdminUserData[]>(
+  const [AllUserData, error, loading, setUserData] = useFetch<AdminUserData[]>(
     apiPaths.admin.users,
     {}
   );
-  console.log("AllUserData", AllUserData);
+
+  if (error && error.status === 403) {
+    const router = useRouter();
+    alert("[⚠] 관리자가 아닙니다. 메인화면으로 이동합니다.");
+    router.push("/");
+  }
 
   // quit user
   const handleRemove = async (userId: number) => {
@@ -63,6 +69,9 @@ const UserPage = () => {
           token
         );
         alert("회원 강퇴 완료!");
+        const reaminUserData =
+          AllUserData?.filter((userData) => userData.id !== userId) || [];
+        setUserData(reaminUserData);
         return response;
       } catch (error) {
         console.error("회원 탈퇴 중 오류 발생", error);

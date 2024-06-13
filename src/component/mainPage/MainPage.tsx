@@ -13,6 +13,8 @@ import MyStudyRooms from "@/component/mainPage/mainMyStudyRoomsComponent";
 
 import Cookies from "js-cookie";
 import { useEffect } from "react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 const tokens = dt.DesignTokenVarNames;
 
@@ -28,7 +30,16 @@ const MainPage = () => {
   //일정과 내가 참가한 스터디룸 목록
   //내가 스크렙한 게시글들 같은 거
 
+  const { data } = useSession();
+  const router = useRouter();
+
   useEffect(() => {
+    const adminEmail = process.env.NEXT_PUBLIC_ADMIN_EMAIL;
+    // @ts-ignore //id 있음
+    if (data !== undefined && data !== null && data?.user?.id === adminEmail) {
+      alert("관리자 페이지로 이동합니다.");
+      router.push("/admin");
+    }
     const alertMessage = Cookies.get("alertMessage");
     console.log("alertMessage?", alertMessage);
     if (alertMessage !== undefined) {

@@ -188,6 +188,7 @@ export default function NavBar() {
                 onClick={() => {
                   setIsModalOpen(true);
                   setIsOpen(false);
+                  alert("로그아웃 되었습니다.");
                 }}
                 className="navbar__list--item--mobile text-left"
               >

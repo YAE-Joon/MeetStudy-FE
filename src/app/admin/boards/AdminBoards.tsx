@@ -14,6 +14,7 @@ import { Title } from "@/component/styled-components/TextBoxes";
 import Loading from "@/component/Loading/Loading";
 import { Container } from "@/component/styled-components/Container";
 import { StudyRoom } from "@/types/StudyRoom";
+import getTokenByClient from "@/util/getTokenByClient";
 
 const tokens = dt.DesignTokenVarNames;
 const {
@@ -40,12 +41,13 @@ const AdminBoards = () => {
     "조회수",
   ];
 
-  const [AllBoardPosts, error] = useFetch<PostBoard[]>(
+  const [AllBoardPosts, error, loading, setBoardData] = useFetch<PostBoard[]>(
     apiPaths.admin.posts,
     {}
   );
 
   const handleRemove = async (postId: number) => {
+    const token = getTokenByClient();
     if (confirm("정말로 이 게시글을 삭제하시겠습니까?")) {
       try {
         const response = await fetchDataBE(
@@ -53,10 +55,12 @@ const AdminBoards = () => {
           {
             method: "DELETE",
           },
-          true,
-          false
+          token
         );
         alert("게시글 삭제 완료!");
+        const remainBoardData =
+          AllBoardPosts?.filter((post) => post.id !== postId) || [];
+        setBoardData(remainBoardData);
         return response;
       } catch (error) {
         console.error("게시글 삭제 중 오류 발생", error);

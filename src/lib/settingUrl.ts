@@ -11,8 +11,8 @@ const buildBaseUrl = (isNextTest: boolean | null = null) => {
   if (isNextTest) {
     //Next 웹서버로 테스트를 돌릴 때
     baseUrl = "http://localhost:3000";
-    console.log("[BaseURL/테스트]:", baseUrl, isNextTest);
-    return baseUrl;
+    // console.log("[BaseURL/테스트]:", baseUrl, isNextTest);
+    // return baseUrl;
   }
 
   if (process.env.NODE_ENV === "production") {
@@ -21,7 +21,7 @@ const buildBaseUrl = (isNextTest: boolean | null = null) => {
     baseUrl = process.env.NEXT_DEV_API_URL || process.env.NEXT_PUBLIC_SITE_URL;
   }
 
-  console.log("[BaseURL/테스트]:", baseUrl, isNextTest);
+  //console.log("[BaseURL/테스트]:", baseUrl, isNextTest);
 
   return baseUrl;
 };

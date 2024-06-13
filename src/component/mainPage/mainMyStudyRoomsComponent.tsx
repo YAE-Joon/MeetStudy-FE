@@ -67,12 +67,12 @@ const MyStudyRooms = () => {
     const loadData = async () => {
       try {
         const apiUrl = apiPaths.studyrooms.byUser(userEmail);
-        console.log(
-          "useFetch에서 데이터를 호출합니다: apiUrl, options, isAdmin, isTest",
-          apiUrl,
-          {},
-          token
-        );
+        // console.log(
+        //   "useFetch에서 데이터를 호출합니다: apiUrl, options, isAdmin, isTest",
+        //   apiUrl,
+        //   {},
+        //   token
+        // );
         const data = await fetchDataBE(apiUrl, {}, token);
         setmyStudyRoomsData(data);
       } catch (err) {
@@ -122,10 +122,6 @@ const MyStudyRooms = () => {
   }
   const tableHeadList = ["스터디명", "가입일", "관리"];
 
-  console.log(
-    "????????????? myStudyRoomsData ???????????????",
-    myStudyRoomsData
-  );
   return (
     <>
       <Title
