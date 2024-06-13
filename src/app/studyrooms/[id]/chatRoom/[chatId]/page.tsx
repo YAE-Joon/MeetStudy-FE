@@ -30,8 +30,9 @@ const {
 
 export default function ChatRoom() {
   console.log("[채칭방] 🧊 채팅방 컴포넌트입니다.");
-  //const [myCurrNickName, setMyCurrNickName] = useState<string>("");
-  // const [nickname, setNickname] = useState<string>("");
+
+  const [myCurrNickName, errorFromNickname, loading] =
+    useFetchUserInfo("nickname");
 
   const [error, setError] = useState<string | null>(null);
   const [isSending, setIsSending] = useState<boolean>(false);
@@ -51,25 +52,9 @@ export default function ChatRoom() {
   const msgContainerRef = useRef<HTMLDivElement>(null);
   const oldRecordRef = useRef<HTMLDivElement>(null);
   const isOldRecordUpdatedRef = useRef(false);
-
-  const debounceTimeout = useRef<NodeJS.Timeout | null>(null);
-
   const [isEnd, setIsEnd] = useState(false);
 
-  // 기존 채팅 기록들을 불러옵니다. (첫번째 cursor)
-
-  const [myCurrNickName, errorFromNickname, loading] =
-    useFetchUserInfo("nickname");
   useEffect(() => {
-    // const fetchUserInfo = async () => {
-    //   console.log("유저 데이터를 토큰으로 가져옵니다다");
-    //   const apiUrl = apiPaths.mypage.info;
-    //   //const response = await fetchDataBE(apiUrl, {});
-    //   const response = await useFetch
-    //   const fetchedUserNickname = response.nickname;
-    //   console.log("fethc해서 가져온 유저정보: response", response);
-    //   setMyCurrNickName(fetchedUserNickname);
-    // };
     const token = getTokenByClient();
     const fetchInitialChatRecords = async () => {
       console.log("이전 채팅 기록을 가져옵니다");
@@ -78,8 +63,8 @@ export default function ChatRoom() {
           chatRoomId
         )}?cursor=${-1}`;
         const response = await fetchDataBE(apiUrl, {}, token);
-        //const fetchedNearRecords = [...response.content].reverse(); //copy !
-        const fetchedNearRecords = response.content;
+        const fetchedNearRecords = [...response.content].reverse(); //copy !
+        //const fetchedNearRecords = response.content;
         const newCursor = response.pageable.cursor;
 
         if (fetchedNearRecords.length === 0) {
@@ -131,11 +116,14 @@ export default function ChatRoom() {
       )}?cursor=${cursorVlaue}`;
       const token = getTokenByClient();
       const response = await fetchDataBE(apiUrl, {}, token);
-      const fetchedOldRecords = response.content;
+
+      const fetchedOldRecords = [...response.content].reverse();
+      // const fetchedOldRecords = response.content;
       const newCursor = response.pageable.cursor;
 
       // 기존에 존재하는 과거 채팅 기록을 temp에 담고
       const existingOldRecord = oldRecords;
+
       // fetch해온 데이터를 oldRecord 상태변수에 넣는다.
       setOldRecords(fetchedOldRecords);
       // temp에 넣은 데이터를 기존 데이터의 앞에 넣는다.
@@ -198,21 +186,18 @@ export default function ChatRoom() {
     }
   }
 
-  // const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   const value = e.target.value;
+  ///// for logging /////
 
-  //   if (debounceTimeout.current) {
-  //     clearTimeout(debounceTimeout.current);
-  //   }
-
-  //   debounceTimeout.current = setTimeout(() => {
-  //     setNickname(value);
-  //   }, 300); // 300ms debounce delay
-  // };
-
-  // const handleButton = () => {
-  //   setMyCurrNickName(nickname);
-  // };
+  // console.log(
+  //   `-----------------------------\n[A] oldRecords:\n${oldRecords
+  //     .map((record) => record.content)
+  //     .join("\n")}\n-----------------------------`
+  // );
+  // console.log(
+  //   `-----------------------------\n[B] messages까지 포함하고 있음:\n${messages
+  //     .map((message) => message.content)
+  //     .join("\n")}\n-----------------------------`
+  // );
 
   if (!oldRecords) {
     return <ChatLoader />;
@@ -239,7 +224,7 @@ export default function ChatRoom() {
         </Announcement>
 
         <div ref={msgContainerRef}>
-          {oldRecords.reverse().map((msg, index) => {
+          {oldRecords.map((msg, index) => {
             let isMyMsg = msg.nickName === myCurrNickName;
             let isAnnounce = checkEnterOrExitFromMessages(msg.content);
             if (isAnnounce) {

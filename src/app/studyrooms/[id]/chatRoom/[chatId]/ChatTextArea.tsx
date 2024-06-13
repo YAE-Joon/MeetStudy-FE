@@ -1,5 +1,5 @@
 "use client";
-import { useState, ChangeEvent, KeyboardEvent } from "react";
+import { useState, ChangeEvent, KeyboardEvent, useRef } from "react";
 import ChatStyled from "@/app/studyrooms/[id]/chatRoom/[chatId]/chatStyled";
 
 const { Footer, StyledTextarea, Button } = ChatStyled;
@@ -10,6 +10,7 @@ interface ChatTextAreaProps {
 
 export const ChatTextArea = ({ onSendMessage }: ChatTextAreaProps) => {
   const [newMessage, setNewMessage] = useState("");
+  const debounceRef = useRef<NodeJS.Timeout | null>(null);
 
   const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setNewMessage(e.target.value);
@@ -20,7 +21,7 @@ export const ChatTextArea = ({ onSendMessage }: ChatTextAreaProps) => {
     if (newMessage.trim()) {
       onSendMessage(newMessage);
       setNewMessage("");
-      alert(`보낸 메시지 : ${newMessage}`); // 임시
+      //alert(`보낸 메시지 : ${newMessage}`); // 임시
     }
   };
 
@@ -28,7 +29,16 @@ export const ChatTextArea = ({ onSendMessage }: ChatTextAreaProps) => {
   const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
-      handleClick();
+      if (newMessage.trim()) {
+        if (debounceRef.current) {
+          clearTimeout(debounceRef.current);
+        }
+        // 메시지 보내기 전 300ms로 관리
+        debounceRef.current = setTimeout(() => {
+          onSendMessage(newMessage);
+          setNewMessage("");
+        }, 300);
+      }
     }
   };
 

@@ -43,7 +43,7 @@ export const JoinStudyRoom = () => {
       handleFinish();
       window.location.reload();
       /* 
-      가입 성공시 isMemeber (layout -> MovingMenu-> this button)의 값을 바꾸어주려고, reload를 통해 layout에서 다시 fetch해와서 거기서 isMember를 다시 세팅한다. 혹은 router를 통해 studyroom/해당스터디룸번호로 보낸다던가
+      가입 성공시 isMemeber (layout -> MovingMenu-> this button)의 값을 바꾸어주려고, reload를 통해 layout에서 다시 fetch해와서 거기서 isMember를 다시 세팅한다. 혹은 router를 통해 studyroom/해당스터디룸번호로 보낸다던가 어느게 좋은지?
       */
     } catch (err) {
       console.error("Failed to join the study room", err);
