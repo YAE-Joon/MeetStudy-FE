@@ -5,6 +5,7 @@ import { apiPaths } from "@/config/api";
 import { StudyRoom } from "@/types/StudyRoom";
 import { CategoriyOptions } from "@/lib/types";
 
+import useFetchUserInfo from "@/hooks/useGetUserInfo";
 import dt from "@/lib/designToken/designTokens";
 import { Title } from "@/component/styled-components/TextBoxes";
 import { FlexBoxV } from "@/component/styled-components/FlexBoxes";
@@ -13,13 +14,11 @@ import StyledStudyRoomIndex from "@/app/studyrooms/StudyRoomIndexClientComponent
 import { PrimaryButton } from "@/component/styled-components/Button/Buttons";
 import Loading from "@/component/Loading/Loading";
 import {
-  Container,
-  GridContainer,
-  FlexContainer,
   GridContainerFull,
   FlexContainerFull,
 } from "@/component/styled-components/Container";
 import ChatStyled from "@/app/studyrooms/[id]/chatRoom/[chatId]/chatStyled";
+
 const { Announcement } = ChatStyled;
 const tokens = dt.DesignTokenVarNames;
 
@@ -31,12 +30,15 @@ const {
 } = StyledStudyRoomIndex;
 
 const StudyRoomPage = ({ categories }: { categories: CategoriyOptions[] }) => {
-  console.log("[studyrooms] 가 랜더링되었습니다. categories? ", categories);
+  console.log("[studyrooms] 가 랜더링되었습니다.");
+  const [myEmail, mailError, loading] = useFetchUserInfo<string>("email");
   // 스터디룸 목록을 불러옵니다.
   const [studyRooms, error] = useFetch<StudyRoom[]>(
     apiPaths.studyrooms.all,
     {}
   );
+
+  console.log("[studyrooms] myEmail?", myEmail);
 
   const [visibleRooms, setVisibleRooms] = useState<StudyRoom[]>([]);
   const [showMore, setShowMore] = useState(false);
@@ -60,7 +62,7 @@ const StudyRoomPage = ({ categories }: { categories: CategoriyOptions[] }) => {
     setIndex(newIndex);
   };
 
-  if (!studyRooms) {
+  if (!studyRooms || !myEmail) {
     return <Loading />;
   }
 
@@ -81,7 +83,11 @@ const StudyRoomPage = ({ categories }: { categories: CategoriyOptions[] }) => {
         <FlexContainerFull>
           <GridContainerFull>
             {visibleRooms.map((studyRoom, idx) => (
-              <StudyRoomCard key={studyRoom.id} item={studyRoom} />
+              <StudyRoomCard
+                key={studyRoom.id}
+                item={studyRoom}
+                mail={myEmail}
+              />
             ))}
           </GridContainerFull>
         </FlexContainerFull>

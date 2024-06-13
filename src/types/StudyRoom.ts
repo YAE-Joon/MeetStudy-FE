@@ -33,6 +33,7 @@ export interface StudyRoom {
   userCapacity: number | null;
   category: Category;
   userStudyRooms?: UserStudyRoom[];
+  currMembers?: number;
 }
 
 export interface StudyRoomTableData {

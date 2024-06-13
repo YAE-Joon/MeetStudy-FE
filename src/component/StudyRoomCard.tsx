@@ -17,21 +17,25 @@ import {
 const mobileWidth = dt.DesignTokenExcept.media.mobile;
 const tokens = dt.DesignTokenVarNames;
 
-const { StyledLink, CardContent, CardUpper_ul, Emoji } = StyledCard;
+const { StyledLink, CardContent, CardUpper_ul, Emoji, StyledWrapper } =
+  StyledCard;
 
 /// 카드 컴포넌트에 대한 인터페이스 정의
 interface StudyRoomCardProps {
   item: StudyRoom;
   root?: string | null;
+  mail?: string;
 }
 
-export const StudyRoomCard: React.FC<StudyRoomCardProps> = ({ item, root }) => {
+export const StudyRoomCard: React.FC<StudyRoomCardProps> = ({
+  item,
+  root,
+  mail,
+}) => {
   // 유저 이메일을 불러옵니다.
+  const myEmail = mail;
 
-  const [myEmail, error, loading] = useFetchUserInfo<string>("email");
   const pathname = root ? (root === "main" ? "studyrooms" : "") : usePathname();
-
-  console.log("pathname???", pathname);
 
   function isEmailInStudyRoom(
     studyRoom: StudyRoom | undefined,
@@ -43,8 +47,6 @@ export const StudyRoomCard: React.FC<StudyRoomCardProps> = ({ item, root }) => {
       ) ?? false
     );
   }
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error.message}</div>;
 
   return (
     <li>
@@ -73,6 +75,37 @@ export const StudyRoomCard: React.FC<StudyRoomCardProps> = ({ item, root }) => {
           )}
         </CardContent>
       </StyledLink>
+    </li>
+  );
+};
+
+// for main
+export const MainStudyRoomCard = ({ item }: { item: StudyRoom }) => {
+  // 유저 이메일을 불러옵니다.
+
+  return (
+    <li>
+      <StyledWrapper>
+        <CardContent>
+          <CardUpper_ul>
+            {/* <Emoji>{getRandomEmoji()}</Emoji> */}
+
+            <Title
+              $htype={3}
+              $fontSize={tokens.fontSize.web.medium}
+              $color={tokens.colors.simple.blackbasic}
+            >
+              {item.title}
+            </Title>
+            <p>{`카테고리 : ${item.category.name}`}</p>
+          </CardUpper_ul>
+
+          {/* <p>{item.description}</p> */}
+          <p>
+            {item.currMembers}/{item.userCapacity}
+          </p>
+        </CardContent>
+      </StyledWrapper>
     </li>
   );
 };

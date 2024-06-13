@@ -21,6 +21,13 @@ import {
 } from "@/component/styled-components/Button/Buttons";
 import { GridBox_ul } from "@/component/styled-components/GridBoxes";
 import { Li_card } from "@/component/styled-components/Card";
+import useFetch from "@/hooks/useFetch";
+import { apiPaths } from "@/config/api";
+import { StudyRoom } from "@/types/StudyRoom";
+import Loading from "@/component/Loading/Loading";
+import { MainStudyRoomCard } from "@/component/StudyRoomCard";
+import Link from "next/link";
+import { StyledButtonLink } from "@/component/styled-components/Button/buttonsComponents";
 const tokens = dt.DesignTokenVarNames;
 const mobileWidth = dt.DesignTokenExcept.media.mobile;
 
@@ -102,7 +109,7 @@ export const FirstSectionLanding = React.forwardRef<
             </Title>
             <LandingDesc content={"온라인 스터디 공간"} align="left" />
             <GridBox_ul>
-              <PrimaryButton content={"스터디 합류하기"} href={"/"} />
+              <PrimaryButton content={"스터디 합류하기"} href={"/studyrooms"} />
               <SecondaryButton
                 content="회원가입하기"
                 href={routeLinks.signUp}
@@ -195,11 +202,26 @@ export const ThirdSectionLanding = React.forwardRef<
   );
 });
 
-// 사용자 후기 섹션
+// 스터디룸 섹션
 export const ForthSectionLanding = React.forwardRef<
   HTMLDivElement,
   LandingProps
 >(({ mover }, ref) => {
+  const [studyRoomsData, error, loading] = useFetch<StudyRoom[]>(
+    apiPaths.studyrooms.all,
+    {}
+  );
+
+  const totalStudyRooms =
+    studyRoomsData?.map((studyRoom: StudyRoom) => {
+      const currMembers = studyRoom.userStudyRooms?.length;
+
+      return { ...studyRoom, currMembers };
+    }) || [];
+
+  const currStudyRoomsNum = totalStudyRooms.length || 10;
+  const studyRooms = totalStudyRooms.slice(0, 5);
+
   return (
     <Container
       $bgColor={tokens.colors.simple.whitebg}
@@ -209,28 +231,25 @@ export const ForthSectionLanding = React.forwardRef<
       ref={ref}
     >
       <FlexBoxV type={"center"} $justifyContent={"center"}>
-        <Title
-          $htype={2}
-          $color={tokens.colors.simple.blackbasic}
-        >{`지금 ${10}개의 스터디룸이 함께하고 있어요`}</Title>
+        {studyRooms.length === 0 ? (
+          <>
+            <Loading />
+          </>
+        ) : (
+          <>
+            <Title
+              $htype={2}
+              $color={tokens.colors.simple.blackbasic}
+            >{`지금 ${currStudyRoomsNum}개의 스터디룸이 함께하고 있어요`}</Title>
 
-        <FlexBox_H_ul>
-          {dummy_list_sect3.map((item, idx) => (
-            <Li_card
-              key={idx}
-              item={{
-                emoji: item.profilePic,
-                comment: item.desc,
-                author: item.author,
-              }}
-              styles={{
-                $effectType: "hoverEffect",
-                $shadow: "primary",
-                $bgColor: tokens.colors.simple.whitebg,
-              }}
-            />
-          ))}
-        </FlexBox_H_ul>
+            <FlexBox_H_ul>
+              {studyRooms.map((item, idx) => (
+                <MainStudyRoomCard key={item.id} item={item} />
+              ))}
+            </FlexBox_H_ul>
+          </>
+        )}
+        <StyledButtonLink href={"/studyrooms"}>지금 합류하기</StyledButtonLink>
       </FlexBoxV>
       <MovingButton onClick={mover} $arrow={"up"} type={"primary"} />
     </Container>

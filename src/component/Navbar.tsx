@@ -9,6 +9,7 @@ import { AiOutlineGoogle } from "react-icons/ai";
 import { SiNaver } from "react-icons/si";
 import { RiKakaoTalkFill } from "react-icons/ri";
 import LoadingTextComponent from "@/component/Loading/LoadingText";
+import Cookies from "js-cookie";
 
 export default function NavBar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -113,7 +114,13 @@ export default function NavBar() {
               <Link href="/calendar" className="navbar__list--item">
                 캘린더
               </Link>
-              <button type="button" onClick={() => signOut()}>
+              <button
+                type="button"
+                onClick={() => {
+                  Cookies.remove("accessToken");
+                  signOut();
+                }}
+              >
                 로그아웃
               </button>
             </>

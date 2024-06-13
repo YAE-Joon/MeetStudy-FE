@@ -152,6 +152,46 @@ const StyledLink = styled(Link)<Styled_li_card_props>`
 
   max-width: 300px;
 
+  width: 300px;
+  max-height: 300px;
+
+  &:hover {
+    background-color: var(${tokens.colors.simple.tertiarygray});
+  }
+
+  border: 3px solid var(${tokens.colors.simple.tertiarygray});
+  background-color: var(${tokens.colors.simple.whitebg});
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+
+  @media only screen and (max-width: ${mobileWidth}) {
+    flex-direction: column;
+    align-items: center;
+
+    flex: 1 1 100%; // 1 line 1 card
+  }
+
+  > div,
+  > section {
+    flex: 1 1 45%;
+    min-width: 45%;
+  }
+`;
+const StyledWrapper = styled.div<Styled_li_card_props>`
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: space-between;
+  //justify-content: center;
+  //for same height
+  align-items: center;
+  // box-sizing: border-box;
+
+  // flex: 1 1 calc(33.333% - 1rem); // 1 line 3 card
+  gap: 0.5rem;
+
+  max-width: 200px;
+  max-height: 200px;
+
   &:hover {
     background-color: var(${tokens.colors.simple.tertiarygray});
   }
@@ -265,7 +305,15 @@ export const JoinTag = styled.div`
   border-radius: 4px;
   font-size: 12px;
   font-weight: bold;
+
+  width: 15px;
 `;
 
-const StyledCard = { StyledLink, CardContent, CardUpper_ul, Emoji };
+const StyledCard = {
+  StyledLink,
+  CardContent,
+  CardUpper_ul,
+  Emoji,
+  StyledWrapper,
+};
 export default StyledCard;

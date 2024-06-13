@@ -425,6 +425,9 @@ const StyledLink = styled(Link)`
   color: inherit;
   transition: color 0.3s, font-weight 0.3s;
 
+  width: 300px;
+  height: 300px;
+
   &:hover {
     color: green;
     font-weight: bold;

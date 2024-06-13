@@ -88,13 +88,13 @@ function setTokenIntoHeader(
   headers["Authorization"] = `Bearer ${token}`;
 
   // 헤더 체크
-  if ("Authorization" in headers) {
-    console.log(
-      `🙆‍♂️ [fetchDataBE] Authorization 헤더가 존재합니다: ${headers["Authorization"]}`
-    );
-  } else {
-    console.log("🙆‍♂️ [fetchDataBE] Authorization 헤더가 존재하지 않습니다.");
-  }
+  // if ("Authorization" in headers) {
+  //   console.log(
+  //     `🙆‍♂️ [fetchDataBE] Authorization 헤더가 존재합니다: ${headers["Authorization"]}`
+  //   );
+  // } else {
+  //   console.log("🙆‍♂️ [fetchDataBE] Authorization 헤더가 존재하지 않습니다.");
+  // }
 
   return headers;
 }
