@@ -31,7 +31,7 @@ const {
   SearchResultContainer,
 } = StyledStudyRoomIndex;
 
-const StudyRoomPage = ({ categories }: { categories: CategoriyOptions[] }) => {
+const StudyRoomPage = ({}) => {
   console.log("[studyrooms] 가 랜더링되었습니다.");
 
   // 참가중 태그를 위해 유저 정보를 불러옴

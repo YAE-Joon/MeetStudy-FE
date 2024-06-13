@@ -4,6 +4,7 @@ import getApiPath from "@/lib/settingUrl";
 
 import { FetchOptions } from "@/lib/types";
 import { UserProfile } from "@/types/User";
+import { getUserFromToken } from "@/util/getUserFromToken";
 
 import { fetchExternalImage } from "next/dist/server/image-optimizer";
 
@@ -21,6 +22,12 @@ export async function getUserInfoFromToken(
 ) {
   if (token === null || token === undefined) {
     return "토큰이 올바르지 않습니다.";
+  }
+
+  const isAdmin = getUserFromToken(token);
+  if (isAdmin && isAdmin.auth === "ADMIN") {
+    console.log("[getUserInfoFromToken] ADMIN 상태에서 호춣");
+    return "ADMIN";
   }
 
   const data = isServer
