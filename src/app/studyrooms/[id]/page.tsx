@@ -1,15 +1,19 @@
 "use client";
+import { useState } from "react";
+import Image from "next/image";
+
 import useFetch from "@/hooks/useFetch";
 import { apiPaths } from "@/config/api";
-import { useStudyRoomData } from "@/context/StudyRoomDataContext";
-import Image from "next/image";
+
+import { StudyRoomTableData } from "@/types/StudyRoom";
+
 import { ImageWrapper } from "@/component/ImageConainer";
+import { StudyRoom } from "@/types/StudyRoom";
+import { Description } from "@/component/styled-components/TextBoxes";
+
 import titleImg from "../../../../public/images/1. landing-01.png";
 import dt from "@/lib/designToken/designTokens";
-import StyledStudyRoomIndex from "@/app/studyrooms/StudyRoomIndexClientComponents";
-import { Description } from "@/component/styled-components/TextBoxes";
-import { StudyRoom } from "@/types/StudyRoom";
-import { useState } from "react";
+import { TableComponent } from "@/app/studyrooms/[id]/tables";
 
 const tokens = dt.DesignTokenVarNames;
 const mobileWidth = dt.DesignTokenExcept.media.mobile;
@@ -20,24 +24,24 @@ export default function Page({
   params: { id: number; slug: string };
 }) {
   console.log("[id] 메인 페이지 컴포넌트입니다.");
-  const userId = 1; //임시
-
   const roomId = params.id;
+  // fetch
   const [studyRoomData, error] = useFetch<StudyRoom>(
     apiPaths.studyrooms.detail(roomId),
-    {},
-    false,
-    false
+    {}
   );
 
-  const currentMemberNum = studyRoomData?.userStudyRooms.length;
+  const currentMemberNum = studyRoomData?.userStudyRooms?.length;
 
-  const [isModalOpen, setIsModalOpen] = useState(false); //모달상태
-  const handleModalClose = () => setIsModalOpen(false);
+  // category가 string이 아닌 경우 문자열로 변환
+  const category = studyRoomData?.category
+    ? `${studyRoomData.category.name} | ${studyRoomData.category.description}`
+    : "카테고리가 기입되지 않았습니다.";
 
-  const handleLogin = (e: React.FormEvent) => {
-    //e.preventDefault();
-    handleModalClose();
+  const propData: StudyRoomTableData = {
+    category: category,
+    description: studyRoomData?.description ?? "한줄설명이 없습니다.",
+    memberNum: currentMemberNum ?? 0,
   };
 
   return !studyRoomData ? (
@@ -56,14 +60,15 @@ export default function Page({
         <div style={{ backgroundColor: "yellow" }}>테스트 </div>
       </ImageWrapper>
       <div style={{ height: "100%" }}>
-        <Description
+        {/* <Description
           content={studyRoomData?.description}
           color={tokens.colors.simple.blackbasic}
         />
         <Description
           content={`현재 인원: ${currentMemberNum}`}
           color={tokens.colors.simple.blackbasic}
-        />
+        /> */}
+        {propData ? <TableComponent data={propData} /> : <div>출력안됨</div>}
       </div>
     </>
   );

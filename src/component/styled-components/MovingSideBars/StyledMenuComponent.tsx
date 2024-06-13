@@ -148,6 +148,7 @@ const CategoryLinksContainer = styled(FlexBoxUlV)`
       font-weight: 700;
       cursor: pointer;
       color: var(${tokens.colors.simple.secondary});
+      border-radius: 15px;
     }
   }
 
@@ -200,6 +201,18 @@ const HamburgerMenu = styled.div.attrs<{ $isopen: boolean }>({
   }
 `;
 
+const Underline = styled.div`
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: ${({ color }) => color || "black"};
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+`;
+
 interface CategoryNavigationProps {
   $bgColor?: string;
   $txtColor?: string;
@@ -221,5 +234,6 @@ const StyledMenuComponent = {
   CategoryLinksContainer,
   HamburgerIcon,
   HamburgerMenu,
+  Underline,
 };
 export default StyledMenuComponent;

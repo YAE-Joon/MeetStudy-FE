@@ -1,70 +1,191 @@
 "use client";
+import { useEffect, useState } from "react";
 
 import { apiPaths } from "@/config/api";
-import useFetch from "@/hooks/useFetch";
-import { UserCalendar } from "@/lib/types";
-
+import fetchDataBE from "@/lib/fetch";
+import { UserCalendar } from "@/types/Calendar";
+import { processDateTime } from "@/util/dateUtilsFinal";
+import { nullChecker } from "@/util/unllChecker";
 import dt from "@/lib/designToken/designTokens";
-import MainStyledPack from "@/component/mainPage/mainStyledComponents";
+import {
+  IoIosArrowDown,
+  IoIosArrowBack,
+  IoIosArrowForward,
+} from "react-icons/io";
 
-import { DailyList } from "@/component/mainPage/mainClinentComponents";
-
-import { Title } from "@/component/styled-components/TextBoxes";
 import { MainSkleton } from "@/component/mainPage/mainStyledComponents";
-
+import getTokenByClient from "@/util/getTokenByClient";
+import StyledMainCal from "@/component/mainPage/styledMainCalendarsComponents";
+import { Title } from "@/component/styled-components/TextBoxes";
+const {
+  StyledDetails,
+  MainTitleWrapper,
+  CalDate,
+  CalTitle,
+  StyledDescription,
+  GhostButton,
+  IconWrapper,
+} = StyledMainCal;
 const tokens = dt.DesignTokenVarNames;
 
 const MyCalendar = () => {
+  //for api params
   const currentDate = new Date();
   const currentYear = currentDate.getFullYear().toString();
   const currentMonth = (currentDate.getMonth() + 1).toString();
+  //data fetching
+  const [userCalendarData, setUserCalendarData] = useState<
+    UserCalendar[] | null
+  >(null);
+  const [error, setError] = useState<Error | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(0);
+  //for pagination
+  const itemsPerPage = 5;
+  const [expandedId, setExpandedId] = useState<number | null>(null);
 
-  console.log(
-    "[myCalender] API를 요청합니다: ",
-    `${apiPaths.calendar.all}?year=${currentYear}&month=${currentMonth}`
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      console.log(
+        "[client][myCalendar] API를 요청합니다: ",
+        `${apiPaths.calendar.all}?year=${currentYear}&month=${currentMonth}`
+      );
+
+      const fetchCalendarData = async () => {
+        try {
+          const token = getTokenByClient();
+          const data = await fetchDataBE(
+            apiPaths.calendar.all,
+            {
+              headers: {
+                year: currentYear,
+                month: currentMonth,
+              },
+            },
+            token
+          );
+          setUserCalendarData(data);
+        } catch (err) {
+          if (err instanceof Error) {
+            setError(err);
+          } else {
+            setError(new Error("알 수 없는 에러가 발생했습니다."));
+          }
+        } finally {
+          setIsLoading(false);
+        }
+      };
+
+      fetchCalendarData();
+    }
+  }, [currentYear, currentMonth]);
+
+  const paginatedData = userCalendarData?.slice(
+    currentPage * itemsPerPage,
+    (currentPage + 1) * itemsPerPage
   );
 
-  // 현재 연도와 월로 요청합니다.
+  // for toggle
+  const toggleDescription = (id: number) => {
+    if (typeof id !== "number") {
+      console.log("[MyCalendar] id가 숫자가 아닙니다.");
+      return;
+    }
+    setExpandedId((prevId) => (prevId === id ? null : id));
+  };
 
-  const [userCalendarData, error, isLoading] = useFetch<UserCalendar[]>(
-    //apiPaths.mypage.info,
-    apiPaths.calendar.all,
-    {
-      headers: {
-        year: currentYear,
-        month: currentMonth,
-      },
-    },
-    false,
-    false
-  );
+  //// handlers for pagiation /////
+  const handlePrevPage = () => {
+    setCurrentPage((prevPage) => Math.max(prevPage - 1, 0));
+  };
+
+  const handleNextPage = () => {
+    if (
+      userCalendarData &&
+      (currentPage + 1) * itemsPerPage < userCalendarData.length
+    ) {
+      setCurrentPage((prevPage) => prevPage + 1);
+    }
+  };
 
   if (isLoading) {
     return <MainSkleton />;
   }
 
-  console.log(
-    "[myCalender]userCalendarData: ",
-    userCalendarData,
-    typeof userCalendarData
-  );
-
   return (
-    <>
-      <Title
-        $htype={3}
-        $fontSize={tokens.fontSize.web.medium}
-        $color={tokens.colors.simple.blackbasic}
-      >
-        {`${currentYear}년 ${currentMonth}월`}
-      </Title>
-
-      {userCalendarData ? (
-        <DailyList userCalendars={userCalendarData} />
+    <div>
+      {!userCalendarData || !paginatedData || paginatedData === undefined ? (
+        <div>로딩중</div>
       ) : (
-        <div>달력 정보가 존재하지 않습니다.</div>
+        <>
+          <Title
+            $color={tokens.colors.simple.blackbasic}
+            $htype={3}
+          >{`${currentMonth}월`}</Title>
+          <div className="w-full max-w-4xl mx-auto">
+            <div className="grid gap-4">
+              {paginatedData.map((userCalendar, idx) => {
+                const startDateStr = nullChecker(
+                  userCalendar.startDate,
+                  "string",
+                  (value) => processDateTime(value).formattedDate
+                );
+                const endDateStr = nullChecker(
+                  userCalendar.endDate,
+                  "string",
+                  (value) => processDateTime(value).formattedDate
+                );
+
+                return (
+                  <StyledDetails key={userCalendar.id}>
+                    <MainTitleWrapper>
+                      <CalDate>{currentPage * itemsPerPage + idx + 1}</CalDate>
+                      <CalTitle $color={"#1a202c"}>
+                        {userCalendar.title}
+                      </CalTitle>
+                      <div style={{ display: "flex", flexDirection: "row" }}>
+                        <div className="text-sm text-gray-500 dark:text-gray-400">
+                          <p>{startDateStr}</p>
+                          <p>{endDateStr}</p>
+                        </div>
+                        <GhostButton
+                          onClick={() => toggleDescription(userCalendar.id)}
+                        >
+                          <IconWrapper
+                            rotate={`${expandedId === userCalendar.id}`}
+                          >
+                            <IoIosArrowDown />
+                          </IconWrapper>
+                        </GhostButton>
+                      </div>
+                    </MainTitleWrapper>
+                    <StyledDescription
+                      $expanded={expandedId === userCalendar.id}
+                    >
+                      {userCalendar.content}
+                    </StyledDescription>
+                  </StyledDetails>
+                );
+              })}
+            </div>
+            <div className="flex justify-between mt-4">
+              <button onClick={handlePrevPage} disabled={currentPage === 0}>
+                <IoIosArrowBack size={24} />
+              </button>
+              <button
+                onClick={handleNextPage}
+                disabled={
+                  !userCalendarData ||
+                  (currentPage + 1) * itemsPerPage >= userCalendarData.length
+                }
+              >
+                <IoIosArrowForward size={24} />
+              </button>
+            </div>
+          </div>
+        </>
       )}
-    </>
+    </div>
   );
 };
 

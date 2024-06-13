@@ -2,7 +2,7 @@
 
 import { apiPaths } from "@/config/api";
 import useFetch from "@/hooks/useFetch";
-import { StudyRoom } from "@/types/StudyRoom";
+import { StudyRoom, UserStudyRoom } from "@/types/StudyRoom";
 
 import dt from "@/lib/designToken/designTokens";
 import MainStyledPack from "@/component/mainPage/mainStyledComponents";
@@ -13,9 +13,14 @@ import { Title } from "@/component/styled-components/TextBoxes";
 import { MainSkleton } from "@/component/mainPage/mainStyledComponents";
 
 import { FlexBoxV } from "@/component/styled-components/FlexBoxes";
-import { StudyRoomCard } from "@/component/styled-components/Card";
+import { StudyRoomCard } from "@/component/StudyRoomCard";
 import StyledStudyRoomIndex from "@/app/studyrooms/StudyRoomIndexClientComponents";
 import { StyledStudyRoomsPack } from "@/component/mainPage/mainStyledComponents";
+import useFetchUserInfo from "@/hooks/useGetUserInfo";
+import { UserProfile } from "@/types/User";
+import { useEffect, useState } from "react";
+import fetchDataBE from "@/lib/fetch";
+import getTokenByClient from "@/util/getTokenByClient";
 const {
   InnerContainer,
 
@@ -23,26 +28,99 @@ const {
   InputContainer,
   SearchResultContainer,
 } = StyledStudyRoomIndex;
-
-const { MyStudyRoomsContainer } = StyledStudyRoomsPack;
+import StyledAdminUserPage from "@/app/admin/UserStyled";
+import { processDateTime } from "@/util/dateUtilsFinal";
+import Link from "next/link";
+const { MyStudyRoomsContainer, MainTableWrapper, StyledLink } =
+  StyledStudyRoomsPack;
+const {
+  Header,
+  TableWrapper,
+  StyledTable,
+  StyledTableHeader,
+  StyledTableRow,
+  StyledTableHead,
+  StyledTableBody,
+  StyledTableCell,
+  Button,
+  QuitButton,
+} = StyledAdminUserPage;
 
 const tokens = dt.DesignTokenVarNames;
 
 const MyStudyRooms = () => {
-  const userEmail = "hayeong@elice.com"; // 인증 최종구현후 수정
-  console.log("[myStudyrooms] 호출합니다: 현재 user eamil:", userEmail);
-
-  const [myStudyRoomsData, error, isLoading] = useFetch<StudyRoom[]>(
-    //apiPaths.mypage.info,
-    apiPaths.studyrooms.byUser(userEmail),
-    {},
-    false,
-    false
+  const [myStudyRoomsData, setmyStudyRoomsData] = useState<StudyRoom[] | null>(
+    null
   );
+  const [error, setError] = useState<Error | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [userEmail, fetchUserError, fetchUserloading] =
+    useFetchUserInfo("email");
 
-  if (isLoading) {
+  useEffect(() => {
+    console.log("[myStudyrooms] 호출합니다: 현재 user eamil:", userEmail);
+    const token = getTokenByClient();
+    if (!userEmail || typeof userEmail !== "string") {
+      return;
+    }
+    // user의 스터디룸 목록 조회
+    const loadData = async () => {
+      try {
+        const apiUrl = apiPaths.studyrooms.byUser(userEmail);
+        // console.log(
+        //   "useFetch에서 데이터를 호출합니다: apiUrl, options, isAdmin, isTest",
+        //   apiUrl,
+        //   {},
+        //   token
+        // );
+        const data = await fetchDataBE(apiUrl, {}, token);
+        setmyStudyRoomsData(data);
+      } catch (err) {
+        if (err instanceof Error) {
+          setError(err);
+        } else {
+          setError(new Error("알 수 없는 에러가 발생했습니다."));
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadData();
+  }, [userEmail]);
+
+  async function handleRemove(studyRoomId: number) {
+    if (confirm("정말로 이 스터디룸에서 탈퇴하시겠습니까?")) {
+      try {
+        const token = getTokenByClient();
+        const response = await fetchDataBE(
+          apiPaths.studyrooms.delete(studyRoomId),
+          {
+            method: "DELETE",
+          },
+          token
+        );
+        const removedStudyRoomData: StudyRoom[] =
+          myStudyRoomsData?.filter(
+            (studyroom) => studyroom.id !== studyRoomId
+          ) ?? [];
+        const result =
+          removedStudyRoomData.length === 0 ? [] : removedStudyRoomData;
+        alert("스터디룸 탈퇴완료!");
+        setmyStudyRoomsData(result);
+
+        return response;
+      } catch (error) {
+        console.error("스터디룸 탈퇴 중 오류 발생", error);
+        alert("스터디룸 탈퇴 중 오류 발생!");
+        throw error;
+      }
+    }
+  }
+
+  if (loading) {
     return <MainSkleton />;
   }
+  const tableHeadList = ["스터디명", "가입일", "관리"];
 
   return (
     <>
@@ -55,23 +133,64 @@ const MyStudyRooms = () => {
       </Title>
       <div
         style={{
+          width: "100%",
           height: "100%",
           display: "flex",
           flexDirection: "row-reverse",
         }}
       >
-        {myStudyRoomsData?.length === 0 ? (
-          <MyStudyRoomsContainer>
-            {myStudyRoomsData.map((studyRoom, idx) => (
-              <StudyRoomCard
-                key={studyRoom.id}
-                item={studyRoom}
-                root={"main"}
-              />
-            ))}
-          </MyStudyRoomsContainer>
-        ) : (
+        {!myStudyRoomsData || myStudyRoomsData?.length === 0 ? (
           <div>참가한 스터디룸 정보가 없습니다.</div>
+        ) : (
+          // <MyStudyRoomsContainer>
+          //   {myStudyRoomsData.map((studyRoom, idx) => (
+          //     <StudyRoomCard
+          //       key={studyRoom.id}
+          //       item={studyRoom}
+          //       root={"main"}
+          //     />
+          //   ))}
+
+          <MainTableWrapper>
+            <StyledTable>
+              <StyledTableHeader>
+                <StyledTableRow>
+                  {tableHeadList.map((head, idx) => (
+                    <StyledTableHead key={idx}>{head}</StyledTableHead>
+                  ))}
+                </StyledTableRow>
+              </StyledTableHeader>
+              <StyledTableBody>
+                {myStudyRoomsData.map((room) =>
+                  room.id !== undefined ? (
+                    <StyledTableRow key={room.id}>
+                      <StyledTableCell>
+                        <StyledLink href={`/studyrooms/${room.id}`}>
+                          {room.title}{" "}
+                        </StyledLink>
+                      </StyledTableCell>
+                      <StyledTableCell>
+                        {processDateTime(room.createdDate).formattedDate}
+                      </StyledTableCell>
+                      {/* <StyledTableCell>{room.description}</StyledTableCell> */}
+                      <StyledTableCell>
+                        <QuitButton
+                          onClick={() =>
+                            room.id !== undefined
+                              ? handleRemove(room.id)
+                              : alert("오류 발생")
+                          }
+                        >
+                          삭제
+                        </QuitButton>
+                      </StyledTableCell>
+                    </StyledTableRow>
+                  ) : null
+                )}
+              </StyledTableBody>
+            </StyledTable>
+          </MainTableWrapper>
+          // </MyStudyRoomsContainer>
         )}
       </div>
     </>

@@ -12,8 +12,12 @@ const ChatRoomMain = styled.main`
 
   flex: 1;
   overflow: auto;
-  padding: 24px;
+  padding: 16px;
   //space-y: 16px;
+
+  background-color: var(${tokens.colors.simple.whitebg});
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
 
   background-color: var(${tokens.colors.simple.tertiarygray});
 
@@ -90,12 +94,14 @@ interface MessageProps {
 const Message = styled.div<MessageProps>`
   background-color: ${({ $isMyMsg }) =>
     $isMyMsg
-      ? `var(${tokens.colors.simple.secondary})`
+      ? `var(${tokens.colors.simple.primary})`
       : `var(${tokens.colors.simple.whitebg})`};
   color: ${({ $isMyMsg }) => ($isMyMsg ? "white" : "black")};
   border-radius: 0.5rem;
   padding: 16px;
   max-width: 75%;
+
+  //background-color: green;
 `;
 
 const MessageAuthor = styled.p`
@@ -106,13 +112,22 @@ const MessageText = styled.p`
   font-size: 0.875rem;
 `;
 
+const Announcement = styled.div`
+  text-align: center;
+  color: #555555;
+  margin: 1rem 0;
+`;
+
 const Footer = styled.div`
   width: 100%;
-  background-color: var(${tokens.colors.simple.primarydeeper});
+  background-color: var(${tokens.colors.simple.whitebg});
   padding: 16px;
   display: flex;
   align-items: center;
   gap: 16px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+  margin-bottom: 5px;
 `;
 
 const StyledTextarea = styled.textarea`
@@ -127,7 +142,7 @@ const StyledTextarea = styled.textarea`
   max-width: 100%;
   min-height: 100px;
   max-height: 300px;
-  resize: vertical; /* 사용자가 세로 방향으로 크기 조절 가능 */
+  resize: vertical;
 
   &:focus {
     outline: none;
@@ -211,6 +226,7 @@ const ChatStyled = {
   StyledTextarea,
   Button,
   ChatLoader,
+  Announcement,
 };
 
 export default ChatStyled;

@@ -1,11 +1,11 @@
 "use client";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+
 import styled from "styled-components";
 
-import { StudyRoom, StudyRoomMember } from "@/types/StudyRoom";
-import { setDateStr, convertISOToYMD } from "@/util/dateUtils";
+import { StudyRoomMember } from "@/types/StudyRoom";
 import { getRandomEmoji } from "@/util/getEmoji";
+import { setDateStr, convertISOToYMD } from "@/util/dateUtils";
 
 import {
   StyledProps,
@@ -18,7 +18,7 @@ import {
 } from "@/component/styled-components/TextBoxes";
 
 import dt from "@/lib/designToken/designTokens";
-import convertDateTime from "@/util/dateTimeUtil";
+
 const mobileWidth = dt.DesignTokenExcept.media.mobile;
 const tokens = dt.DesignTokenVarNames;
 
@@ -71,48 +71,6 @@ export const Li_card: React.FC<LiCardProps> = ({ item, styles = {} }) => {
         )}
       </CardContent>
     </Styled_li>
-  );
-};
-
-///// cards for studyroom list
-interface StudyRoomCardProps {
-  item: StudyRoom;
-  root?: string | null;
-}
-
-export const StudyRoomCard: React.FC<StudyRoomCardProps> = ({ item, root }) => {
-  let pathname;
-  if (root === null) {
-    pathname = usePathname();
-  } else if ((root = "main")) {
-    pathname = `studyrooms`;
-  }
-
-  console.log("item", item);
-
-  return (
-    <StyledLink href={`${pathname}/${item.id}`}>
-      <CardContent>
-        <CardUpper_ul>
-          <Emoji>{getRandomEmoji()}</Emoji>
-
-          <Title
-            $htype={3}
-            $fontSize={tokens.fontSize.web.medium}
-            $color={tokens.colors.simple.blackbasic}
-          >
-            {item.title}
-          </Title>
-
-          <Span content={`생성일: ${convertDateTime(item.createdDate)}`} />
-        </CardUpper_ul>
-
-        <Description
-          content={item.description}
-          color={tokens.colors.simple.grayfortext}
-        />
-      </CardContent>
-    </StyledLink>
   );
 };
 
@@ -184,6 +142,7 @@ const StyledLink = styled(Link)<Styled_li_card_props>`
   flex-wrap: wrap;
   flex-direction: column;
   justify-content: space-between;
+  //justify-content: center;
   //for same height
   align-items: center;
   // box-sizing: border-box;
@@ -192,6 +151,46 @@ const StyledLink = styled(Link)<Styled_li_card_props>`
   gap: 0.5rem;
 
   max-width: 300px;
+
+  width: 300px;
+  max-height: 300px;
+
+  &:hover {
+    background-color: var(${tokens.colors.simple.tertiarygray});
+  }
+
+  border: 3px solid var(${tokens.colors.simple.tertiarygray});
+  background-color: var(${tokens.colors.simple.whitebg});
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+
+  @media only screen and (max-width: ${mobileWidth}) {
+    flex-direction: column;
+    align-items: center;
+
+    flex: 1 1 100%; // 1 line 1 card
+  }
+
+  > div,
+  > section {
+    flex: 1 1 45%;
+    min-width: 45%;
+  }
+`;
+const StyledWrapper = styled.div<Styled_li_card_props>`
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: space-between;
+  //justify-content: center;
+  //for same height
+  align-items: center;
+  // box-sizing: border-box;
+
+  // flex: 1 1 calc(33.333% - 1rem); // 1 line 3 card
+  gap: 0.5rem;
+
+  max-width: 200px;
+  max-height: 200px;
 
   &:hover {
     background-color: var(${tokens.colors.simple.tertiarygray});
@@ -264,6 +263,7 @@ const StudyRoomMemberCard = styled.div`
 
   max-width: 300px;
   margin: 10px;
+  max-height: 400px;
 `;
 
 const ImageContainer = styled.div`
@@ -296,3 +296,24 @@ const Position = styled.p`
   color: gray;
   margin-bottom: 8px;
 `;
+
+export const JoinTag = styled.div`
+  display: inline-block;
+  padding: 4px 8px;
+  border: 1px solid green;
+  color: green;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: bold;
+
+  width: 15px;
+`;
+
+const StyledCard = {
+  StyledLink,
+  CardContent,
+  CardUpper_ul,
+  Emoji,
+  StyledWrapper,
+};
+export default StyledCard;

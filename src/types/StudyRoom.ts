@@ -6,7 +6,7 @@ export interface BasicUser {
 
 export interface UserStudyRoom {
   id: number;
-  joinDate: string;
+  joinDate: string | null;
   permission: string;
   studyRoomId: number;
   user: BasicUser;
@@ -19,11 +19,25 @@ export interface StudyRoomMember {
   email: string;
 }
 
-export interface StudyRoom {
+export interface Category {
   id: number;
+  name: string;
+  description: string;
+}
+
+export interface StudyRoom {
+  id?: number;
   title: string;
   description: string;
   createdDate: string;
-  maxCapacity: number;
-  userStudyRooms: UserStudyRoom[];
+  userCapacity: number | null;
+  category: Category;
+  userStudyRooms?: UserStudyRoom[];
+  currMembers?: number;
+}
+
+export interface StudyRoomTableData {
+  category: string;
+  description: string;
+  memberNum: number;
 }

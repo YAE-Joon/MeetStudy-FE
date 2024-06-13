@@ -9,6 +9,9 @@ export const InnerContainer = styled(FlexBoxH)`
   align-items: flex-start;
   height: 100vh;
 
+  margin-bottom: 1rem;
+  //background-color: blue;
+
   //margin-top: 0.5rem;
   > *:first-child {
     flex: 3 0 20%;

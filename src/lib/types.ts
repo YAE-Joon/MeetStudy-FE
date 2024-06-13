@@ -1,48 +1,7 @@
 export interface FetchOptions {
   method?: string;
-  headers?: HeadersInit;
+  headers?: Record<string, string>;
   body?: any;
-}
-export interface UserProfile {
-  email?: string;
-  username: string;
-  nickname: string;
-  password: string;
-  interests: string[];
-}
-
-export interface CalendarPeriod {
-  startDay: string;
-  endDay: string;
-  startTime: string;
-  endTime: string;
-}
-export interface UserCalendar extends CalendarPeriod {
-  id: number;
-  title: string;
-  content: string;
-
-  isHoliday: boolean;
-}
-
-// 구조 확인 필요
-// export interface UserStudyRoom {
-//   id: number;
-//   joinData: Date;
-//   permission: string;
-//   studyRoomId: number;
-//   user: { email: string; password: string };
-// }
-
-export type MyaccountProps = {
-  UserProfile: UserProfile;
-};
-
-export interface UserData {
-  userProfile: UserProfile | null;
-  userCalendars: UserCalendar[];
-  userScrappedPosts: null;
-  userPosts: null;
 }
 
 export interface CategoriyOptions {
@@ -59,11 +18,8 @@ export interface ChatRoomInfoProps {
   //필수요소긴 함
   studyRoomId?: number;
   notice?: string;
-
-  //목업데이터용
-  member?: number;
-  maxMember?: number;
-  desc?: string;
+  //d임시
+  chatAdminId: number;
 }
 
 export interface ChatMessage {

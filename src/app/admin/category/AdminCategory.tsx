@@ -33,8 +33,7 @@ const AdminCategories = () => {
 
   const [AllStudyRooms, error] = useFetch<StudyRoom[]>(
     apiPaths.admin.getAllstudyRooms,
-    {},
-    true
+    {}
   );
 
   const handleRemove = async (userId: number) => {
@@ -109,7 +108,7 @@ const AdminCategories = () => {
                         <StyledTableCell>{room.id}</StyledTableCell>
                         <StyledTableCell>{room.title}</StyledTableCell>
                         <StyledTableCell>{room.createdDate}</StyledTableCell>
-                        <StyledTableCell>{room.maxCapacity}</StyledTableCell>
+                        <StyledTableCell>{room.userCapacity}</StyledTableCell>
                         <StyledTableCell>
                           <QuitButton onClick={() => handleRemove(room.id)}>
                             삭제

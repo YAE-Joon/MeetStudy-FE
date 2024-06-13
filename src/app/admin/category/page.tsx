@@ -19,9 +19,7 @@ import { apiPaths } from "@/config/api";
 const AdminCategoryPage = () => {
   const [categories, error] = useFetch<CategoriyOptions[]>(
     apiPaths.category.public,
-    {},
-    true,
-    false
+    {}
   );
 
   if (!categories) {

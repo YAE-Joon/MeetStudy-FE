@@ -10,6 +10,7 @@ import {
 import { StyledProps } from "@/component/styled-components/styledProps";
 import { Description } from "@/component/styled-components/TextBoxes";
 import { Container } from "@/component/styled-components/Container";
+import Link from "next/link";
 
 const tokens = dt.DesignTokenVarNames;
 const mobileWidth = dt.DesignTokenExcept.media.mobile;
@@ -43,7 +44,7 @@ const SectionContainerV = styled(FlexBoxV)`
 `;
 
 const PartContainerV = styled(FlexBoxV)`
-  padding: 3rem;
+  padding: 1rem;
   background-color: var(${tokens.colors.simple.whitebg});
   border-radius: 20px;
   border: thick double var(${tokens.colors.simple.tertiarygray});
@@ -388,8 +389,55 @@ const MyStudyRoomsContainer = styled(StyledUl)`
   }
 `;
 
+const MainTableWrapper = styled.div`
+  position: relative;
+  width: 100%;
+  min-width: 200;
+  overflow: auto;
+`;
+
+export const MainWrapper = styled.section`
+  display: flex;
+  flex-direction: "column";
+  justify-content: space-between;
+  align-items: center;
+
+  min-height: 100%;
+  width: 80%;
+  min-width: var(${tokens.boxSizes.width.wrapperMax});
+  padding: 1.5rem;
+
+  & > * {
+    flex: 1 1 50%;
+    max-width: 50%;
+  }
+
+  @media only screen and (max-width: ${mobileWidth}) {
+    grid-template-columns: 1fr;
+    margin-bottom: 120px;
+    min-width: var(${tokens.boxSizes.width.wrapperMinMobile});
+    text-align: center;
+  }
+`;
+
+const StyledLink = styled(Link)`
+  text-decoration: none;
+  color: inherit;
+  transition: color 0.3s, font-weight 0.3s;
+
+  width: 300px;
+  height: 300px;
+
+  &:hover {
+    color: green;
+    font-weight: bold;
+  }
+`;
+
 export const StyledStudyRoomsPack = {
   MyStudyRoomsContainer,
+  MainTableWrapper,
+  StyledLink,
 };
 
 export const StyledCalendarPack = {
@@ -417,5 +465,6 @@ const MainStyledPack = {
   MainTitleWrapper,
   ErrorBox,
   StyledDescription,
+  MainWrapper,
 };
 export default MainStyledPack;

@@ -1,65 +1,48 @@
 import getApiPath from "@/lib/settingUrl";
 import { FetchOptions } from "@/lib/types";
 
+interface CustomError extends Error {
+  status?: number;
+}
+
 /**
  *
  * @param apiUrl
  * @param options
- * @param isAdmin
- * @param isTest
+ * @param token
  * @returns
- * 
- * interface FetchOptions {
-  method?: string;
-  headers?: HeadersInit;
-  body?: any;
-}
  */
 async function fetchDataBE(
   apiUrl: string,
   options: FetchOptions = {},
-  isAdmin: boolean | null = null,
-  isTest: boolean | null = null
+  token: string
 ) {
-  const apiPath = getApiPath(apiUrl, isTest);
-  const headers: HeadersInit = {
+  const apiPath = getApiPath(apiUrl);
+  const initialHeaders: HeadersInit = {
     "Content-Type": "application/json",
     ...options.headers,
   };
-  // Authorization
-  const token = process.env.NEXT_PUBLIC_TEST_TOKEN;
-  const adminToken = process.env.NEXT_PUBLIC_TEST_ADMIN;
 
-  // 일반유저 토큰이 존재할 때 Authorization 헤더 추가
-  if (token) {
-    //(headers as Record<string, string>)["Authorization"] = `Bearer ${token}`;
-    (headers as Record<string, string>)["Authorization"] = `Bearer ${token}`;
-  }
-  // 어드민일 때 덮어씌움
-  if (isAdmin) {
-    (headers as Record<string, string>)[
-      "Authorization"
-    ] = `Bearer ${adminToken}`;
-  }
-
-  // 헤더 체크
-  if ("Authorization" in headers) {
-    console.log(
-      `🙆‍♂️ [fetchDataBE] Authorization 헤더가 존재합니다: ${headers["Authorization"]}`
-    );
-  } else {
-    console.log("🙆‍♂️ [fetchDataBE] Authorization 헤더가 존재하지 않습니다.");
-  }
-
-  console.log(
-    `🙆‍♂️ [fetchDataBE] fetch를 시작합니다. 요청받은 옵션: apiUrl:${apiUrl} | options:${options} | isAdmin:${isAdmin} | isTest:${isTest}`
-  );
+  const headersWithToken = setTokenIntoHeader(initialHeaders, token);
 
   try {
+    // console.log(
+    //   `🙆‍♂️ [fetchDataBE] fetch를 시작합니다. 요청받은 옵션: \napiUrl: ${apiUrl} \nmethod: ${
+    //     options.method || "GET"
+    //   } \nheaders: ${JSON.stringify(headersWithToken, null, 2)} \nbody: ${
+    //     typeof options.body === "object"
+    //       ? JSON.stringify(options.body, null, 2)
+    //       : options.body
+    //   }`
+    // );
+    console.log(
+      `🙆‍♂️ [fetchDataBE] fetch를 시작합니다. 요청받은 옵션: \napiUrl: ${apiUrl}`
+    );
+
     const response = await fetch(apiPath, {
       method: options.method || "GET",
       body: options.body ? JSON.stringify(options.body) : null,
-      headers: headers,
+      headers: headersWithToken,
     });
 
     console.log(
@@ -69,10 +52,15 @@ async function fetchDataBE(
 
     if (!response.ok) {
       const errorMessage = await response.text();
-      throw new Error(`❗response is not OK: ${errorMessage}`);
+      //에러 상태코드도 함께 보내기
+      const error = new Error(
+        `❗response가 OK하지 않음! ${errorMessage}`
+      ) as CustomError;
+      (error as any).status = response.status;
+      throw error;
     }
 
-    //check response body
+    // Check response body
     const contentLength = response.headers.get("Content-Length");
     const contentType = response.headers.get("Content-Type");
 
@@ -82,7 +70,7 @@ async function fetchDataBE(
       contentType.includes("application/json")
     ) {
       const fetchedData = await response.json();
-      console.log("🙆‍♂️ [fetchDataBE] 최종 데이터 ", fetchedData);
+      //console.log("🙆‍♂️ [fetchDataBE] 최종 데이터 ", fetchedData);
       return fetchedData;
     }
     console.log(
@@ -96,3 +84,26 @@ async function fetchDataBE(
 }
 
 export default fetchDataBE;
+
+function setTokenIntoHeader(
+  headers: Record<string, string>,
+  token: string
+): Record<string, string> {
+  // token setting
+  if (token === null || token === undefined) {
+    throw new Error(`Token 을 확인해주세요 | token: ${token}`);
+  }
+
+  headers["Authorization"] = `Bearer ${token}`;
+
+  // 헤더 체크
+  // if ("Authorization" in headers) {
+  //   console.log(
+  //     `🙆‍♂️ [fetchDataBE] Authorization 헤더가 존재합니다: ${headers["Authorization"]}`
+  //   );
+  // } else {
+  //   console.log("🙆‍♂️ [fetchDataBE] Authorization 헤더가 존재하지 않습니다.");
+  // }
+
+  return headers;
+}

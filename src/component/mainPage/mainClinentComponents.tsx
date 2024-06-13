@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 
-import { UserCalendar } from "@/lib/types";
+import { UserCalendar } from "@/types/Calendar";
 import routeLinks from "@/lib/routeLinks";
 
 import { standardizeDate } from "@/util/dateUtils";
@@ -35,9 +35,9 @@ const {
 } = MainStyledPack;
 
 const { Date } = StyledCalendarPack;
+
 export const MainNavBar = ({ mode }: { mode?: string }) => {
   const { data: session, status } = useSession();
-  console.log(session);
   const isLoggedIn = status === "authenticated";
   const [userNickName, setUserNickName] =
     useState("밋스터디에 오신걸 환영합니다.");

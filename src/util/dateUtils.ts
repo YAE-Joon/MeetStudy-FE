@@ -1,4 +1,4 @@
-import { CalendarPeriod } from "@/lib/types";
+import { CalendarPeriod } from "@/types/Calendar";
 
 const errorNotISOtype = `ISO형 날짜가 아닙니다. | null이 입력되었습니다.`;
 
