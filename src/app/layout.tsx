@@ -17,9 +17,6 @@ export const metadata: Metadata = {
   title: { default: " 밋스터디", template: " 밋스터디 📗 %s" },
   description: "함께 공부하는 온라인 스터디룸, 밋스터디",
   keywords: ["스터디", "실시간 채팅", "스터디룸"],
-  icons: {
-    icon: [{ url: "/favocon-96x96.png" }],
-  },
   metadataBase: new URL("http://127.0.0.1:3000/"),
   robots: { index: true, follow: true },
   viewport: { width: "device-width", initialScale: 1 },
