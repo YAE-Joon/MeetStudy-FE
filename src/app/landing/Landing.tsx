@@ -13,7 +13,7 @@ import { MovingButton } from "@/component/styled-components/Button/Buttons";
 import { GridContainerMini } from "@/component/styled-components/Container";
 import { FlexBoxV } from "@/component/styled-components/FlexBoxes";
 import Loading from "@/component/Loading/Loading";
-import { StudyRoomCard } from "@/component/StudyRoomCard";
+import { StudyRoomCard } from "@/component/styled-components/Cards/StudyRoomCard";
 import { StyledButtonLink } from "@/component/styled-components/Button/buttonsComponents";
 
 export const tokens = dt.DesignTokenVarNames;

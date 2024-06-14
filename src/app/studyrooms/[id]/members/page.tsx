@@ -9,7 +9,7 @@ import { StudyRoom } from "@/types/StudyRoom";
 import { nullChecker } from "@/util/unllChecker";
 import { setDateStr, convertISOToYMD } from "@/util/dateUtils";
 
-import { MemberCard } from "@/component/styled-components/Card";
+import { MemberCard } from "@/component/styled-components/Cards/StudyRoomCard/StyledCardComponents";
 import {
   Container,
   GridContainer,

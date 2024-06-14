@@ -21,11 +21,9 @@ export async function middleware(req: NextRequest) {
 
   /** 스터디룸 하위 페이지 진입 금지 */
   if (matchedPath.startsWith("/studyrooms")) {
-    console.log("스터디룸s로 들어왔어요 ");
     const regex = /^\/studyrooms\/\d+$/;
 
     if (regex.test(matchedPath)) {
-      console.log("스터디룸s이라 나갈거예요");
       return response;
     }
     // 로그인 상태를 확인한다.

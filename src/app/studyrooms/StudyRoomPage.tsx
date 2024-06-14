@@ -1,36 +1,35 @@
 "use client";
 import { useState, useEffect } from "react";
-import useFetch from "@/hooks/useFetch";
-import { apiPaths } from "@/config/api";
-import { StudyRoom } from "@/types/StudyRoom";
-import { CategoriyOptions } from "@/lib/types";
+import { useRouter } from "next/navigation";
 
+import useFetch from "@/hooks/useFetch";
 import useFetchUserInfo from "@/hooks/useGetUserInfo";
+import { apiPaths } from "@/config/api";
+
+import { StudyRoom } from "@/types/StudyRoom";
+
 import dt from "@/lib/designToken/designTokens";
 import { Title } from "@/component/styled-components/TextBoxes";
 import { FlexBoxV } from "@/component/styled-components/FlexBoxes";
-import { StudyRoomCard } from "@/component/StudyRoomCard";
+import { StudyRoomCard } from "@/component/styled-components/Cards/StudyRoomCard";
 import StyledStudyRoomIndex from "@/app/studyrooms/StudyRoomIndexClientComponents";
 import { PrimaryButton } from "@/component/styled-components/Button/Buttons";
 import Loading from "@/component/Loading/Loading";
-import {
-  GridContainerFull,
-  FlexContainerFull,
-} from "@/component/styled-components/Container";
+import { GridContainerFull } from "@/component/styled-components/Container";
 import ChatStyled from "@/app/studyrooms/[id]/chatRoom/[chatId]/chatStyled";
 import { getUserFromToken } from "@/util/getUserFromToken";
 import getTokenByClient from "@/util/getTokenByClient";
-import { useRouter } from "next/navigation";
-import PackedStyledCards from "@/component/styled-components/StudyRoomCard/StyledCard";
+
+import PackedStyledCards from "@/component/styled-components/Cards/StudyRoomCard/StyledCard";
 const { StyledCardWrapper } = PackedStyledCards;
+
 const { Announcement } = ChatStyled;
 const tokens = dt.DesignTokenVarNames;
 
 const {
   InnerContainer,
-  SearchBarWarpper,
+
   SearchBarWarpperH,
-  SearchResultContainer,
 } = StyledStudyRoomIndex;
 
 const StudyRoomPage = ({}) => {

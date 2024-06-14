@@ -1,23 +1,10 @@
-import { StudyRoom } from "@/types/StudyRoom";
 import { usePathname } from "next/navigation";
-import useFetchUserInfo from "@/hooks/useGetUserInfo";
-import convertDateTime from "@/util/dateTimeUtil";
 import { RiUserFill } from "react-icons/ri";
-import dt from "@/lib/designToken/designTokens";
-import { getRandomEmoji } from "@/util/getEmoji";
-import { JoinTag } from "@/component/styled-components/Card";
-//import StyledCard from "@/component/styled-components/Card";
+import { StudyRoom } from "@/types/StudyRoom";
+import convertDateTime from "@/util/dateTimeUtil";
 
-import {
-  Span,
-  Description,
-  Title,
-} from "@/component/styled-components/TextBoxes";
-
-import PackedStyledCards from "@/component/styled-components/StudyRoomCard/StyledCard";
-const mobileWidth = dt.DesignTokenExcept.media.mobile;
-const tokens = dt.DesignTokenVarNames;
-
+import PackedStyledCards from "@/component/styled-components/Cards/StudyRoomCard/StyledCard";
+import { JoinTag } from "@/component/styled-components/Cards/StudyRoomCard/StyledCardComponents";
 const {
   StyledLinkContainer,
   CardHeader,
@@ -32,9 +19,6 @@ const {
 
   UserIcon,
 } = PackedStyledCards;
-
-// const { StyledLink, CardContent, CardUpper_ul, Emoji, StyledWrapper } =
-//   StyledCard;
 
 /// 카드 컴포넌트에 대한 인터페이스 정의
 interface StudyRoomCardProps {
@@ -113,40 +97,3 @@ export const StudyRoomCard: React.FC<StudyRoomCardProps> = ({
     </StyledLinkContainer>
   );
 };
-
-// for main
-export const MainStudyRoomCard = ({ item }: { item: StudyRoom }) => {
-  // 유저 이메일을 불러옵니다.
-
-  return (
-    <li>
-      <div>다시해보는중</div>
-    </li>
-  );
-};
-
-// return (
-//   <li>
-//     <StyledWrapper>
-//       <CardContent>
-//         <CardUpper_ul>
-//           {/* <Emoji>{getRandomEmoji()}</Emoji> */}
-
-//           <Title
-//             $htype={3}
-//             $fontSize={tokens.fontSize.web.medium}
-//             $color={tokens.colors.simple.blackbasic}
-//           >
-//             {item.title}
-//           </Title>
-//           <p>{`카테고리 : ${item.category.name}`}</p>
-//         </CardUpper_ul>
-
-//         {/* <p>{item.description}</p> */}
-//         <p>
-//           {item.currMembers}/{item.userCapacity}
-//         </p>
-//       </CardContent>
-//     </StyledWrapper>
-//   </li>
-// );

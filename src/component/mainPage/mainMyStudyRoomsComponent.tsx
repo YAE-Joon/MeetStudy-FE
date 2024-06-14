@@ -13,7 +13,7 @@ import { Title } from "@/component/styled-components/TextBoxes";
 import { MainSkleton } from "@/component/mainPage/mainStyledComponents";
 
 import { FlexBoxV } from "@/component/styled-components/FlexBoxes";
-import { StudyRoomCard } from "@/component/StudyRoomCard";
+import { StudyRoomCard } from "@/component/styled-components/Cards/StudyRoomCard";
 import StyledStudyRoomIndex from "@/app/studyrooms/StudyRoomIndexClientComponents";
 import { StyledStudyRoomsPack } from "@/component/mainPage/mainStyledComponents";
 import useFetchUserInfo from "@/hooks/useGetUserInfo";
