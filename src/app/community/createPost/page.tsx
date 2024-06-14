@@ -26,8 +26,9 @@ const CreatePost: React.FC = () => {
         return;
       }
       try {
+        const baseUrl = process.env.NEXT_PUBLIC_SITE_URL;
         const response = await axios.get(
-          "http://34.47.79.59:8080/api/admin/categories/public",
+          `${baseUrl}/api/admin/categories/public`,
           {
             headers: {
               Authorization: token,
@@ -53,8 +54,9 @@ const CreatePost: React.FC = () => {
     }
 
     try {
+      const baseUrl = process.env.NEXT_PUBLIC_SITE_URL;
       await axios.post(
-        "http://34.47.79.59:8080/api/post",
+        `${baseUrl}/api/post`,
         {
           categoryId: parseInt(category), // category 값을 숫자로 변환하여 categoryId로 사용
           title,

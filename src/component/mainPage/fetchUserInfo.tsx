@@ -10,7 +10,8 @@ export const fetchUserInfo = async () => {
   }
 
   try {
-    const response = await fetch(`http://34.47.79.59:8080/api/mypage`, {
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL;
+    const response = await fetch(`${baseUrl}/api/mypage`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

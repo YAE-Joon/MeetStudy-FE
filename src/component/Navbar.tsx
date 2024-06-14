@@ -50,7 +50,8 @@ export default function NavBar() {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://34.47.79.59:8080/api/user/login", {
+      const baseUrl = process.env.NEXT_PUBLIC_SITE_URL;
+      const response = await fetch(`${baseUrl}/api/user/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

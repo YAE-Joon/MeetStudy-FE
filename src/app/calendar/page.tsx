@@ -76,10 +76,11 @@ const NewEventForm: React.FC<{ onSubmit: (data: EventFormData) => void }> = ({
       console.error("No token found");
       return;
     }
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL;
 
     // axios를 사용하여 POST 요청 보내기
     axios
-      .post("http://34.47.79.59:8080/api/calendar", formattedData, {
+      .post(`${baseUrl}/api/calendar`, formattedData, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
@@ -230,9 +231,9 @@ export default function ReactBigCalendar() {
     }
 
     console.log(token);
-
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL;
     axios
-      .get("http://34.47.79.59:8080/api/calendar", {
+      .get(`${baseUrl}/api/calendar`, {
         headers: {
           year: currentYearMonth.year.toString(),
           month: currentYearMonth.month.toString().padStart(2, "0"),

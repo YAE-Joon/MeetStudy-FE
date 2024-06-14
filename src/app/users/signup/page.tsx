@@ -87,7 +87,8 @@ const SignupPage = () => {
       const formattedInterests = form.interests.map(
         (interest, index) => index + 1
       );
-      const response = await fetch("http://34.47.79.59:8080/api/user/join", {
+      const baseUrl = process.env.NEXT_PUBLIC_SITE_URL;
+      const response = await fetch(`${baseUrl}/api/user/join`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -100,20 +101,20 @@ const SignupPage = () => {
           interests: [3, 4],
         }),
       });
-      console.log({
-        email: "teee01@gmail.com",
-        password: "test5678!@",
-        username: "teee001",
-        nickname: "teeee001",
-        interests: [3, 4],
-      });
-      console.log({
-        email: initialEmail,
-        password: form.password,
-        username: form.name,
-        nickname: form.nickname,
-        interests: formattedInterests,
-      });
+      // console.log({
+      //   email: "teee01@gmail.com",
+      //   password: "test5678!@",
+      //   username: "teee001",
+      //   nickname: "teeee001",
+      //   interests: [3, 4],
+      // });
+      // console.log({
+      //   email: initialEmail,
+      //   password: form.password,
+      //   username: form.name,
+      //   nickname: form.nickname,
+      //   interests: formattedInterests,
+      // });
 
       const data = await response.json();
 

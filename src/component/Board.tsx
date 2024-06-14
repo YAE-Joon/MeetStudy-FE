@@ -48,7 +48,8 @@ const Board: React.FC<Props> = ({ title, posts, categories }) => {
 
     try {
       // 게시글 조회수 증가
-      await axios.get(`http://34.47.79.59:8080/api/post/public/${postId}`, {
+      const baseUrl = process.env.NEXT_PUBLIC_SITE_URL;
+      await axios.get(`${baseUrl}/api/post/public/${postId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -64,8 +65,9 @@ const Board: React.FC<Props> = ({ title, posts, categories }) => {
   // 카테고리를 클릭했을 때 해당 카테고리에 속하는 게시물을 가져오는 함수
   const handleCategoryClick = async (categoryId: number) => {
     try {
+      const baseUrl = process.env.NEXT_PUBLIC_SITE_URL;
       const response = await axios.get(
-        `http://34.47.79.59:8080/api/post/public/category/${categoryId}?page=0&size=100`
+        `${baseUrl}/api/post/public/category/${categoryId}?page=0&size=100`
       );
       const data: Post[] = response.data; // 카테고리에 속하는 게시물 데이터 가져오기
 

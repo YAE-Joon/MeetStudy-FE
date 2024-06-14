@@ -7,6 +7,7 @@ import { RootState } from "../../redux/reducers";
 import Board from "@/component/Board";
 import { setCategories } from "@/redux/actions/categoryActions";
 import { TabBar, TabButton, TabContent } from "./CommunityPageStyles"; // Import styles
+import getTokenByClient from "@/util/getTokenByClient";
 
 export default function CommunityPage() {
   const dispatch = useDispatch();
@@ -18,20 +19,21 @@ export default function CommunityPage() {
   ); // Accessing data from Redux store
 
   useEffect(() => {
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL;
     axios
-      .get("http://34.47.79.59:8080/api/post/public?page=0&size=100")
+      .get(`${baseUrl}/api/post/public?page=0&size=100`)
       .then((response) => {
         dispatch(setCertificates(response.data)); // Redux 스토어에 데이터 설정
       })
       .catch((error) => console.error("Error fetching posts:", error));
   }, [dispatch]);
 
-  const token =
-    "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyMCIsImF1dGgiOiJBRE1JTiIsInVzZXJuYW1lIjoi7J287J207IK87Jyg7KCAIiwiZXhwIjoyNzE3NjY0MDI2fQ.hrVSdMxokj0FbBXnmUKLlqgPwHvGMllGpeGmPw6pVdSFmybESvKhQbpZmpkuowbEc61rpYdkcPIi9m91C41StQ";
+  const token = getTokenByClient();
 
   useEffect(() => {
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL;
     axios
-      .get("http://34.47.79.59:8080/api/admin/categories/public", {
+      .get(`${baseUrl}/api/admin/categories/public`, {
         headers: {
           Authorization: token,
         },

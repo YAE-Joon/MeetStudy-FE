@@ -38,9 +38,8 @@ export default function PostDetail() {
 
   const fetchPost = async (postId: number) => {
     try {
-      const response = await fetch(
-        `http://34.47.79.59:8080/api/post/public/${postId}`
-      );
+      const baseUrl = process.env.NEXT_PUBLIC_SITE_URL;
+      const response = await fetch(`${baseUrl}/api/post/public/${postId}`);
       const postData: Post = await response.json();
       setPost(postData);
     } catch (error) {
@@ -50,8 +49,9 @@ export default function PostDetail() {
 
   const fetchComments = async (postId: number) => {
     try {
+      const baseUrl = process.env.NEXT_PUBLIC_SITE_URL;
       const response = await fetch(
-        `http://34.47.79.59:8080/api/comment/public/${postId}?page=0&size=8`
+        `${baseUrl}/api/comment/public/${postId}?page=0&size=8`
       );
       const data: Comment[] = await response.json();
       setComments(data);
@@ -73,17 +73,15 @@ export default function PostDetail() {
     }
 
     try {
-      const response = await fetch(
-        `http://34.47.79.59:8080/api/comment/${post?.id}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({ content: newComment }),
-        }
-      );
+      const baseUrl = process.env.NEXT_PUBLIC_SITE_URL;
+      const response = await fetch(`${baseUrl}/api/comment/${post?.id}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ content: newComment }),
+      });
 
       if (response.ok) {
         const newCommentData: Comment = await response.json();
