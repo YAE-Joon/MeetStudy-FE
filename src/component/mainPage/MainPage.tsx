@@ -6,7 +6,7 @@ import Cookies from "js-cookie";
 import { getUserFromToken } from "@/util/getUserFromToken";
 import getTokenByClient from "@/util/getTokenByClient";
 
-import { Container } from "@/component/styled-components/Container";
+import { MainContainer } from "@/component/styled-components/Container";
 import { MainNavBar } from "@/component/mainPage/mainClinentComponents";
 import MainStyledPack from "@/component/mainPage/mainStyledComponents";
 import dt from "@/lib/designToken/designTokens";
@@ -48,7 +48,7 @@ const MainPage = () => {
   return (
     <>
       {!isRedirecting && <MainNavBar mode={"mypage"} />}
-      <Container $bgColor={`${tokens.colors.simple.primary}`} $height={"100vh"}>
+      <MainContainer>
         {!isRedirecting && (
           <MainWrapper>
             <PartContainerV>
@@ -59,7 +59,7 @@ const MainPage = () => {
             </PartContainerV>
           </MainWrapper>
         )}
-      </Container>
+      </MainContainer>
     </>
   );
 };

@@ -144,6 +144,8 @@ const FlexBar = styled.nav`
   padding: 1rem;
 
   background-color: var(${tokens.colors.simple.whitebg});
+
+  position: fixed;
 `;
 interface StyledListProps {
   gap?: string;
@@ -402,7 +404,7 @@ export const MainWrapper = styled.section`
   justify-content: space-between;
   align-items: center;
 
-  min-height: 100%;
+  /* min-height: 100%; */
   width: 80%;
   min-width: var(${tokens.boxSizes.width.wrapperMax});
   padding: 1.5rem;

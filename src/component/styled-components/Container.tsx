@@ -18,6 +18,7 @@ interface OuterContainerProps {
   $gap?: string | null;
   $height?: string | null;
   $bgColor?: string | null;
+  $justify?: string | null;
 }
 
 export const OuterContainer = styled.div.attrs<OuterContainerProps>(
@@ -27,15 +28,36 @@ export const OuterContainer = styled.div.attrs<OuterContainerProps>(
 )<OuterContainerProps>`
   scroll-snap-type: y mandatory;
   height: ${(props) => props.$height || "100vh"};
-  min-height: 80vh;
   flex: 1; /** footer를 밀어내기 위해서 */
   min-width: ${(props) => props.$minWidth || "auto"};
   gap: ${(props) => props.$gap || "0"};
   background-color: ${(props) => props.$bgColor || "transparent"};
 
   //수정용
-  height: auto;
   min-height: ${(props) => props.$height || "100vh"};
+  justify-content: ${(props) => props.$justify || "flex-start"};
+
+  @media only screen and (max-width: ${mobileWidth}) {
+    width: 100vw;
+  }
+`;
+
+export const OuterContainerMain = styled.div.attrs<OuterContainerProps>(
+  ({ as }) => ({
+    as: as || "div",
+  })
+)<OuterContainerProps>`
+  scroll-snap-type: y mandatory;
+  height: 100vh;
+  flex: 1;
+  min-width: auto;
+  gap: 0;
+  background-color: transparent;
+
+  //수정용
+  /* height: auto; */
+  min-height: 100vh;
+  justify-content: center;
 
   @media only screen and (max-width: ${mobileWidth}) {
     width: 100vw;
@@ -217,4 +239,31 @@ export const GridContainerMini = styled.ul`
       height: 50%;
     }
   }
+`;
+
+export const MainContainer = styled.main<ContainerProps>`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
+  min-width: 100%;
+  background-color: var(${tokens.colors.simple.primary});
+  gap: 0;
+  padding-top: 5rem;
+  height: 100vh;
+  scroll-snap-align: start;
+  border-radius: 0;
+
+  overflow: visible;
+
+  @media only screen and (max-width: ${mobileWidth}) {
+    grid-template-columns: 1fr;
+    width: 100%;
+    min-width: 200px;
+    text-align: center;
+  }
+
+  min-height: auto;
 `;

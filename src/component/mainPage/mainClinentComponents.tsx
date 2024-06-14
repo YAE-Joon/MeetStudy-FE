@@ -70,12 +70,11 @@ export const MainNavBar = ({ mode }: { mode?: string }) => {
           {mode === "mypage" ? (
             <>
               <li>
-                <IoMdSettings
-                  style={{ color: `var(${tokens.colors.simple.primary})` }}
-                />
-              </li>
-              <li>
-                <Link href={routeLinks.myAccountSetting}>계정 관리</Link>
+                <Link href={routeLinks.myAccountSetting}>
+                  <IoMdSettings
+                    style={{ color: `var(${tokens.colors.simple.primary})` }}
+                  />
+                </Link>
               </li>
             </>
           ) : (

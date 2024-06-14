@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 
 import { apiPaths } from "@/config/api";
 import fetchDataBE from "@/lib/fetch";
-import { UserCalendar } from "@/types/Calendar";
+import { UserPersonalCaledar } from "@/types/Calendar";
 import { processDateTime } from "@/util/dateUtilsFinal";
 import { nullChecker } from "@/util/unllChecker";
 import dt from "@/lib/designToken/designTokens";
@@ -28,6 +28,11 @@ const {
 } = StyledMainCal;
 const tokens = dt.DesignTokenVarNames;
 
+import PackedStyledEmpty from "@/component/styled-components/EmptyContent";
+import { PrimaryButton } from "@/component/styled-components/Button/Buttons";
+const { EmptyStyledLink, EmptyText, EmptyTitle, EmptyCard, EmptyContainer } =
+  PackedStyledEmpty;
+
 const MyCalendar = () => {
   //for api params
   const currentDate = new Date();
@@ -35,7 +40,7 @@ const MyCalendar = () => {
   const currentMonth = (currentDate.getMonth() + 1).toString();
   //data fetching
   const [userCalendarData, setUserCalendarData] = useState<
-    UserCalendar[] | null
+    UserPersonalCaledar[] | null
   >(null);
   const [error, setError] = useState<Error | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -54,7 +59,7 @@ const MyCalendar = () => {
       const fetchCalendarData = async () => {
         try {
           const token = getTokenByClient();
-          const data = await fetchDataBE(
+          const calendarData = await fetchDataBE(
             apiPaths.calendar.all,
             {
               headers: {
@@ -64,7 +69,10 @@ const MyCalendar = () => {
             },
             token
           );
-          setUserCalendarData(data);
+          const filteredHoliyDay = calendarData?.filter(
+            (data: UserPersonalCaledar) => data.holiday === false
+          );
+          setUserCalendarData(filteredHoliyDay);
         } catch (err) {
           if (err instanceof Error) {
             setError(err);
@@ -112,6 +120,20 @@ const MyCalendar = () => {
     return <MainSkleton />;
   }
 
+  const EmptyNoticeBox = () => {
+    return (
+      <EmptyContainer>
+        <EmptyCard>
+          <EmptyText>개인 일정이 없습니다. 일정을 추가해보세요</EmptyText>
+          {/* <CreateChatRoom roomId={roomId} /> */}
+          <span>
+            <PrimaryButton content={"캘린더 바로가기"} href={"/calendar"} />
+          </span>
+        </EmptyCard>
+      </EmptyContainer>
+    );
+  };
+
   return (
     <div>
       {!userCalendarData || !paginatedData || paginatedData === undefined ? (
@@ -122,66 +144,81 @@ const MyCalendar = () => {
             $color={tokens.colors.simple.blackbasic}
             $htype={3}
           >{`${currentMonth}월`}</Title>
-          <div className="w-full max-w-4xl mx-auto">
-            <div className="grid gap-4">
-              {paginatedData.map((userCalendar, idx) => {
-                const startDateStr = nullChecker(
-                  userCalendar.startDate,
-                  "string",
-                  (value) => processDateTime(value).formattedDate
-                );
-                const endDateStr = nullChecker(
-                  userCalendar.endDate,
-                  "string",
-                  (value) => processDateTime(value).formattedDate
-                );
-
-                return (
-                  <StyledDetails key={userCalendar.id}>
-                    <MainTitleWrapper>
-                      <CalTitle $color={"#1a202c"}>
-                        {userCalendar.title}
-                      </CalTitle>
-                      <div style={{ display: "flex", flexDirection: "row" }}>
-                        <div className="text-sm text-gray-500 dark:text-gray-400">
-                          <p>{startDateStr}</p>
-                          <p>{endDateStr}</p>
-                        </div>
-                        <GhostButton
-                          onClick={() => toggleDescription(userCalendar.id)}
-                        >
-                          <IconWrapper
-                            rotate={`${expandedId === userCalendar.id}`}
-                          >
-                            <IoIosArrowDown />
-                          </IconWrapper>
-                        </GhostButton>
-                      </div>
-                    </MainTitleWrapper>
-                    <StyledDescription
-                      $expanded={expandedId === userCalendar.id}
-                    >
-                      {userCalendar.content}
-                    </StyledDescription>
-                  </StyledDetails>
-                );
-              })}
-            </div>
-            <div className="flex justify-between mt-4">
-              <button onClick={handlePrevPage} disabled={currentPage === 0}>
-                <IoIosArrowBack size={24} />
-              </button>
-              <button
-                onClick={handleNextPage}
-                disabled={
-                  !userCalendarData ||
-                  (currentPage + 1) * itemsPerPage >= userCalendarData.length
-                }
+          {userCalendarData.length === 0 ? (
+            <>
+              <EmptyNoticeBox />
+            </>
+          ) : (
+            <>
+              <div
+                style={{ width: "100%", maxWidth: "1024px", margin: "0 auto" }}
               >
-                <IoIosArrowForward size={24} />
-              </button>
-            </div>
-          </div>
+                <div
+                  style={{ display: "inline-grid", gap: "16px", width: "100%" }}
+                >
+                  {paginatedData.map((userCalendar, idx) => {
+                    const startDateStr = nullChecker(
+                      userCalendar.startDate,
+                      "string",
+                      (value) => processDateTime(value).formattedDate
+                    );
+                    const endDateStr = nullChecker(
+                      userCalendar.endDate,
+                      "string",
+                      (value) => processDateTime(value).formattedDate
+                    );
+
+                    return (
+                      <StyledDetails key={userCalendar.id}>
+                        <MainTitleWrapper>
+                          <CalTitle $color={"#1a202c"}>
+                            {userCalendar.title}
+                          </CalTitle>
+                          <div
+                            style={{ display: "flex", flexDirection: "row" }}
+                          >
+                            <div className="text-sm text-gray-500 dark:text-gray-400">
+                              <p>{startDateStr}</p>
+                              <p>{endDateStr}</p>
+                            </div>
+                            <GhostButton
+                              onClick={() => toggleDescription(userCalendar.id)}
+                            >
+                              <IconWrapper
+                                rotate={`${expandedId === userCalendar.id}`}
+                              >
+                                <IoIosArrowDown />
+                              </IconWrapper>
+                            </GhostButton>
+                          </div>
+                        </MainTitleWrapper>
+                        <StyledDescription
+                          $expanded={expandedId === userCalendar.id}
+                        >
+                          {userCalendar.content}
+                        </StyledDescription>
+                      </StyledDetails>
+                    );
+                  })}
+                </div>
+                <div className="flex justify-between mt-4">
+                  <button onClick={handlePrevPage} disabled={currentPage === 0}>
+                    <IoIosArrowBack size={24} />
+                  </button>
+                  <button
+                    onClick={handleNextPage}
+                    disabled={
+                      !userCalendarData ||
+                      (currentPage + 1) * itemsPerPage >=
+                        userCalendarData.length
+                    }
+                  >
+                    <IoIosArrowForward size={24} />
+                  </button>
+                </div>
+              </div>
+            </>
+          )}
         </>
       )}
     </div>

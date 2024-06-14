@@ -1,27 +1,14 @@
 "use client";
-import React from "react";
+
 import { usePathname } from "next/navigation";
 import { ChatRoomInfoProps } from "@/lib/types";
-import dt from "@/lib/designToken/designTokens";
 import PackedStyledChatrooms from "@/app/studyrooms/[id]/chatRoom/StyledChatRoomCompoents";
-import { CreateChatRoom } from "@/app/studyrooms/[id]/chatRoom/CreateNewChatRoom";
-import { useState } from "react";
-import { QuitButton } from "@/app/admin/UserStyled";
-import getTokenByClient from "@/util/getTokenByClient";
-const {
-  ChatRoomContainer,
-  ChatRoomCard,
-  LinkContent,
-  LinkDetails,
-  LinkTitle,
-  NoChatContainer,
-  NoChatCard,
-  NoChatTitle,
-  NoChatText,
-} = PackedStyledChatrooms;
+const { ChatRoomContainer, ChatRoomCard, LinkContent, LinkDetails, LinkTitle } =
+  PackedStyledChatrooms;
 
-const tokens = dt.DesignTokenVarNames;
-const mobileWidth = dt.DesignTokenExcept.media.mobile;
+import PackedStyledEmpty from "@/component/styled-components/EmptyContent";
+const { EmptyStyledLink, EmptyText, EmptyTitle, EmptyCard, EmptyContainer } =
+  PackedStyledEmpty;
 
 export const ChatRoomList = ({
   chatRoomList,
@@ -51,14 +38,14 @@ export const ChatRoomList = ({
 
 export const NoChatRoom = ({ roomId }: { roomId: number }) => {
   return (
-    <NoChatContainer>
-      <NoChatCard>
-        <NoChatTitle>개설된 채팅방이 없습니다.</NoChatTitle>
-        <NoChatText>
+    <EmptyContainer>
+      <EmptyCard>
+        <EmptyTitle>개설된 채팅방이 없습니다.</EmptyTitle>
+        <EmptyText>
           아직 채팅방을 만들지 않았습니다. 채팅방을 만들어보세요!
-        </NoChatText>
+        </EmptyText>
         {/* <CreateChatRoom roomId={roomId} /> */}
-      </NoChatCard>
-    </NoChatContainer>
+      </EmptyCard>
+    </EmptyContainer>
   );
 };

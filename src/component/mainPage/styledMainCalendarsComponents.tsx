@@ -10,9 +10,9 @@ const StyledDetails = styled.div`
   margin-bottom: 1rem;
   display: flex;
   flex-direction: column;
-  // background-color: red;
 
   display: flex;
+
   align-items: center;
   justify-content: center;
 `;

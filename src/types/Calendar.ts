@@ -9,3 +9,12 @@ export interface UserCalendar extends CalendarPeriod {
 
   isHoliday: boolean;
 }
+
+export interface UserPersonalCaledar {
+  id: number;
+  title: string;
+  content: string;
+  startDate: string;
+  endDate: string;
+  holiday: boolean;
+}
