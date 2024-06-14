@@ -1,20 +1,15 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { signIn } from "next-auth/react";
 
-const interestsOptions = [
-  "이름1",
-  "이름2",
-  "이름3",
-  "이름4",
-  "이름5",
-  "이름6",
-  "이름7",
-  "이름8",
-];
+interface Category {
+  id: number;
+  name: string;
+  description: string;
+}
 
 interface SignupForm {
   password: string;
@@ -35,7 +30,24 @@ const SignupPage = () => {
     nickname: "",
     interests: [],
   });
+  const [categories, setCategories] = useState<Category[]>([]);
   const [status, setStatus] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch(
+          "http://34.47.79.59:8080/api/admin/categories/public"
+        );
+        const data = await response.json();
+        setCategories(data);
+      } catch (error) {
+        console.error("Failed to fetch categories:", error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
@@ -84,9 +96,15 @@ const SignupPage = () => {
     }
 
     try {
-      const formattedInterests = form.interests.map(
-        (interest, index) => index + 1
-      );
+      const formattedInterests = form.interests
+        .map((interest) => {
+          const category = categories.find(
+            (category) => category.name === interest
+          );
+          return category ? category.id : null;
+        })
+        .filter((id) => id !== null);
+
       const baseUrl = process.env.NEXT_PUBLIC_SITE_URL;
       const response = await fetch(`${baseUrl}/api/user/join`, {
         method: "POST",
@@ -98,25 +116,14 @@ const SignupPage = () => {
           password: form.password,
           username: form.name,
           nickname: form.nickname,
-          interests: [3, 4],
+          interests: formattedInterests,
         }),
       });
-      // console.log({
-      //   email: "teee01@gmail.com",
-      //   password: "test5678!@",
-      //   username: "teee001",
-      //   nickname: "teeee001",
-      //   interests: [3, 4],
-      // });
-      // console.log({
-      //   email: initialEmail,
-      //   password: form.password,
-      //   username: form.name,
-      //   nickname: form.nickname,
-      //   interests: formattedInterests,
-      // });
+
+      console.log(formattedInterests);
 
       const data = await response.json();
+      console.log(data);
 
       if (!response.ok) {
         throw new Error(data.message || "회원가입에 실패했습니다.");
@@ -238,22 +245,22 @@ const SignupPage = () => {
               관심분야
             </label>
             <div className="grid grid-cols-2 gap-3">
-              {interestsOptions.map((interest, index) => (
-                <div key={index} className="flex items-center">
+              {categories.map((category) => (
+                <div key={category.id} className="flex items-center">
                   <input
                     type="checkbox"
-                    id={`interest-${index}`}
+                    id={`interest-${category.id}`}
                     name="interests"
-                    value={interest}
-                    checked={form.interests.includes(interest)}
+                    value={category.name}
+                    checked={form.interests.includes(category.name)}
                     onChange={handleChange}
                     className="h-4 w-4 text-indigo-600 border-gray-300 rounded"
                   />
                   <label
-                    htmlFor={`interest-${index}`}
+                    htmlFor={`interest-${category.id}`}
                     className="ml-2 block text-sm text-gray-700"
                   >
-                    {interest}
+                    {category.name}
                   </label>
                 </div>
               ))}
