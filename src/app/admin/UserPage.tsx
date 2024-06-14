@@ -116,7 +116,7 @@ const UserPage = () => {
     </>
   ) : (
     <>
-      <OuterContainer>
+      <OuterContainer $minWidth={"100%"}>
         <Container>
           {!isRedirecting && (
             <>

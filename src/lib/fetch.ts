@@ -39,9 +39,9 @@ async function fetchDataBE(
     //       : options.body
     //   }`
     // );
-    console.log(
-      `🙆‍♂️ [fetchDataBE] fetch를 시작합니다. 요청받은 옵션: \napiUrl: ${apiUrl}`
-    );
+    // console.log(
+    //   `🙆‍♂️ [fetchDataBE] fetch를 시작합니다. 요청받은 옵션: \napiUrl: ${apiUrl}`
+    // );
 
     const response = await fetch(apiPath, {
       method: options.method || "GET",

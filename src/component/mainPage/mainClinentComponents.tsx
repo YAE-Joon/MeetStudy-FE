@@ -80,12 +80,12 @@ export const MainNavBar = ({ mode }: { mode?: string }) => {
           ) : (
             <>
               <li>
-                <RiUserFill
-                  style={{ color: `var(${tokens.colors.simple.primary})` }}
-                />
-              </li>
-              <li>
-                <Link href={routeLinks.main}>메인으로</Link>
+                <Link href={routeLinks.main}>
+                  {" "}
+                  <RiUserFill
+                    style={{ color: `var(${tokens.colors.simple.primary})` }}
+                  />
+                </Link>
               </li>
             </>
           )}

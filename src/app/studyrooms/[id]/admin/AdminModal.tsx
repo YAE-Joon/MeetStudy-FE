@@ -27,7 +27,7 @@ export const QuitUser = ({ userId, handleRemove }: QuitUserProps) => {
       //     method: "DELETE",
       //   });
       const response = handleRemove(userId);
-      console.log("[스터디룸] 성공적으로 스터디룸을 떠났습니다.", response);
+      //console.log("[스터디룸] 성공적으로 스터디룸을 떠났습니다.", response);
       setModalMessage("성공적으로 유저를 강퇴시켰습니다.");
       handleFinish();
     } catch (err) {

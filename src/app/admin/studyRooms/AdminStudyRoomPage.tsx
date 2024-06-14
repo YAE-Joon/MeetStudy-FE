@@ -84,7 +84,7 @@ const AdminStudyRooms = () => {
     </>
   ) : (
     <>
-      <OuterContainer>
+      <OuterContainer $minWidth={"100%"}>
         <Container>
           <Header>
             <Title $color={tokens.colors.simple.blackbasic}>

@@ -1,38 +1,17 @@
 "use client";
-
-import { apiPaths } from "@/config/api";
-import useFetch from "@/hooks/useFetch";
-import { StudyRoom, UserStudyRoom } from "@/types/StudyRoom";
-
-import dt from "@/lib/designToken/designTokens";
-import MainStyledPack from "@/component/mainPage/mainStyledComponents";
-
-import { DailyList } from "@/component/mainPage/mainClinentComponents";
-
-import { Title } from "@/component/styled-components/TextBoxes";
-import { MainSkleton } from "@/component/mainPage/mainStyledComponents";
-
-import { FlexBoxV } from "@/component/styled-components/FlexBoxes";
-import { StudyRoomCard } from "@/component/styled-components/Cards/StudyRoomCard";
-import StyledStudyRoomIndex from "@/app/studyrooms/StudyRoomIndexClientComponents";
-import { StyledStudyRoomsPack } from "@/component/mainPage/mainStyledComponents";
-import useFetchUserInfo from "@/hooks/useGetUserInfo";
-import { UserProfile } from "@/types/User";
 import { useEffect, useState } from "react";
+import { apiPaths } from "@/config/api";
 import fetchDataBE from "@/lib/fetch";
 import getTokenByClient from "@/util/getTokenByClient";
-const {
-  InnerContainer,
-
-  SearchBarWarpper,
-  InputContainer,
-  SearchResultContainer,
-} = StyledStudyRoomIndex;
+import { StudyRoom } from "@/types/StudyRoom";
+import useFetchUserInfo from "@/hooks/useGetUserInfo";
+import dt from "@/lib/designToken/designTokens";
+import { Title } from "@/component/styled-components/TextBoxes";
+import { MainSkleton } from "@/component/mainPage/mainStyledComponents";
+import { StyledStudyRoomsPack } from "@/component/mainPage/mainStyledComponents";
 import StyledAdminUserPage from "@/app/admin/UserStyled";
 import { processDateTime } from "@/util/dateUtilsFinal";
-import Link from "next/link";
-const { MyStudyRoomsContainer, MainTableWrapper, StyledLink } =
-  StyledStudyRoomsPack;
+const { MainTableWrapper, StyledLink } = StyledStudyRoomsPack;
 const {
   Header,
   TableWrapper,
@@ -58,7 +37,7 @@ const MyStudyRooms = () => {
     useFetchUserInfo("email");
 
   useEffect(() => {
-    console.log("[myStudyrooms] 호출합니다: 현재 user eamil:", userEmail);
+    // console.log("[myStudyrooms] 호출합니다: 현재 user eamil:", userEmail);
     const token = getTokenByClient();
     if (!userEmail || typeof userEmail !== "string") {
       return;
@@ -181,7 +160,7 @@ const MyStudyRooms = () => {
                               : alert("오류 발생")
                           }
                         >
-                          삭제
+                          탈퇴
                         </QuitButton>
                       </StyledTableCell>
                     </StyledTableRow>

@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { apiPaths } from "@/config/api";
 import useFetch from "@/hooks/useFetch";
 import getTokenByClient from "@/util/getTokenByClient";
@@ -19,6 +20,7 @@ export default function StudyRoomdLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const { data, status } = useSession();
   const params = useParams();
   const roomId = Number(params.id);
   const initialValue = [
@@ -43,11 +45,16 @@ export default function StudyRoomdLayout({
   );
 
   // 유저 이메일을 불러옵니다.
-  const [myEmail, setMyEmail] = useFetchUserInfo("email");
+  const [myEmail, setMyEmail] = useState("");
 
   // 스터디룸의 멤버리스트 중 중 나의 정보를 불러옵니다.
   // 동시에 권한을 확인합니다.
   useEffect(() => {
+    //@ts-ignore //확실히 있음
+    if (status === "authenticated" && data?.user?.id) {
+      //@ts-ignore //확실히 있음
+      setMyEmail(data.user.id);
+    }
     let userRole = {
       isMember: false,
       isOwner: false,
@@ -70,14 +77,14 @@ export default function StudyRoomdLayout({
     userRole.isMember = myPermission ? true : false; //permission이 있다면 member가 맞음.
     userRole.isOwner = myPermission === "OWNER" ? true : false;
 
-    console.log(
-      "[🙆 개별 스터디룸에 들어왔습니다. 참가 자격을 확인합니다\n Admin?:",
-      userRole.isAdmin,
-      "member?",
-      userRole.isMember,
-      "owner?",
-      userRole.isOwner
-    );
+    // console.log(
+    //   "[🙆 개별 스터디룸에 들어왔습니다. 참가 자격을 확인합니다\n Admin?:",
+    //   userRole.isAdmin,
+    //   "member?",
+    //   userRole.isMember,
+    //   "owner?",
+    //   userRole.isOwner
+    // );
 
     setUserAccControl(userRole);
 
@@ -91,7 +98,7 @@ export default function StudyRoomdLayout({
         },
       ]);
     }
-  }, [studyRoomData, myEmail]);
+  }, [studyRoomData]);
 
   return !studyRoomData ? (
     <Loading />

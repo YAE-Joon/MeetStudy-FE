@@ -23,10 +23,10 @@ const useFetchUserInfo = <T extends string | object>(
         if (userAuth?.auth === "ADMIN") {
           setMyData("ADMIN" as T); // 타입 단언
         }
-        console.log(
-          "useGetUserInfo에서 데이터를 호출합니다: apiUrl, requiredFields, token",
-          requiredFields
-        );
+        // console.log(
+        //   "useGetUserInfo에서 데이터를 호출합니다: apiUrl, requiredFields, token",
+        //   requiredFields
+        // );
 
         const data = await getUserInfoFromToken(token, requiredFields);
         setMyData(data);

@@ -33,16 +33,16 @@ const useWebSocket = (
 
   useEffect(() => {
     //ws로 통신하기 위해 웹소켓으로 만듦
-    console.log(
-      "🙆‍♂️ useWebsocket의 useEffect가 실행됩니다! wsStompClient 존재?",
-      wsStompClient
-    );
+    // console.log(
+    //   "🙆‍♂️ useWebsocket의 useEffect가 실행됩니다! wsStompClient 존재?",
+    //   wsStompClient
+    // );
     if (wsStompClient && wsStompClient.connected) {
-      console.log("🙆‍♂️ 이미 wsStompClient가 존재하고 연결되어 있습니다!");
+      // console.log("🙆‍♂️ 이미 wsStompClient가 존재하고 연결되어 있습니다!");
       // 이미 stomp 연결이 되어 있음
       return;
     }
-    console.log("🙆‍♂️ wsStompClient가 없습니다. 연결을 시도합니다!");
+    // console.log("🙆‍♂️ wsStompClient가 없습니다. 연결을 시도합니다!");
     const webSocketFactory = () => socket;
 
     const stompClient = new Client({
@@ -51,13 +51,13 @@ const useWebSocket = (
       connectHeaders: {
         Authorization: token,
       },
-      debug: (str) => {
-        console.log("🕷️[degub]: ", str);
-      },
+      // debug: (str) => {
+      //   console.log("🕷️[degub]: ", str);
+      // },
       beforeConnect: () => {
-        console.log(
-          `🙆‍♂️ 연결을 시도합니다: chatRoomId : ${chatRoomId} | ws Url : ${wsUrl}`
-        );
+        // console.log(
+        //   `🙆‍♂️ 연결을 시도합니다: chatRoomId : ${chatRoomId} | ws Url : ${wsUrl}`
+        // );
       },
       onConnect: () => {
         console.log("🙆‍♂️Connected to WebSocket");
@@ -74,7 +74,7 @@ const useWebSocket = (
         //connection이 완료 되면 /room/{chatRoomId} 으로 입장 메세지가 뜨고 메세지는 데이터베이스에 저장된다.
 
         stompClient.subscribe(subscribeRoom, (message) => {
-          console.log(`🙆➡️➡️🙆‍♂️ Received: ${message.body}`);
+          // console.log(`🙆➡️➡️🙆‍♂️ Received: ${message.body}`);
           setMessages((prevMessages) => [
             ...prevMessages,
             JSON.parse(message.body),
@@ -109,7 +109,7 @@ const useWebSocket = (
 
   // 클라이언트 컴포넌트에서 메시지를 보낼 때 사용함!
   const sendMessage = <T>(messageObj: T) => {
-    console.log("🙆‍♂️➡️➡️🙆:", messageObj, "| stompClient:", wsStompClient);
+    //console.log("🙆‍♂️➡️➡️🙆:", messageObj, "| stompClient:", wsStompClient);
     let response = { status: false, message: "" };
     let msg = "";
     if (wsStompClient && wsStompClient.connected) {

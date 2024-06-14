@@ -51,10 +51,10 @@ const MyCalendar = () => {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      console.log(
-        "[client][myCalendar] API를 요청합니다: ",
-        `${apiPaths.calendar.all}?year=${currentYear}&month=${currentMonth}`
-      );
+      // console.log(
+      //   "[client][myCalendar] API를 요청합니다: ",
+      //   `${apiPaths.calendar.all}?year=${currentYear}&month=${currentMonth}`
+      // );
 
       const fetchCalendarData = async () => {
         try {
@@ -96,7 +96,7 @@ const MyCalendar = () => {
   // for toggle
   const toggleDescription = (id: number) => {
     if (typeof id !== "number") {
-      console.log("[MyCalendar] id가 숫자가 아닙니다.");
+      //console.log("[MyCalendar] id가 숫자가 아닙니다.");
       return;
     }
     setExpandedId((prevId) => (prevId === id ? null : id));

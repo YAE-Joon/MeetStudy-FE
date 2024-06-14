@@ -38,7 +38,7 @@ export const Myaccount = () => {
     );
   }
 
-  console.log("[마이 페이지] 불러온 정보: userProfileData", userProfileData);
+  //console.log("[마이 페이지] 불러온 정보: userProfileData", userProfileData);
   return (
     <Container
       $height={"100vh"}

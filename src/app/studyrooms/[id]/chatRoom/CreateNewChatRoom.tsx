@@ -53,7 +53,7 @@ export const CreateChatRoom = ({ roomId }: { roomId: number }) => {
     useState<CreateChatRoomProps>(initValue);
 
   const createNewChatRoom = async (newData: CreateChatRoomProps) => {
-    console.log("➡️➡️[채팅방 생성] 시작합니다 |  newData: ", newData);
+    // console.log("➡️➡️[채팅방 생성] 시작합니다 |  newData: ", newData);
     try {
       const token = getTokenByClient();
       const response = await fetchDataBE(

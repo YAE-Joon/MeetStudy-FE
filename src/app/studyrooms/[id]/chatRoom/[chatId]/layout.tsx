@@ -24,7 +24,7 @@ export default function ChatRoomLayout({
   const chatRoomId = getChatRoomId();
   const roomId = useRoomId();
 
-  console.log("스터디룸 아이디는 ", roomId, "채팅방 아이디는", chatRoomId);
+  //("스터디룸 아이디는 ", roomId, "채팅방 아이디는", chatRoomId);
 
   const [chatRoomDetails, error, loading] = useFetch<ChatRoomInfoProps>(
     apiPaths.chatroom.detail(chatRoomId),

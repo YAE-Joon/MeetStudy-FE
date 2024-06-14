@@ -29,7 +29,7 @@ const {
 } = ChatStyled;
 
 export default function ChatRoom() {
-  console.log("[채칭방] 🧊 채팅방 컴포넌트입니다.");
+  //console.log("[채칭방] 🧊 채팅방 컴포넌트입니다.");
 
   const [myCurrNickName, errorFromNickname, loading] =
     useFetchUserInfo("nickname");
@@ -57,7 +57,7 @@ export default function ChatRoom() {
   useEffect(() => {
     const token = getTokenByClient();
     const fetchInitialChatRecords = async () => {
-      console.log("이전 채팅 기록을 가져옵니다");
+      //console.log("이전 채팅 기록을 가져옵니다");
       try {
         const apiUrl = `${apiPaths.chatroom.getRecords(
           chatRoomId
@@ -135,10 +135,10 @@ export default function ChatRoom() {
       //setOldRecords((prev) => [...newChatRecords, ...prev]);
       //setMessages((prev) => [...newChatRecords, ...prev]);
 
-      console.log(
-        `🧊🧊🧊fetch 한 이전 기록들 / cursor=${cursor}| 메시지 갯수:${fetchedOldRecords.length} | 메시지 내용: `,
-        fetchedOldRecords
-      );
+      // console.log(
+      //   `🧊🧊🧊fetch 한 이전 기록들 / cursor=${cursor}| 메시지 갯수:${fetchedOldRecords.length} | 메시지 내용: `,
+      //   fetchedOldRecords
+      // );
 
       if (fetchedOldRecords.length === 0) {
         setIsEnd((prev) => !prev);
@@ -166,7 +166,7 @@ export default function ChatRoom() {
 
   // 이전 채팅 기록 불러오기 handler
   function hanldeMessageReq() {
-    console.log("🧊🧊이전 대화 기록을 요청합니다 | cursor?", cursor);
+    // console.log("🧊🧊이전 대화 기록을 요청합니다 | cursor?", cursor);
     //setCursor((prev) => prev + 1);
     if (cursor !== null && cursor !== -1) {
       fetchChatRecords(cursor);

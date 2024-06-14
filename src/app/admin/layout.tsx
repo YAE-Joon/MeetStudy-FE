@@ -1,6 +1,5 @@
 "use client";
 
-import { useParams } from "next/navigation";
 import dt from "@/lib/designToken/designTokens";
 import { OuterContainer } from "@/component/styled-components/Container";
 import { InnerContainer } from "@/app/studyrooms/[id]/StyledComponents";

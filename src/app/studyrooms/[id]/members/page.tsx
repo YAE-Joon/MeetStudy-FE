@@ -20,7 +20,7 @@ import { processDateTime } from "@/util/dateUtilsFinal";
 const { SearchResultContainer } = StyledStudyRoomIndex;
 
 export default function MemberLists() {
-  console.log("[id/memberlist] 멤버 페이지 컴포넌트입니다.");
+  //console.log("[id/memberlist] 멤버 페이지 컴포넌트입니다.");
   const roomId = Number(useParams().id);
   // 입장한 스터디룸에 대한 정보를 불러옵니다.
   const [studyRoomData, error] = useFetch<StudyRoom>(
@@ -39,7 +39,7 @@ export default function MemberLists() {
     return memberInfo;
   });
 
-  console.log("currentMembers???", currentMembers);
+  //console.log("currentMembers???", currentMembers);
 
   return !studyRoomData ? (
     <div>목록 로딩중</div>

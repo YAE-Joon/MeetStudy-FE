@@ -4,7 +4,7 @@ import React from "react";
 
 interface UsersIconProps extends React.SVGProps<SVGSVGElement> {}
 export const TableComponent = ({ data }: { data: StudyRoomTableData }) => {
-  console.log("data, ", data.category);
+  //console.log("data, ", data.category);
   return (
     <>
       <div className="w-full max-w-none mx-auto p-4 md:p-6">

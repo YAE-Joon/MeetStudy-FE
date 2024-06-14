@@ -34,7 +34,7 @@ const {
 
 const StudyRoomPage = ({}) => {
   const [isRedirecting, setIsRedirecting] = useState(false); //관리자 리다이렉트용
-  console.log("[studyrooms] 가 랜더링되었습니다.");
+  //console.log("[studyrooms] 가 랜더링되었습니다.");
   const router = useRouter();
 
   useEffect(() => {
@@ -56,7 +56,7 @@ const StudyRoomPage = ({}) => {
     {}
   );
 
-  console.log("[studyrooms] myEmail?", myEmail);
+  //console.log("[studyrooms] myEmail?", myEmail);
 
   const [visibleRooms, setVisibleRooms] = useState<StudyRoom[]>([]);
   const [showMore, setShowMore] = useState(false);

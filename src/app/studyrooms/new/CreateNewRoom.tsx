@@ -47,7 +47,7 @@ export default function FormForNewStudyRoom({
     const categoryId = category.id;
     const newData = { title, description, userCapacity, categoryId };
 
-    console.log("➡️➡️[스터디룸 생성] 시작합니다 |  newData: ", newData);
+    //console.log("➡️➡️[스터디룸 생성] 시작합니다 |  newData: ", newData);
     try {
       const token = getTokenByClient();
       const response = await fetchDataBE(
@@ -60,7 +60,7 @@ export default function FormForNewStudyRoom({
       );
 
       const result: StudyRoom = await response;
-      console.log("result", result);
+      //console.log("result", result);
       alert("성공적으로 생성하였습니다.");
       router.push(`/studyrooms`);
     } catch (error) {

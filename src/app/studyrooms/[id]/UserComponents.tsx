@@ -30,7 +30,7 @@ export const JoinStudyRoom = () => {
   const handleSignUp = async () => {
     try {
       const token = getTokenByClient();
-      console.log("[스터디룸/가입하기] 토큰을 조회합니다.", token);
+      //console.log("[스터디룸/가입하기] 토큰을 조회합니다.", token);
       const response = await fetchDataBE(
         apiPaths.userStudyrooms.join(roomId),
         {
@@ -38,7 +38,7 @@ export const JoinStudyRoom = () => {
         },
         token
       );
-      console.log("[스터디룸] 성공적으로 가입하였습니다.", response);
+      //console.log("[스터디룸] 성공적으로 가입하였습니다.", response);
       setModalMessage("성공적으로 가입하였습니다.");
       handleFinish();
       window.location.reload();
@@ -88,7 +88,7 @@ export const LeaveStudyRoom = () => {
   const handleSignOut = async () => {
     try {
       const token = getTokenByClient();
-      console.log("[스터디룸/탈퇴하기] 토큰을 조회합니다.", token);
+      //console.log("[스터디룸/탈퇴하기] 토큰을 조회합니다.", token);
       const response = await fetchDataBE(
         apiPaths.userStudyrooms.leave(roomId),
         {
@@ -96,7 +96,7 @@ export const LeaveStudyRoom = () => {
         },
         token
       );
-      console.log("[스터디룸] 성공적으로 스터디룸을 떠났습니다.", response);
+      //console.log("[스터디룸] 성공적으로 스터디룸을 떠났습니다.", response);
       setModalMessage("성공적으로 스터디룸을 떠났습니다.");
       handleFinish();
     } catch (err) {

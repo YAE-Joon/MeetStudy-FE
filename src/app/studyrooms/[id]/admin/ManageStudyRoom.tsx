@@ -59,7 +59,7 @@ const ManageStudyRoom = ({ initialData, roomId }: EditDataProps) => {
   const router = useRouter();
 
   const updateStudyRoom = async (updatedData: StudyRoom) => {
-    console.log("[스터디룸 관리자] 스터디룸 정보를 수정합니다: ");
+    //console.log("[스터디룸 관리자] 스터디룸 정보를 수정합니다: ");
     setLoading(true);
     setError(null);
     try {
@@ -117,7 +117,7 @@ const ManageStudyRoom = ({ initialData, roomId }: EditDataProps) => {
           },
           token
         );
-        console.log("[스터디룸 관리자] response: ", response);
+        // console.log("[스터디룸 관리자] response: ", response);
         setStudyRoomMembers((prevList) =>
           prevList.filter((member) => member.id !== id)
         );
@@ -139,7 +139,7 @@ const ManageStudyRoom = ({ initialData, roomId }: EditDataProps) => {
           },
           token
         );
-        console.log("[스터디룸 관리자] response: ", response);
+        //console.log("[스터디룸 관리자] response: ", response);
         setStudyRoomMembers((prevList) =>
           prevList.filter((member) => member.id !== id)
         );

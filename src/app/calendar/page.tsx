@@ -87,7 +87,7 @@ const NewEventForm: React.FC<{ onSubmit: (data: EventFormData) => void }> = ({
         },
       })
       .then((response) => {
-        console.log("New event submitted successfully:", response.data);
+        //console.log("New event submitted successfully:", response.data);
         onSubmit(formData); // 부모 컴포넌트에서 추가 작업을 수행할 수 있도록 formData 전달
       })
       .catch((error) => {
@@ -230,7 +230,7 @@ export default function ReactBigCalendar() {
       return;
     }
 
-    console.log(token);
+    // console.log(token);
     const baseUrl = process.env.NEXT_PUBLIC_SITE_URL;
     axios
       .get(`${baseUrl}/api/calendar`, {
@@ -241,7 +241,7 @@ export default function ReactBigCalendar() {
         },
       })
       .then((response) => {
-        console.log("Fetched data:", response.data);
+        //console.log("Fetched data:", response.data);
         const eventData = response.data.map(convertEventData);
         setEventsData(eventData);
       })

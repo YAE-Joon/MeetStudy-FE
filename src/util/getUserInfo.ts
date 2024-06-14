@@ -44,7 +44,7 @@ export async function getUserInfoFromToken(
     });
     return userInfo;
   }
-  console.log("data[requiredFields]", data[requiredFields]);
+  //console.log("data[requiredFields]", data[requiredFields]);
   return data[requiredFields];
 }
 
@@ -67,9 +67,9 @@ export default async function WillfetchDataBE(
     ...options.headers,
   };
   const headersWithToken = setTokenIntoHeader(initialHeaders, token);
-  console.log(
-    `🙆‍♂️ [fetchDataBE] fetch를 시작합니다. 요청받은 옵션: \napiUrl:${apiUrl} | options:${options}`
-  );
+  // console.log(
+  //   `🙆‍♂️ [fetchDataBE] fetch를 시작합니다. 요청받은 옵션: \napiUrl:${apiUrl} | options:${options}`
+  // );
 
   try {
     const response = await fetch(apiPath, {
