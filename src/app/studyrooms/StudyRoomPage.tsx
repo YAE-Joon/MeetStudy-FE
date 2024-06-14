@@ -21,7 +21,8 @@ import ChatStyled from "@/app/studyrooms/[id]/chatRoom/[chatId]/chatStyled";
 import { getUserFromToken } from "@/util/getUserFromToken";
 import getTokenByClient from "@/util/getTokenByClient";
 import { useRouter } from "next/navigation";
-
+import PackedStyledCards from "@/component/styled-components/StudyRoomCard/StyledCard";
+const { StyledCardWrapper } = PackedStyledCards;
 const { Announcement } = ChatStyled;
 const tokens = dt.DesignTokenVarNames;
 
@@ -102,19 +103,28 @@ const StudyRoomPage = ({}) => {
               >
                 스터디룸 목록
               </Title>
-              <PrimaryButton
-                content={"스터디룸 생성"}
-                href={"studyrooms/new"}
-              />
+              <span
+                style={{
+                  width: "300px",
+                  borderRadius: "10px",
+                  overflow: "hidden",
+                  marginBottom: "1rem",
+                  marginTop: "1rem",
+                  marginRight: "1rem",
+                }}
+              >
+                <PrimaryButton
+                  content={"스터디룸 생성"}
+                  href={"studyrooms/new"}
+                />
+              </span>
             </SearchBarWarpperH>
             {/* <FlexContainerFull> */}
             <GridContainerFull>
               {visibleRooms.map((studyRoom, idx) => (
-                <StudyRoomCard
-                  key={studyRoom.id}
-                  item={studyRoom}
-                  mail={myEmail}
-                />
+                <StyledCardWrapper key={studyRoom.id} $index={idx}>
+                  <StudyRoomCard item={studyRoom} mail={myEmail} />
+                </StyledCardWrapper>
               ))}
             </GridContainerFull>
             {/* </FlexContainerFull> */}
@@ -127,6 +137,7 @@ const StudyRoomPage = ({}) => {
                 width: "100%",
                 paddingBottom: "1rem",
                 backgroundColor: "transparent",
+                //backgroundColor: "yellow",
               }}
             >
               {index < studyRooms.length ? (

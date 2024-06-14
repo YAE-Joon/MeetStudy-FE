@@ -147,34 +147,21 @@ export const FlexContainer = styled.div`
   flex-grow: 1;
 `;
 
-export const GridContainerFull = styled.div`
+export const GridContainerFull = styled.ul`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 1rem;
+  grid-gap: 1rem;
   width: 100%;
-  padding: 1rem;
+  max-width: 1200px;
   overflow: visible;
-  grid-auto-rows: 1fr; // 각 행의 높이를 균등하게 설정합니다.
-  grid-auto-flow: dense; // 그리드 아이템의 위치를 촘촘하게 채웁니다.
-
-  & > * {
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
+  list-style-type: none;
+  grid-auto-rows: auto;
+  grid-auto-flow: dense;
+  /* background-color: blue; */
 
   li {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    aspect-ratio: 1 / 1; // 1:1 비율을 유지합니다.
-  }
-
-  li > a {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    list-style-type: none;
+    aspect-ratio: 1 / 1;
   }
 
   @media only screen and (max-width: ${mobileWidth}) {
@@ -183,17 +170,8 @@ export const GridContainerFull = styled.div`
     min-width: 200px;
     text-align: center;
 
-    li {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      aspect-ratio: 1 / 1; // 모바일에서도 1:1 비율을 유지합니다.
-    }
-
-    li > a {
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    li > div {
+      height: 50%;
     }
   }
 `;
@@ -210,4 +188,33 @@ export const FlexContainerFull = styled.div`
   overflow: visible; //
 
   //background-color: blue;
+`;
+
+export const GridContainerMini = styled.ul`
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-gap: 1rem;
+  width: 100%;
+  max-width: 1200px;
+  overflow: visible;
+  list-style-type: none;
+  grid-auto-rows: auto;
+  grid-auto-flow: dense;
+  /* background-color: blue; */
+
+  li {
+    list-style-type: none;
+    aspect-ratio: 1 / 1;
+  }
+
+  @media only screen and (max-width: ${mobileWidth}) {
+    grid-template-columns: 1fr;
+    width: 100%;
+    min-width: 200px;
+    text-align: center;
+
+    li > div {
+      height: 50%;
+    }
+  }
 `;

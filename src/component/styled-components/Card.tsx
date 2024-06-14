@@ -142,16 +142,13 @@ const StyledLink = styled(Link)<Styled_li_card_props>`
   flex-wrap: wrap;
   flex-direction: column;
   justify-content: space-between;
-  //justify-content: center;
-  //for same height
   align-items: center;
-  // box-sizing: border-box;
 
-  // flex: 1 1 calc(33.333% - 1rem); // 1 line 3 card
-  gap: 0.5rem;
+  width: 100%;
+  height: 100%;
 
-  width: 300px;
-  //max-height: 300px;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 
   &:hover {
     background-color: var(${tokens.colors.simple.tertiarygray});
@@ -249,6 +246,7 @@ const CardUpper_ul = styled.ul<Styled_li_card_props>`
   gap: 0.5rem;
 `;
 
+/// studyrooms/[id]/members styeld
 const StudyRoomMemberCard = styled.div`
   background-color: white;
   border-radius: 8px;
@@ -297,14 +295,15 @@ const Position = styled.p`
 
 export const JoinTag = styled.div`
   display: inline-block;
-  padding: 4px 8px;
+  padding: 4px 8px 4px 8px;
   border: 1px solid green;
   color: green;
   border-radius: 4px;
   font-size: 12px;
   font-weight: bold;
+  text-align: center;
 
-  width: 15px;
+  width: 60px;
 `;
 
 const StyledCard = {

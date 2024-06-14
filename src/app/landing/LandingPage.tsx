@@ -1,12 +1,11 @@
 "use client";
 import React, { RefObject, useRef } from "react";
 
-import {
-  FirstSectionLanding,
-  ForthSectionLanding,
-  SecondSectionLanding,
-  ThirdSectionLanding,
-} from "./Landing";
+import { FirstSectionLanding } from "./FirstSectionLanding";
+import { SecondSectionLanding } from "./SecondSectionLanding";
+import { ThirdSectionLanding } from "./ThirdSectionLanding";
+import { ForthSectionLanding } from "./Landing";
+
 import { OuterContainer } from "@/component/styled-components/Container";
 
 /**

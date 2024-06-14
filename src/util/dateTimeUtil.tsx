@@ -46,5 +46,7 @@ export default function convertDateTime(dateTime: string): string {
   const formattedHour = h.toString().padStart(2, "0");
   const formattedMinute = min.toString().padStart(2, "0");
 
-  return `${y}년 ${m}월 ${d}일 ${period} ${formattedHour}시 ${formattedMinute}분`;
+  // return `${y}년 ${m}월 ${d}일 ${period} ${formattedHour}시 ${formattedMinute}분`;
+
+  return `${y}년 ${m}월 ${d}일`;
 }
