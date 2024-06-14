@@ -58,7 +58,7 @@ async function fetchDataBE(
       const errorMessage = await response.text();
       //에러 상태코드도 함께 보내기
       const error = new Error(
-        `❗response가 OK하지 않음! ${errorMessage}`
+        `❗respons is not OK! ${errorMessage}`
       ) as CustomError;
       (error as any).status = response.status;
       throw error;

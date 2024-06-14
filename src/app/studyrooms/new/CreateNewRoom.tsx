@@ -64,6 +64,7 @@ export default function FormForNewStudyRoom({
       alert("성공적으로 생성하였습니다.");
       router.push(`/studyrooms`);
     } catch (error) {
+      console.log("erro?", error);
       console.error("❗Error:", error);
       alert(`❗생성 중 오류가 발생하였습니다!${error}`);
     }
@@ -144,7 +145,7 @@ export default function FormForNewStudyRoom({
               />
             </BasicFieldRow>
             <BasicFieldRow>
-              <BasicLabel>사용자 수용 인원: </BasicLabel>
+              <BasicLabel>최대인원(최소 4인): </BasicLabel>
               <BasicInput
                 type="number"
                 name="userCapacity"

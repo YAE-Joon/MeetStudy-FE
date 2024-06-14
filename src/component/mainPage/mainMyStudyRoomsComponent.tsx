@@ -11,6 +11,8 @@ import { MainSkleton } from "@/component/mainPage/mainStyledComponents";
 import { StyledStudyRoomsPack } from "@/component/mainPage/mainStyledComponents";
 import StyledAdminUserPage from "@/app/admin/UserStyled";
 import { processDateTime } from "@/util/dateUtilsFinal";
+import { PrimaryButton } from "@/component/styled-components/Button/Buttons";
+import PackedStyledEmpty from "@/component/styled-components/EmptyContent";
 const { MainTableWrapper, StyledLink } = StyledStudyRoomsPack;
 const {
   Header,
@@ -24,7 +26,8 @@ const {
   Button,
   QuitButton,
 } = StyledAdminUserPage;
-
+const { EmptyStyledLink, EmptyText, EmptyTitle, EmptyCard, EmptyContainer } =
+  PackedStyledEmpty;
 const tokens = dt.DesignTokenVarNames;
 
 const MyStudyRooms = () => {
@@ -110,26 +113,26 @@ const MyStudyRooms = () => {
       >
         내가 참여중인 스터디들
       </Title>
-      <div
-        style={{
-          width: "100%",
-          height: "100%",
-          display: "flex",
-          flexDirection: "row-reverse",
-        }}
-      >
-        {!myStudyRoomsData || myStudyRoomsData?.length === 0 ? (
-          <div>참가한 스터디룸 정보가 없습니다.</div>
-        ) : (
-          // <MyStudyRoomsContainer>
-          //   {myStudyRoomsData.map((studyRoom, idx) => (
-          //     <StudyRoomCard
-          //       key={studyRoom.id}
-          //       item={studyRoom}
-          //       root={"main"}
-          //     />
-          //   ))}
 
+      {!myStudyRoomsData || myStudyRoomsData?.length === 0 ? (
+        <EmptyNoticeBox />
+      ) : (
+        // <MyStudyRoomsContainer>
+        //   {myStudyRoomsData.map((studyRoom, idx) => (
+        //     <StudyRoomCard
+        //       key={studyRoom.id}
+        //       item={studyRoom}
+        //       root={"main"}
+        //     />
+        //   ))}
+        <div
+          style={{
+            width: "100%",
+            height: "100%",
+            display: "flex",
+            flexDirection: "row-reverse",
+          }}
+        >
           <MainTableWrapper>
             <StyledTable>
               <StyledTableHeader>
@@ -169,11 +172,30 @@ const MyStudyRooms = () => {
               </StyledTableBody>
             </StyledTable>
           </MainTableWrapper>
-          // </MyStudyRoomsContainer>
-        )}
-      </div>
+          {/* </MyStudyRoomsContainer> */}
+        </div>
+      )}
     </>
   );
 };
 
 export default MyStudyRooms;
+
+const EmptyNoticeBox = () => {
+  return (
+    <EmptyContainer>
+      <EmptyCard>
+        <EmptyText>
+          참가한 스터디룸 정보가 없습니다. {"\n"}스터디룸에 합류해보세요
+        </EmptyText>
+        {/* <CreateChatRoom roomId={roomId} /> */}
+        <span>
+          <PrimaryButton
+            content={"스터디룸 목록 바로가기"}
+            href={"/studyrooms"}
+          />
+        </span>
+      </EmptyCard>
+    </EmptyContainer>
+  );
+};

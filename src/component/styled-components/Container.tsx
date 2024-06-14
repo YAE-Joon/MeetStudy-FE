@@ -249,7 +249,7 @@ export const MainContainer = styled.main<ContainerProps>`
 
   width: 100%;
   min-width: 100%;
-  background-color: var(${tokens.colors.simple.primary});
+  background: linear-gradient(to bottom, #52c233, #2b8213);
   gap: 0;
   padding-top: 5rem;
   height: 100vh;

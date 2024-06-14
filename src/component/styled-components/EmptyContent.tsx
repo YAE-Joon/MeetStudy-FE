@@ -31,6 +31,7 @@ const EmptyTitle = styled.h2`
 const EmptyText = styled.p`
   color: #718096;
   margin-bottom: 1.5rem;
+  white-space: pre-wrap;
 `;
 
 const EmptyStyledLink = styled(Link)`
@@ -57,6 +58,12 @@ const EmptyStyledLink = styled(Link)`
     pointer-events: none;
     opacity: 0.5;
   }
+`;
+
+const EmptyStudyRoomContainer = styled.div`
+  align-items: center;
+  justify-content: center;
+  height: 300px;
 `;
 
 const PackedStyledEmpty = {

@@ -28,9 +28,8 @@ export default function CommunityPage() {
       .catch((error) => console.error("Error fetching posts:", error));
   }, [dispatch]);
 
-  const token = getTokenByClient();
-
   useEffect(() => {
+    const token = getTokenByClient();
     const baseUrl = process.env.NEXT_PUBLIC_SITE_URL;
     axios
       .get(`${baseUrl}/api/admin/categories/public`, {

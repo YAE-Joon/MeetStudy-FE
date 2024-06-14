@@ -65,10 +65,11 @@ export const CreateChatRoom = ({ roomId }: { roomId: number }) => {
         token
       );
 
-      const result = response;
-      alert(`성공적으로 생성하였습니다. ${result}`);
+      const newChatRoomId = response.chatRoomId;
+      alert(`성공적으로 생성하였습니다.`);
       setChatRoomSet(initValue);
-      window.location.reload(); // chatroom num을 모름, 새로고침 함
+      router.push(`/studyrooms/${roomId}/chatRoom/${newChatRoomId}`);
+      //window.location.reload(); // chatroom num을 모름, 새로고침 함
     } catch (error) {
       console.error("❗Error:", error);
       alert(`❗생성 중 오류가 발생하였습니다!${error}`);

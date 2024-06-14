@@ -124,7 +124,7 @@ const MyCalendar = () => {
     return (
       <EmptyContainer>
         <EmptyCard>
-          <EmptyText>개인 일정이 없습니다. 일정을 추가해보세요</EmptyText>
+          <EmptyText>개인 일정이 없습니다. {"\n"}일정을 추가해보세요</EmptyText>
           {/* <CreateChatRoom roomId={roomId} /> */}
           <span>
             <PrimaryButton content={"캘린더 바로가기"} href={"/calendar"} />

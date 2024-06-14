@@ -139,7 +139,7 @@ const ManageStudyRoom = ({ initialData, roomId }: EditDataProps) => {
           },
           token
         );
-        //console.log("[스터디룸 관리자] response: ", response);
+        console.log("[스터디룸 관리자] response: ", response);
         setStudyRoomMembers((prevList) =>
           prevList.filter((member) => member.id !== id)
         );

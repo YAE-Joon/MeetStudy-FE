@@ -41,9 +41,11 @@ export const QuitUser = ({ userId, handleRemove }: QuitUserProps) => {
 
   return (
     <>
-      <RemoveButton type="button" onClick={() => setIsModalOpen(true)}>
-        유저 삭제
-      </RemoveButton>
+      <RemoveButton
+        onClick={() => setIsModalOpen(true)}
+        content={"유저 삭제"}
+      />
+
       <Modal isVisible={isModalOpen} onClose={handleModalClose}>
         <ModalContainer
           mode="유저 관리"

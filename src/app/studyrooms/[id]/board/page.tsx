@@ -66,7 +66,7 @@ const board = () => {
           <Board
             title="정보공유 게시판"
             posts={test}
-            popularPosts={popularPosts}
+            // popularPosts={popularPosts}
             categories={testcategories}
           />
         </div>

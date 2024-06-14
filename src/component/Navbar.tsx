@@ -22,6 +22,8 @@ export default function NavBar() {
 
   const router = useRouter();
 
+  console.log("status", status);
+
   if (status === "loading") {
     //로딩 상태일 때에는 아무것도 보이지 않기
     return (

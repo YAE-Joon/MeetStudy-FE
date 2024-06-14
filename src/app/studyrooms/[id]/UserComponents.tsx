@@ -20,7 +20,7 @@ import { useRoomId } from "@/hooks/useGetRoomId";
 // 스터디룸 가입 버튼 { roomId }: { roomId: number }
 export const JoinStudyRoom = () => {
   const [modalMessage, setModalMessage] =
-    useState("본 스터디룸에 가입하시겠습니까?");
+    useState("스터디룸에 가입하시겠습니까?");
   const [isModalOpen, setIsModalOpen] = useState(false); //모달상태
   const handleModalClose = () => setIsModalOpen(false);
   const [isDone, setIsDone] = useState(false);

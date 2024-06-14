@@ -146,6 +146,8 @@ const EditSections: React.FC<MyaccountProps> = ({ UserProfile }) => {
         token
       );
 
+      console.log("내 정보 수정의 응답: ", response);
+
       alert("성공적으로 수정하였습니다.");
     } catch (error) {
       console.error("❗Error:", error);
@@ -154,7 +156,7 @@ const EditSections: React.FC<MyaccountProps> = ({ UserProfile }) => {
   };
 
   if (!myUserInfo) {
-    console.log("userInfo? (3)", myUserInfo);
+    //console.log("userInfo? (3)", myUserInfo);
     return <h1>유저 정보 받기에 실패했습니다</h1>;
   }
 
@@ -176,7 +178,7 @@ const EditSections: React.FC<MyaccountProps> = ({ UserProfile }) => {
               <span>{"*".repeat(Math.min(myUserInfo.password.length, 6))}</span>
             </li>
             <li>
-              <span style={{ fontWeight: "bold" }}>관심분야</span>{" "}
+              {/* <span style={{ fontWeight: "bold" }}>관심분야</span>{" "} */}
               {/* <span>
                 {myUserInfo.interests.map((inter: string, idx) => (
                   <span key={idx}>{inter}</span>

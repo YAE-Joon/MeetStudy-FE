@@ -31,12 +31,15 @@ export default function StudyRoomdLayout({
     { label: "게시판", link: `/studyrooms/${roomId}/board` },
   ];
 
-  const [studyRoomMenu, setStudyRoomMenu] = useState(initialValue);
-  const [userAccessControl, setUserAccControl] = useState({
+  //console.log("레이아웃이 랜더링되었습니다.");
+
+  const initalAccess = {
     isAdmin: false,
     isMember: false,
     isOwner: false,
-  });
+  };
+  const [studyRoomMenu, setStudyRoomMenu] = useState(initialValue);
+  const [userAccessControl, setUserAccControl] = useState(initalAccess);
 
   // 입장한 스터디룸에 대한 정보를 불러옵니다.
   const [studyRoomData, error] = useFetch<StudyRoom>(
@@ -55,6 +58,9 @@ export default function StudyRoomdLayout({
       //@ts-ignore //확실히 있음
       setMyEmail(data.user.id);
     }
+  }, [status]);
+
+  useEffect(() => {
     let userRole = {
       isMember: false,
       isOwner: false,
@@ -98,7 +104,7 @@ export default function StudyRoomdLayout({
         },
       ]);
     }
-  }, [studyRoomData]);
+  }, [myEmail]);
 
   return !studyRoomData ? (
     <Loading />

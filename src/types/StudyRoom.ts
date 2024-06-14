@@ -20,7 +20,7 @@ export interface StudyRoomMember {
 }
 
 export interface Category {
-  id: number;
+  id?: number;
   name: string;
   description: string;
 }
@@ -40,4 +40,8 @@ export interface StudyRoomTableData {
   category: string;
   description: string;
   memberNum: number;
+}
+
+interface dummyStudyrooms {
+  items: "object";
 }

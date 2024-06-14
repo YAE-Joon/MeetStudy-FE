@@ -1,5 +1,5 @@
 "use client";
-import React, { RefObject } from "react";
+import React, { RefObject, useEffect, useState } from "react";
 
 import useFetch from "@/hooks/useFetch";
 import { apiPaths } from "@/config/api";
@@ -22,18 +22,14 @@ export const mobileWidth = dt.DesignTokenExcept.media.mobile;
 export interface LandingProps {
   ref: RefObject<HTMLDivElement>;
   mover: () => void;
+  studyRoomsData: StudyRoom[];
 }
 
 // 스터디룸 섹션
 export const ForthSectionLanding = React.forwardRef<
   HTMLDivElement,
   LandingProps
->(({ mover }, ref) => {
-  const [studyRoomsData, error, loading] = useFetch<StudyRoom[]>(
-    apiPaths.studyrooms.all,
-    {}
-  );
-
+>(({ mover, studyRoomsData }, ref) => {
   const totalStudyRooms =
     studyRoomsData?.map((studyRoom: StudyRoom) => {
       const currMembers = studyRoom.userStudyRooms?.length;
@@ -62,7 +58,7 @@ export const ForthSectionLanding = React.forwardRef<
             <Title
               $htype={2}
               $color={tokens.colors.simple.blackbasic}
-            >{`지금 ${currStudyRoomsNum}개의 스터디룸이 함께하고 있어요`}</Title>
+            >{`지금 ${7}개의 스터디룸이 함께하고 있어요`}</Title>
 
             <GridContainerMini>
               {studyRooms.map((item, idx) => (

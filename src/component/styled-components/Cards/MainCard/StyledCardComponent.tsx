@@ -125,12 +125,14 @@ export const SectionReviewCard = styled.div`
 export const SectionReviewCardHeader = styled.div`
   display: flex;
   align-items: center;
+  flex-direction: column;
   margin-bottom: 1rem;
+  text-align: center;
 `;
 
 export const SectionProfilePic = styled.div`
   font-size: 2rem;
-  margin-right: 1rem;
+  //margin-right: 1rem;
 `;
 
 export const SectionReviewTitleContainer = styled.div`
