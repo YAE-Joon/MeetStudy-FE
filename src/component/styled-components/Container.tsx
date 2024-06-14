@@ -152,35 +152,26 @@ export const GridContainerFull = styled.div`
   grid-template-columns: repeat(3, 1fr);
   gap: 1rem;
   width: 100%;
-  max-width: 1200px;
-  flex-grow: 1;
-  overflow: visible;
-
   padding: 1rem;
-
-  min-height: 100%; //
+  overflow: visible;
+  grid-auto-rows: 1fr; // 각 행의 높이를 균등하게 설정합니다.
+  grid-auto-flow: dense; // 그리드 아이템의 위치를 촘촘하게 채웁니다.
 
   & > * {
-    max-height: 500px;
-    min-width: 200px;
     overflow: hidden;
-
-    gap: 1rem;
-
     display: flex;
     align-items: center;
     justify-content: center;
   }
 
   li {
-    height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
+    aspect-ratio: 1 / 1; // 1:1 비율을 유지합니다.
   }
 
   li > a {
-    height: 90%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -190,32 +181,28 @@ export const GridContainerFull = styled.div`
     grid-template-columns: 1fr;
     width: 100%;
     min-width: 200px;
-
     text-align: center;
 
     li {
-      height: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
+      aspect-ratio: 1 / 1; // 모바일에서도 1:1 비율을 유지합니다.
     }
 
     li > a {
-      height: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
     }
   }
-  //background-color: red;
 `;
-
 export const FlexContainerFull = styled.div`
   display: flex;
   flex-direction: column;
   min-height: 100vh;
   width: 100%;
-  flex-grow: 1;
+  //flex-grow: 1;
 
   align-items: center;
   justify-content: center;

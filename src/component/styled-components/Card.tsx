@@ -150,10 +150,8 @@ const StyledLink = styled(Link)<Styled_li_card_props>`
   // flex: 1 1 calc(33.333% - 1rem); // 1 line 3 card
   gap: 0.5rem;
 
-  max-width: 300px;
-
   width: 300px;
-  max-height: 300px;
+  //max-height: 300px;
 
   &:hover {
     background-color: var(${tokens.colors.simple.tertiarygray});
@@ -180,7 +178,7 @@ const StyledWrapper = styled.div<Styled_li_card_props>`
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
   //justify-content: center;
   //for same height
   align-items: center;
@@ -215,10 +213,10 @@ const StyledWrapper = styled.div<Styled_li_card_props>`
 `;
 
 const CardContent = styled.div`
-  flex-grow: 1;
+  //flex-grow: 1;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   overflow: hidden;
   padding: 1rem;
@@ -243,7 +241,7 @@ const CardUpper_ul = styled.ul<Styled_li_card_props>`
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
   //for same height
   align-items: center;
   // box-sizing: border-box;

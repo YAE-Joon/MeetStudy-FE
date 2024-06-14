@@ -20,6 +20,7 @@ import {
 import ChatStyled from "@/app/studyrooms/[id]/chatRoom/[chatId]/chatStyled";
 import { getUserFromToken } from "@/util/getUserFromToken";
 import getTokenByClient from "@/util/getTokenByClient";
+import { useRouter } from "next/navigation";
 
 const { Announcement } = ChatStyled;
 const tokens = dt.DesignTokenVarNames;
@@ -32,9 +33,22 @@ const {
 } = StyledStudyRoomIndex;
 
 const StudyRoomPage = ({}) => {
+  const [isRedirecting, setIsRedirecting] = useState(false); //관리자 리다이렉트용
   console.log("[studyrooms] 가 랜더링되었습니다.");
+  const router = useRouter();
+
+  useEffect(() => {
+    const token = getTokenByClient();
+    const userInfo = getUserFromToken(token);
+    if (userInfo && userInfo?.auth === "ADMIN") {
+      setIsRedirecting(true);
+      alert("관리자 페이지로 이동합니다.");
+      router.push("/admin");
+    }
+  }, []);
 
   // 참가중 태그를 위해 유저 정보를 불러옴
+
   const [myEmail, mailError, loading] = useFetchUserInfo<string>("email");
   // 스터디룸 목록을 불러옵니다.
   const [studyRooms, error] = useFetch<StudyRoom[]>(
@@ -70,52 +84,72 @@ const StudyRoomPage = ({}) => {
     return <Loading />;
   }
 
+  if (error) {
+    return <div>에러</div>;
+  }
+
   return (
     <InnerContainer>
-      <FlexBoxV>
-        <SearchBarWarpperH>
-          <Title
-            $htype={3}
-            $align={"left"}
-            $color={tokens.colors.simple.blackbasic}
-            $fontSize={tokens.fontSize.web.large}
-          >
-            스터디룸 목록
-          </Title>
-          <PrimaryButton content={"스터디룸 생성"} href={"studyrooms/new"} />
-        </SearchBarWarpperH>
-        <FlexContainerFull>
-          <GridContainerFull>
-            {visibleRooms.map((studyRoom, idx) => (
-              <StudyRoomCard
-                key={studyRoom.id}
-                item={studyRoom}
-                mail={myEmail}
+      {!isRedirecting && (
+        <>
+          <FlexBoxV>
+            <SearchBarWarpperH>
+              <Title
+                $htype={3}
+                $align={"left"}
+                $color={tokens.colors.simple.blackbasic}
+                $fontSize={tokens.fontSize.web.large}
+              >
+                스터디룸 목록
+              </Title>
+              <PrimaryButton
+                content={"스터디룸 생성"}
+                href={"studyrooms/new"}
               />
-            ))}
-          </GridContainerFull>
-        </FlexContainerFull>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            margin: "1rem 0 1rem 0",
-            width: "100%",
-            paddingBottom: "1rem",
-            backgroundColor: "transparent",
-          }}
-        >
-          {index < studyRooms.length ? (
-            <PrimaryButton onClick={loadMoreRooms} content={"더보기"} />
-          ) : (
-            <Announcement>
-              <strong>마지막 목록입니다.</strong>
-              <p>더 이상 불러올 스터디룸이 없습니다.</p>
-            </Announcement>
-          )}
-        </div>
-      </FlexBoxV>
+            </SearchBarWarpperH>
+            {/* <FlexContainerFull> */}
+            <GridContainerFull>
+              {visibleRooms.map((studyRoom, idx) => (
+                <StudyRoomCard
+                  key={studyRoom.id}
+                  item={studyRoom}
+                  mail={myEmail}
+                />
+              ))}
+            </GridContainerFull>
+            {/* </FlexContainerFull> */}
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                margin: "1rem 0 1rem 0",
+                width: "100%",
+                paddingBottom: "1rem",
+                backgroundColor: "transparent",
+              }}
+            >
+              {index < studyRooms.length ? (
+                <span
+                  style={{
+                    width: "80px",
+                    borderRadius: "10px",
+                    overflow: "hidden",
+                    marginBottom: "1rem",
+                  }}
+                >
+                  <PrimaryButton onClick={loadMoreRooms} content={"더보기"} />
+                </span>
+              ) : (
+                <Announcement>
+                  <strong>마지막 목록입니다.</strong>
+                  <p>더 이상 불러올 스터디룸이 없습니다.</p>
+                </Announcement>
+              )}
+            </div>
+          </FlexBoxV>
+        </>
+      )}
     </InnerContainer>
   );
 };

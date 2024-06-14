@@ -24,6 +24,8 @@ import { useRouter } from "next/navigation";
 import StyledAdminUserPage from "@/app/admin/UserStyled";
 import { processDateTime } from "@/util/dateUtilsFinal";
 import { StyledStudyRoomsPack } from "@/component/mainPage/mainStyledComponents";
+import { ChatRoomInfoProps } from "@/lib/types";
+import useFetch from "@/hooks/useFetch";
 const { MainTableWrapper } = StyledStudyRoomsPack;
 const {
   Header,
@@ -51,7 +53,6 @@ const ManageStudyRoom = ({ initialData, roomId }: EditDataProps) => {
   const [studyRoomMembers, setStudyRoomMembers] = useState<UserStudyRoom[]>(
     initialData.userStudyRooms ?? []
   );
-
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 

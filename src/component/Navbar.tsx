@@ -179,9 +179,11 @@ export default function NavBar() {
               <button
                 type="button"
                 onClick={() => {
-                  alert("로그아웃 되었습니다.");
-                  signOut();
-                  setIsOpen(false);
+                  if (confirm("로그아웃 하시겠습니까?")) {
+                    alert("로그아웃 되었습니다.");
+                    signOut();
+                    setIsOpen(false);
+                  }
                 }}
                 className="navbar__list--item--mobile text-left"
               >

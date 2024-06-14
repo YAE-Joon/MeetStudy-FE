@@ -18,18 +18,21 @@ const Content = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 16px;
+  background-color: lightgray;
+  padding: 2rem;
+  border-radius: 10px;
 `;
 
 const Title = styled.h1`
   font-size: 8rem;
   font-weight: bold;
   letter-spacing: -0.05em;
-  color: gray;
+  color: black;
 `;
 
 const Message = styled.p`
   font-size: 1.25rem;
-  color: gray;
+  color: black;
 `;
 
 const HomeLink = styled(Link)`
@@ -38,16 +41,18 @@ const HomeLink = styled(Link)`
   align-items: center;
   justify-content: center;
   border-radius: 8px;
-  background-color: gray;
+  background-color: lightslategray;
+
   padding: 0 24px;
   font-size: 0.875rem;
-  font-weight: medium;
-  color: gray;
+  font-weight: 20px;
+  color: white;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
   transition: background-color 0.2s;
 
   &:hover {
-    background-color: gray;
+    background-color: green;
+    color: white;
   }
 
   &:focus-visible {

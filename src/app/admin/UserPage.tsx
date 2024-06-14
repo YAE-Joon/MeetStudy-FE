@@ -1,7 +1,7 @@
 "use client";
 // 개별 스터디룸의 멤버 리스트
-import { useState } from "react";
-
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { apiPaths } from "@/config/api";
 import useFetch from "@/hooks/useFetch";
 import fetchDataBE from "@/lib/fetch";
@@ -18,7 +18,8 @@ import { Title } from "@/component/styled-components/TextBoxes";
 import Loading from "@/component/Loading/Loading";
 import { Container } from "@/component/styled-components/Container";
 import getTokenByClient from "@/util/getTokenByClient";
-import { useRouter } from "next/navigation";
+
+import { getUserFromToken } from "@/util/getUserFromToken";
 
 const tokens = dt.DesignTokenVarNames;
 const {
@@ -34,7 +35,9 @@ const {
   QuitButton,
 } = StyledAdminUserPage;
 const UserPage = () => {
+  const [isRedirecting, setIsRedirecting] = useState(false);
   const [currPage, setCurrPage] = useState(0);
+  const router = useRouter();
   const tableHeadList = [
     "No(id)",
     "역할",
@@ -43,6 +46,16 @@ const UserPage = () => {
     "닉네임",
     "관심분야",
   ];
+
+  useEffect(() => {
+    const token = getTokenByClient();
+    const userInfo = getUserFromToken(token);
+    if (userInfo && userInfo?.auth !== "ADMIN") {
+      setIsRedirecting(true);
+      alert("[⚠] 관리자가 아닙니다. 메인화면으로 이동합니다. ");
+      router.push("/");
+    }
+  }, []);
 
   const [AllUserData, error, loading, setUserData] = useFetch<AdminUserData[]>(
     apiPaths.admin.users,
@@ -105,54 +118,60 @@ const UserPage = () => {
     <>
       <OuterContainer>
         <Container>
-          <Header>
-            <Title $color={tokens.colors.simple.blackbasic}>회원 관리</Title>
-          </Header>
-          {AllUserData === null || AllUserData.length === 0 ? (
+          {!isRedirecting && (
             <>
-              <div>유저가 존재하지 않습니다.</div>
-            </>
-          ) : (
-            <>
-              <TableWrapper>
-                <StyledTable>
-                  <StyledTableHeader>
-                    <StyledTableRow>
-                      {tableHeadList.map((head, idx) => (
-                        <StyledTableHead key={idx}>{head}</StyledTableHead>
-                      ))}
-                    </StyledTableRow>
-                  </StyledTableHeader>
-                  <StyledTableBody>
-                    {currentUserData.map((user) => (
-                      <StyledTableRow key={user.id}>
-                        <StyledTableCell>{user.id}</StyledTableCell>
-                        <StyledTableCell>{user.role}</StyledTableCell>
-                        <StyledTableCell>{user.username}</StyledTableCell>
-                        <StyledTableCell>{user.email}</StyledTableCell>
-                        <StyledTableCell>{user.nickname}</StyledTableCell>
-                        <StyledTableCell>{user.interests}</StyledTableCell>
-                        <StyledTableCell>
-                          <QuitButton onClick={() => handleRemove(user.id)}>
-                            삭제
-                          </QuitButton>
-                        </StyledTableCell>
-                      </StyledTableRow>
-                    ))}
-                  </StyledTableBody>
-                </StyledTable>
-              </TableWrapper>
-              <div>
-                <Button onClick={handlePrevPage} disabled={currPage === 0}>
-                  이전
-                </Button>
-                <Button
-                  onClick={handleNextPage}
-                  disabled={currPage === totalPages - 1}
-                >
-                  다음
-                </Button>
-              </div>
+              <Header>
+                <Title $color={tokens.colors.simple.blackbasic}>
+                  회원 관리
+                </Title>
+              </Header>
+              {AllUserData === null || AllUserData.length === 0 ? (
+                <>
+                  <div>유저가 존재하지 않습니다.</div>
+                </>
+              ) : (
+                <>
+                  <TableWrapper>
+                    <StyledTable>
+                      <StyledTableHeader>
+                        <StyledTableRow>
+                          {tableHeadList.map((head, idx) => (
+                            <StyledTableHead key={idx}>{head}</StyledTableHead>
+                          ))}
+                        </StyledTableRow>
+                      </StyledTableHeader>
+                      <StyledTableBody>
+                        {currentUserData.map((user) => (
+                          <StyledTableRow key={user.id}>
+                            <StyledTableCell>{user.id}</StyledTableCell>
+                            <StyledTableCell>{user.role}</StyledTableCell>
+                            <StyledTableCell>{user.username}</StyledTableCell>
+                            <StyledTableCell>{user.email}</StyledTableCell>
+                            <StyledTableCell>{user.nickname}</StyledTableCell>
+                            <StyledTableCell>{user.interests}</StyledTableCell>
+                            <StyledTableCell>
+                              <QuitButton onClick={() => handleRemove(user.id)}>
+                                삭제
+                              </QuitButton>
+                            </StyledTableCell>
+                          </StyledTableRow>
+                        ))}
+                      </StyledTableBody>
+                    </StyledTable>
+                  </TableWrapper>
+                  <div>
+                    <Button onClick={handlePrevPage} disabled={currPage === 0}>
+                      이전
+                    </Button>
+                    <Button
+                      onClick={handleNextPage}
+                      disabled={currPage === totalPages - 1}
+                    >
+                      다음
+                    </Button>
+                  </div>
+                </>
+              )}
             </>
           )}
         </Container>

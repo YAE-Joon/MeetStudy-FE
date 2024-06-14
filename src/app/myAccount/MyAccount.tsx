@@ -130,8 +130,8 @@ const EditSections: React.FC<MyaccountProps> = ({ UserProfile }) => {
   //// fetching : update, delete /////
 
   const updateUserInfo = async (editedData: UserProfile) => {
-    console.log("[🐸🐸🐸🐸 내 정보를 수정합니다!] ");
-    console.log("[🐸🐸🐸🐸] 수정될 정보는?  editedData", editedData);
+    //console.log("[🐸🐸🐸🐸 내 정보를 수정합니다!] ");
+    //console.log("[🐸🐸🐸🐸] 수정될 정보는?  editedData", editedData);
     const token = getTokenByClient();
     try {
       const response = await fetchDataBE(

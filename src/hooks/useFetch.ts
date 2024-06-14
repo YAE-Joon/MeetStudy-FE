@@ -4,6 +4,7 @@ import { FetchOptions } from "@/lib/types";
 import fetchDataBE from "@/lib/fetch";
 import getTokenByClient from "@/util/getTokenByClient";
 import { useRouter } from "next/navigation";
+import { getUserFromToken } from "@/util/getUserFromToken";
 
 interface FetchError extends Error {
   status?: number;
@@ -29,7 +30,8 @@ const useFetch = <T>(apiUrl: string, options: FetchOptions = {}) => {
   useEffect(() => {
     const loadData = async () => {
       try {
-        const token = getTokenByClient();
+        let token = getTokenByClient();
+
         console.log(
           "useFetch에서 데이터를 호출합니다: apiUrl,options",
           apiUrl,

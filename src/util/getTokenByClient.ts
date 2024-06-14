@@ -1,4 +1,5 @@
 "use client";
+import { getUserFromToken } from "@/util/getUserFromToken";
 import Cookies from "js-cookie";
 /**
  *
@@ -7,8 +8,12 @@ import Cookies from "js-cookie";
 export default function getTokenByClient() {
   try {
     const token = Cookies.get("accessToken");
+    //console.log("토큰이 뭐라고 찍혀?", token);
+
     //console.log("🍪: token | ", token);
     if (token === undefined || token === null) {
+      //console.log("토큰이 여기서는 뭐라고 찍혀?", token);
+      //문제가 없는데 여기서 오류가 나면 serverside에서 랜더링(1차)될 때 되어서 그럼
       throw new Error("액세스 토큰 쿠키가 undefined | null 입니다!");
     }
 

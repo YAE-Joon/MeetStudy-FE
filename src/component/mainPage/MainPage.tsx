@@ -27,15 +27,9 @@ const MainPage = () => {
   const [isRedirecting, setIsRedirecting] = useState(false); //관리자 리다이렉트용
   const router = useRouter();
 
-  const token = getTokenByClient();
-  const userInfo = getUserFromToken(token);
-
-  // if (userInfo && userInfo?.auth === "ADMIN") {
-  //   alert("관리자 페이지로 이동합니다.");
-  //   router.push("/admin");
-  // }
-
   useEffect(() => {
+    const token = getTokenByClient();
+    const userInfo = getUserFromToken(token);
     if (userInfo && userInfo?.auth === "ADMIN") {
       setIsRedirecting(true);
       alert("관리자 페이지로 이동합니다.");

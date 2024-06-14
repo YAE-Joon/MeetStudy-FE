@@ -6,6 +6,8 @@ import dt from "@/lib/designToken/designTokens";
 import PackedStyledChatrooms from "@/app/studyrooms/[id]/chatRoom/StyledChatRoomCompoents";
 import { CreateChatRoom } from "@/app/studyrooms/[id]/chatRoom/CreateNewChatRoom";
 import { useState } from "react";
+import { QuitButton } from "@/app/admin/UserStyled";
+import getTokenByClient from "@/util/getTokenByClient";
 const {
   ChatRoomContainer,
   ChatRoomCard,

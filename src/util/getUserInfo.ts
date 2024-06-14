@@ -26,6 +26,7 @@ export async function getUserInfoFromToken(
 
   const isAdmin = getUserFromToken(token);
   if (isAdmin && isAdmin.auth === "ADMIN") {
+    console.log("어드민토큰", token);
     console.log("[getUserInfoFromToken] ADMIN 상태에서 호춣");
     return "ADMIN";
   }

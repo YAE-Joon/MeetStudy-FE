@@ -23,6 +23,10 @@ async function fetchDataBE(
     ...options.headers,
   };
 
+  // if (token === "ADMIN") {
+  //   throw new Error("어드민 접근.");
+  // }
+
   const headersWithToken = setTokenIntoHeader(initialHeaders, token);
 
   try {

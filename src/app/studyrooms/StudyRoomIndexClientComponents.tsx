@@ -100,7 +100,7 @@ const SearchBarWarpper = styled(FlexBoxUlV)`
 
 const SearchBarWarpperH = styled(FlexBoxH)`
   height: 10vh;
-  min-height: 30px;
+  // min-height: 30px;
   width: 100%;
 
   display: flex;
