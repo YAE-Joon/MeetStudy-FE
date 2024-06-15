@@ -24,6 +24,10 @@ export const FirstSectionLanding = React.forwardRef<
   HTMLDivElement,
   LandingProps
 >(({ mover }, ref) => {
+  const handleAlert = () => {
+    console.log("landing 합류하기 클릭함");
+    alert("회원가입 후 입장할 수 있습니다.");
+  };
   return (
     <Container
       $bgColor={tokens.colors.simple.secondary}
@@ -41,7 +45,10 @@ export const FirstSectionLanding = React.forwardRef<
             </Title>
             <LandingDesc content={"온라인 스터디 공간"} align="left" />
             <GridBox_ul>
-              <PrimaryButton content={"스터디 합류하기"} href={"/studyrooms"} />
+              <PrimaryButton
+                content={"스터디 합류하기"}
+                onClick={handleAlert}
+              />
               <SecondaryButton
                 content="회원가입하기"
                 href={routeLinks.signUp}
