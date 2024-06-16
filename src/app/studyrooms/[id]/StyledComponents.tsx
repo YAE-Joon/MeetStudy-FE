@@ -7,15 +7,19 @@ const mobileWidth = dt.DesignTokenExcept.media.mobile;
 
 export const InnerContainer = styled(FlexBoxH)`
   align-items: flex-start;
+  height: 100vh;
+
+  margin-bottom: 1rem;
+  //background-color: blue;
 
   //margin-top: 0.5rem;
   > *:first-child {
-    flex-grow: 2;
+    flex: 3 0 20%;
     max-width: 20%;
   }
 
   > *:last-child {
-    flex-grow: 8;
+    flex: 7 0 70%;
   }
 
   @media only screen and (max-width: ${mobileWidth}) {
@@ -28,21 +32,17 @@ export const InnerContainer = styled(FlexBoxH)`
 
     > *:first-child {
       width: 100%;
-      height: 10%;
+      height: 20%;
+      max-width: none;
+      margin-bottom: 1rem;
 
-      max-width: 20%;
-
-      /* flex-grow: 2;
-      max-width: 20%;
-      height: 100vh;
-      overflow: auto; */
-
-      //background-color: red;
+      height: auto;
     }
 
     > *:last-child {
       width: 100%;
-      height: 90%;
+      height: 80%;
+      max-width: none;
     }
   }
 `;

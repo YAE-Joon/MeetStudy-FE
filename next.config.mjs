@@ -10,7 +10,7 @@ const nextConfig = {
     styledComponents: true,
   },
   webpack: (config, { isServer }) => {
-    console.log("👩‍💻 | isServer :", isServer);
+    //console.log("👩‍💻 | isServer :", isServer);
 
     if (isServer) {
       if (!process.env.TS_FILE_GENERATED) {
@@ -29,7 +29,7 @@ const nextConfig = {
           "designTokens.ts"
         );
 
-        console.log("👩‍💻 | 디자인 토큰이 서버에서 로드되었어요.");
+        //console.log("👩‍💻 | 디자인 토큰이 서버에서 로드되었어요.");
 
         const generateTsFile = () => {
           const jsonFileData = fs.readFileSync(jsonFilePath, "utf-8");
@@ -38,10 +38,10 @@ const nextConfig = {
             jsonData,
             "DesignTokenVarNames"
           );
-          console.log("👩‍💻 : 서버에서 세팅에 필요한 문자열을 생성합니다.");
+          //console.log("👩‍💻 : 서버에서 세팅에 필요한 문자열을 생성합니다.");
           const cssVarsString = setTokenintoStyle(jsonData);
           const tsContent = `${tsVarContents}\n\n${cssVarsString}`;
-          console.log("👩‍💻 : 서버에서 세팅을 위한 파일을 생성합니다..");
+          //console.log("👩‍💻 : 서버에서 세팅을 위한 파일을 생성합니다..");
           fs.writeFileSync(tsFilePath, tsContent);
         };
 
@@ -62,7 +62,7 @@ const nextConfig = {
           { key: "Access-Control-Allow-Credentials", value: "true" },
           {
             key: "Access-Control-Allow-Origin",
-            value: "http://127.0.0.1:3000",
+            value: "*",
           }, // replace this your actual origin
           {
             key: "Access-Control-Allow-Methods",

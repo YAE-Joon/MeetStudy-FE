@@ -1,5 +1,5 @@
 "use client";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import dt from "@/lib/designToken/designTokens";
 
 const tokens = dt.DesignTokenVarNames;
@@ -12,8 +12,12 @@ const ChatRoomMain = styled.main`
 
   flex: 1;
   overflow: auto;
-  padding: 24px;
+  padding: 16px;
   //space-y: 16px;
+
+  background-color: var(${tokens.colors.simple.whitebg});
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
 
   background-color: var(${tokens.colors.simple.tertiarygray});
 
@@ -33,11 +37,13 @@ const ChatRoomMain = styled.main`
     background: transparent;
     border-radius: 6px;
   }
+
+  //반응형
 `;
 
 const Header = styled.header`
   width: 100%;
-  background-color: #1a1a1a;
+  background-color: var(${tokens.colors.simple.primarydeeper});
   color: white;
   padding: 16px 24px;
   display: flex;
@@ -82,18 +88,20 @@ const MessageContainer = styled.div<MessageContainerProps>`
 `;
 
 interface MessageProps {
-  $isOwn?: boolean;
+  $isMyMsg?: boolean;
 }
 
 const Message = styled.div<MessageProps>`
-  background-color: ${({ $isOwn }) =>
-    $isOwn
-      ? `var(${tokens.colors.simple.secondary})`
+  background-color: ${({ $isMyMsg }) =>
+    $isMyMsg
+      ? `var(${tokens.colors.simple.primary})`
       : `var(${tokens.colors.simple.whitebg})`};
-  color: ${({ $isOwn }) => ($isOwn ? "white" : "black")};
+  color: ${({ $isMyMsg }) => ($isMyMsg ? "white" : "black")};
   border-radius: 0.5rem;
   padding: 16px;
   max-width: 75%;
+
+  //background-color: green;
 `;
 
 const MessageAuthor = styled.p`
@@ -104,13 +112,22 @@ const MessageText = styled.p`
   font-size: 0.875rem;
 `;
 
+const Announcement = styled.div`
+  text-align: center;
+  color: #555555;
+  margin: 1rem 0;
+`;
+
 const Footer = styled.div`
   width: 100%;
-  background-color: var(${tokens.colors.simple.grayfortext});
+  background-color: var(${tokens.colors.simple.whitebg});
   padding: 16px;
   display: flex;
   align-items: center;
   gap: 16px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+  margin-bottom: 5px;
 `;
 
 const StyledTextarea = styled.textarea`
@@ -120,6 +137,13 @@ const StyledTextarea = styled.textarea`
   border: 1px solid "#555";
   background-color: "#333";
   color: black;
+
+  min-width: 200px;
+  max-width: 100%;
+  min-height: 100px;
+  max-height: 300px;
+  resize: vertical;
+
   &:focus {
     outline: none;
     border-color: #3b82f6;
@@ -127,7 +151,7 @@ const StyledTextarea = styled.textarea`
 `;
 
 const Button = styled.button`
-  background-color: var(${tokens.colors.simple.secondary});
+  background-color: var(${tokens.colors.simple.primary});
   color: white;
   border: none;
   padding: 8px 16px;
@@ -138,6 +162,56 @@ const Button = styled.button`
     outline: none;
   }
 `;
+
+/// chat loader
+interface LetterProps {
+  $delay: number;
+}
+
+const blink = keyframes`
+  0%, 100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+`;
+
+const Container = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  gap: 10px;
+
+  font-size: var(${tokens.fontSize.web.large});
+  height: 100%;
+  width: 100%;
+`;
+
+const Letter = styled.span<LetterProps>`
+  color: white;
+  /* background-color: var(${tokens.colors.simple.whitebg}); */
+
+  animation: ${blink} 1.5s infinite;
+  animation-delay: ${(props) => props.$delay}s;
+`;
+
+const ChatLoader = () => {
+  const message = "대화를 불러오는 중입니다...";
+
+  return (
+    <Container>
+      {message.split("").map((letter, index) => (
+        <Letter key={index} $delay={index * 0.1}>
+          {letter}
+        </Letter>
+      ))}
+    </Container>
+  );
+};
+
 const ChatStyled = {
   Header,
   Title,
@@ -151,6 +225,8 @@ const ChatStyled = {
   Footer,
   StyledTextarea,
   Button,
+  ChatLoader,
+  Announcement,
 };
 
 export default ChatStyled;

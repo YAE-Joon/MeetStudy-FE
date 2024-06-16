@@ -1,13 +1,22 @@
 "use client";
 // 채팅방
-import { useState, ChangeEvent, useRef, useEffect } from "react";
-import ChatStyled from "@/app/studyrooms/[id]/chatRoom/[chatId]/chatStyled";
-import { ChatMessage, UserProfile } from "@/lib/types";
+//🙆‍♂️ 클라이언트
+//🙆 백엔드 서버
+// sending: 🙆‍♂️->🙆, received: 🙆->🙆‍♂️
+import { useState, useRef, useEffect } from "react";
+import { apiPaths } from "@/config/api";
+import fetchDataBE from "@/lib/fetch";
+import getTokenByClient from "@/util/getTokenByClient";
+import useFetchUserInfo from "@/hooks/useGetUserInfo";
 import useWebSocket from "@/webSocket/client";
 import { getChatRoomId } from "@/app/studyrooms/studyroomSub";
-import useFetch from "@/hooks/useFetch";
-import { apiPaths } from "@/config/api";
-import Loading from "@/component/Loading/Loading";
+
+import { SendingChatMessage, ReceivedChatMessage } from "@/types/Chatroom";
+import { ChatRecordsResponse } from "@/types/Chat";
+
+import { ChatTextArea } from "@/app/studyrooms/[id]/chatRoom/[chatId]/ChatTextArea";
+import ChatStyled from "@/app/studyrooms/[id]/chatRoom/[chatId]/chatStyled";
+import { checkEnterOrExitFromMessages } from "@/util/checkChatText";
 
 const {
   ChatRoomMain,
@@ -15,130 +24,260 @@ const {
   Message,
   MessageAuthor,
   MessageText,
-  Footer,
-  StyledTextarea,
-  Button,
+  ChatLoader,
+  Announcement,
 } = ChatStyled;
 
 export default function ChatRoom() {
-  const [messages, setMessages] = useState<ChatMessage[]>([]);
-  const [newMessage, setNewMessage] = useState("");
+  //console.log("[채칭방] 🧊 채팅방 컴포넌트입니다.");
+
+  const [myCurrNickName, errorFromNickname, loading] =
+    useFetchUserInfo("nickname");
+
   const [error, setError] = useState<string | null>(null);
-
-  const webSocketUrl = `ws://${process.env.NEXT_PUBLIC_WS_URL}/ws`;
+  const [isSending, setIsSending] = useState<boolean>(false);
+  // for API request
   const chatRoomId = getChatRoomId();
+  const webSocketUrl = `ws://${process.env.NEXT_PUBLIC_WS_URL}/ws`;
+  // for get past chat records
+  const [cursor, setCursor] = useState(null);
 
-  const [userData, userDataFetchError, isLoading] = useFetch<UserProfile>(
-    apiPaths.mypage.info,
-    {},
-    false,
-    false
+  // for message(from chat) and record(from db)
+  const [oldRecords, setOldRecords] = useState<ReceivedChatMessage[]>([]);
+  const [chatRecords, setChatRecords] = useState<ChatRecordsResponse | null>(
+    null
   );
-  const [chatRecords, chatRecordError] = useFetch<ChatMessage[]>(
-    apiPaths.chatroom.getRecords(chatRoomId),
-    {},
-    false,
-    false
-  );
-  const { messages: receivedMessages, sendMessage } = useWebSocket(
-    webSocketUrl,
-    chatRoomId.toString()
-  );
-
-  useEffect(() => {
-    if (receivedMessages.length > 0) {
-      setMessages((prevMessages) => [...prevMessages, ...receivedMessages]);
-    }
-  }, [receivedMessages]);
-
+  // for scolling
   const msgEndRef = useRef<HTMLDivElement>(null);
-
-  const scrollToBottom = () => {
-    if (msgEndRef.current) {
-      msgEndRef.current.scrollIntoView({ behavior: "smooth" });
-    }
-  };
-  //수정예정
-  const isMyMessage = async (
-    myNickName: string,
-    chatRecords: ChatMessage[]
-  ) => {
-    console.log("🙆‍♂️ 기존 채팅 데이터를 불러옵니다... ", chatRecords);
-
-    const markedRecords = chatRecords.map((record) =>
-      record.nickName === myNickName
-        ? { ...record, isOwn: true }
-        : { ...record, isOwn: false }
-    );
-    setMessages(markedRecords);
-  };
+  const msgContainerRef = useRef<HTMLDivElement>(null);
+  const oldRecordRef = useRef<HTMLDivElement>(null);
+  const isOldRecordUpdatedRef = useRef(false);
+  const [isEnd, setIsEnd] = useState(false);
 
   useEffect(() => {
-    if (userData && chatRecords) {
-      isMyMessage(userData.nickname, chatRecords);
-    }
-  }, [userData, chatRecords]);
+    const token = getTokenByClient();
+    const fetchInitialChatRecords = async () => {
+      //console.log("이전 채팅 기록을 가져옵니다");
+      try {
+        const apiUrl = `${apiPaths.chatroom.getRecords(
+          chatRoomId
+        )}?cursor=${-1}`;
+        const response = await fetchDataBE(apiUrl, {}, token);
+        const fetchedNearRecords = [...response.content].reverse(); //copy !
+        //const fetchedNearRecords = response.content;
+        const newCursor = response.pageable.cursor;
 
+        if (fetchedNearRecords.length === 0) {
+          setIsEnd((prev) => !prev);
+          return;
+        }
+
+        setOldRecords(fetchedNearRecords);
+        setCursor(newCursor);
+      } catch (error) {}
+    };
+
+    fetchInitialChatRecords();
+  }, [myCurrNickName]);
+
+  // 불러온 기존 데이터를 webSockethook으로 넘겨줍니다
+  // 왜? websocket에서 화면에서 그려지는 message를 통합으로 관리하기 때문에..
+  const { messages, sendMessage, setMessages } = useWebSocket(
+    webSocketUrl,
+    chatRoomId,
+    chatRecords?.content || []
+  );
+
+  // 이전 채팅 기록에 변동이 일어날 시
   useEffect(() => {
+    if (cursor == -1) {
+      // 변동은 있었으나 첫 접속 때라면 bottom으로 이동하도록
+      scrollToBottom();
+      return;
+    }
+    // 그 외의 경우는 oldRecord div의 아랫쪽(이전 채팅기록 요청시 최상단)으로
+    scrollToLastOldRecord();
+  }, [oldRecords]);
+
+  // websocket에서 받는 채팅 메시지에 변동이 있을 때
+  useEffect(() => {
+    if (isOldRecordUpdatedRef.current) {
+      //이전 메시지 불러오기라면
+      isOldRecordUpdatedRef.current = false;
+      return;
+    }
     scrollToBottom();
   }, [messages]);
 
-  const handleSendMessage = () => {
-    if (newMessage.trim()) {
-      const messageObject: ChatMessage = {
-        nickName: "나",
-        content: newMessage,
-        isOwn: true,
-        createdAt: new Date().toISOString(),
-      };
+  async function fetchChatRecords(cursorVlaue: number) {
+    try {
+      const apiUrl = `${apiPaths.chatroom.getRecords(
+        chatRoomId
+      )}?cursor=${cursorVlaue}`;
+      const token = getTokenByClient();
+      const response = await fetchDataBE(apiUrl, {}, token);
 
-      setMessages((prevMessages) => [...prevMessages, messageObject]);
-      sendMessage(JSON.stringify(messageObject));
-      setNewMessage("");
+      const fetchedOldRecords = [...response.content].reverse();
+      // const fetchedOldRecords = response.content;
+      const newCursor = response.pageable.cursor;
+
+      // 기존에 존재하는 과거 채팅 기록을 temp에 담고
+      const existingOldRecord = oldRecords;
+
+      // fetch해온 데이터를 oldRecord 상태변수에 넣는다.
+      setOldRecords(fetchedOldRecords);
+      // temp에 넣은 데이터를 기존 데이터의 앞에 넣는다.
+      setMessages((prev) => [...existingOldRecord, ...prev]);
+      isOldRecordUpdatedRef.current = true;
+
+      setCursor(newCursor);
+
+      //setOldRecords((prev) => [...newChatRecords, ...prev]);
+      //setMessages((prev) => [...newChatRecords, ...prev]);
+
+      // console.log(
+      //   `🧊🧊🧊fetch 한 이전 기록들 / cursor=${cursor}| 메시지 갯수:${fetchedOldRecords.length} | 메시지 내용: `,
+      //   fetchedOldRecords
+      // );
+
+      if (fetchedOldRecords.length === 0) {
+        setIsEnd((prev) => !prev);
+        return;
+      }
+    } catch (error) {}
+  }
+
+  ///////////// fetch function , hanlders ///////////////
+
+  // websocket 으로 메시지 보내는 핸들러
+  async function handleSendMessage(message: string) {
+    const sendMessageObj: SendingChatMessage = {
+      content: message,
+    };
+
+    const res = sendMessage<SendingChatMessage>(sendMessageObj);
+    if (res.status) {
+      setIsSending(false);
+    } else {
+      setError("메시지 전송에 실패했습니다. 다시 시도해주세요.");
+      setIsSending(false);
     }
-  };
+  }
 
-  const onChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    setNewMessage(e.target.value);
-  };
+  // 이전 채팅 기록 불러오기 handler
+  function hanldeMessageReq() {
+    // console.log("🧊🧊이전 대화 기록을 요청합니다 | cursor?", cursor);
+    //setCursor((prev) => prev + 1);
+    if (cursor !== null && cursor !== -1) {
+      fetchChatRecords(cursor);
+    }
+  }
 
-  if (isLoading) {
-    return <div>"채팅로딩중(바꿀예정)"</div>;
+  // scroll handlers //
+  function scrollToBottom() {
+    if (msgEndRef.current) {
+      msgEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }
+
+  function scrollToLastOldRecord() {
+    if (oldRecordRef.current) {
+      oldRecordRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }
+
+  ///// for logging /////
+
+  // console.log(
+  //   `-----------------------------\n[A] oldRecords:\n${oldRecords
+  //     .map((record) => record.content)
+  //     .join("\n")}\n-----------------------------`
+  // );
+  // console.log(
+  //   `-----------------------------\n[B] messages까지 포함하고 있음:\n${messages
+  //     .map((message) => message.content)
+  //     .join("\n")}\n-----------------------------`
+  // );
+
+  if (!oldRecords) {
+    return <ChatLoader />;
   }
 
   if (error) {
     return <ChatRoomMain>Error: {error}</ChatRoomMain>;
   }
-
-  if (!userData || !chatRecords) {
-    return <ChatRoomMain>!userData || !chatRecords</ChatRoomMain>;
-  }
-
   return (
     <>
+      {/* <input
+        placeholder="닉네임을 입력하세요;"
+        value={nickname}
+        onChange={handleInput}
+      />
+      <button onClick={handleButton}>닉네임 입력하기</button> */}
       <ChatRoomMain>
-        {messages.map((msg, index) => (
-          <MessageContainer
-            key={index}
-            $justify={msg.isOwn ? "flex-end" : "flex-start"}
-          >
-            <Message $isOwn={msg.isOwn}>
-              <MessageAuthor>{msg.nickName}</MessageAuthor>
-              <MessageText>{msg.content}</MessageText>
-              <p>{msg.createdAt}</p>
-            </Message>
-          </MessageContainer>
-        ))}
-        <div ref={msgEndRef} />
+        <Announcement>
+          {!isEnd ? (
+            <button onClick={hanldeMessageReq}>이전 기록 불러오기</button>
+          ) : (
+            <p>마지막 기록입니다.</p>
+          )}
+        </Announcement>
+
+        <div ref={msgContainerRef}>
+          {oldRecords.map((msg, index) => {
+            let isMyMsg = msg.nickName === myCurrNickName;
+            let isAnnounce = checkEnterOrExitFromMessages(msg.content);
+            if (isAnnounce) {
+              return (
+                <Announcement key={index}>
+                  ----- {msg.content} -----
+                </Announcement>
+              );
+            }
+            return (
+              <MessageContainer
+                key={index}
+                $justify={isMyMsg ? "flex-end" : "flex-start"}
+              >
+                <Message $isMyMsg={isMyMsg}>
+                  <MessageAuthor>{msg.nickName}</MessageAuthor>
+                  <MessageText>{msg.content}</MessageText>
+                  <p>{msg.createdAt}</p>
+                </Message>
+              </MessageContainer>
+            );
+          })}
+          <div ref={oldRecordRef} />
+        </div>
+        <div ref={msgContainerRef} style={{ height: "100%" }}>
+          {messages.map((msg, index) => {
+            let isMyMsg: boolean = msg.nickName === myCurrNickName;
+            let isAnnounce = checkEnterOrExitFromMessages(msg.content);
+            if (isAnnounce) {
+              return (
+                <Announcement key={index}>
+                  ----- {msg.content} -----
+                </Announcement>
+              );
+            }
+            return (
+              <MessageContainer
+                key={index}
+                $justify={isMyMsg ? "flex-end" : "flex-start"}
+              >
+                <Message $isMyMsg={isMyMsg}>
+                  <MessageAuthor>{msg.nickName}</MessageAuthor>
+                  <MessageText>{msg.content}</MessageText>
+                  <p>{msg.createdAt}</p>
+                </Message>
+              </MessageContainer>
+            );
+          })}
+          <div ref={msgEndRef} style={{ height: "1rem" }} />
+        </div>
       </ChatRoomMain>
-      <Footer>
-        <StyledTextarea
-          placeholder="메세지를 입력하세요"
-          value={newMessage}
-          onChange={onChange}
-        />
-        <Button onClick={handleSendMessage}>보내기</Button>
-      </Footer>
+
+      <ChatTextArea onSendMessage={handleSendMessage} />
     </>
   );
 }

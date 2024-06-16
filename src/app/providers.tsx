@@ -1,7 +1,7 @@
 "use client";
 
 import Navbar from "@/component/Navbar";
-import { SessionProvider } from "next-auth/react";
+import { SessionProvider, useSession } from "next-auth/react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Provider } from "react-redux";
@@ -39,7 +39,7 @@ export const NextLayout = ({ children }: Props) => {
       <div className="layout">
         <Navbar />
         <Suspense fallback={<MainLoading />}>{children}</Suspense>
-        <Footer />
+        {/* <Footer /> */}
       </div>
     </Provider>
   );

@@ -1,7 +1,9 @@
 "use client";
-import { UserProfile } from "@/lib/types";
+
 import useFetch from "@/hooks/useFetch";
 import { apiPaths } from "@/config/api";
+import { UserProfile } from "@/types/User";
+
 import dt from "@/lib/designToken/designTokens";
 
 import { Container } from "@/component/styled-components/Container";
@@ -20,9 +22,7 @@ export const Myaccount = () => {
   // 유저의 정보들을 불러옵니다.
   const [userProfileData, error] = useFetch<UserProfile>(
     apiPaths.mypage.info,
-    {},
-    false, //관리자 아님
-    false
+    {}
   );
 
   if (error) {
@@ -38,7 +38,7 @@ export const Myaccount = () => {
     );
   }
 
-  console.log("[마이 페이지] 불러온 정보: userProfileData", userProfileData);
+  //console.log("[마이 페이지] 불러온 정보: userProfileData", userProfileData);
   return (
     <Container
       $height={"100vh"}

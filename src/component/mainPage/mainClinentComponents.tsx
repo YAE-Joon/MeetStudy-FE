@@ -1,8 +1,8 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 
-import { UserCalendar } from "@/lib/types";
+import { UserCalendar } from "@/types/Calendar";
 import routeLinks from "@/lib/routeLinks";
 
 import { standardizeDate } from "@/util/dateUtils";
@@ -19,6 +19,8 @@ import {
 } from "@/component/styled-components/TextBoxes";
 import MainStyledPack from "@/component/mainPage/mainStyledComponents";
 import { StyledCalendarPack } from "@/component/mainPage/mainStyledComponents";
+import { fetchUserInfo } from "./fetchUserInfo";
+import { useSession } from "next-auth/react";
 const tokens = dt.DesignTokenVarNames;
 
 // styleds components
@@ -33,8 +35,23 @@ const {
 } = MainStyledPack;
 
 const { Date } = StyledCalendarPack;
+
 export const MainNavBar = ({ mode }: { mode?: string }) => {
-  const userNickName = "인증유저갖고오면바꿀닉네임";
+  const { data: session, status } = useSession();
+  const isLoggedIn = status === "authenticated";
+  const [userNickName, setUserNickName] =
+    useState("밋스터디에 오신걸 환영합니다.");
+
+  useEffect(() => {
+    const fetchAndSetUserInfo = async () => {
+      const nickname = await fetchUserInfo();
+      if (nickname) {
+        setUserNickName(nickname);
+      }
+    };
+
+    fetchAndSetUserInfo();
+  }, []);
   return (
     <FlexBar>
       <Title
@@ -43,7 +60,9 @@ export const MainNavBar = ({ mode }: { mode?: string }) => {
         $color={tokens.colors.simple.blackbasic}
         $padding={"0"}
       >
-        {`어서오세요, ${userNickName} 님!`}
+        {isLoggedIn
+          ? `어서오세요, ${userNickName} 님!`
+          : "밋스터디에 오신걸 환영합니다"}
       </Title>
 
       <SettingSection>
@@ -51,23 +70,22 @@ export const MainNavBar = ({ mode }: { mode?: string }) => {
           {mode === "mypage" ? (
             <>
               <li>
-                <IoMdSettings
-                  style={{ color: `var(${tokens.colors.simple.primary})` }}
-                />
-              </li>
-              <li>
-                <Link href={routeLinks.myAccountSetting}>계정 관리</Link>
+                <Link href={routeLinks.myAccountSetting}>
+                  <IoMdSettings
+                    style={{ color: `var(${tokens.colors.simple.primary})` }}
+                  />
+                </Link>
               </li>
             </>
           ) : (
             <>
               <li>
-                <RiUserFill
-                  style={{ color: `var(${tokens.colors.simple.primary})` }}
-                />
-              </li>
-              <li>
-                <Link href={routeLinks.main}>메인으로</Link>
+                <Link href={routeLinks.main}>
+                  {" "}
+                  <RiUserFill
+                    style={{ color: `var(${tokens.colors.simple.primary})` }}
+                  />
+                </Link>
               </li>
             </>
           )}

@@ -10,6 +10,8 @@ interface Simple {
   grayfortext: string;
   invalidred: string;
   validgreen: string;
+  darkgray: string;
+  imtermediategray: string;
 }
 
 interface Colors {
@@ -91,6 +93,8 @@ const simple: Simple = {
   grayfortext: "--colors-simple-grayfortext",
   invalidred: "--colors-simple-invalidred",
   validgreen: "--colors-simple-validgreen",
+  darkgray: "--colors-simple-darkgray",
+  imtermediategray: "--colors-simple-imtermediategray",
 };
 
 const colors: Colors = {
@@ -191,6 +195,8 @@ export default dt
 --colors-simple-grayfortext:#555555;
 --colors-simple-invalidred:#D32F2F;
 --colors-simple-validgreen:#388E3C;
+--colors-simple-darkgray:#444444;
+--colors-simple-imtermediategray:#767676;
 --font-size-web-xlarge:32px;
 --font-size-web-large:24px;
 --font-size-web-medium:18px;

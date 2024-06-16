@@ -1,54 +1,20 @@
 "use client";
-import React from "react";
-import { useParams, useRouter, usePathname } from "next/navigation";
-import Link from "next/link";
-import styled from "styled-components";
+
+import { usePathname } from "next/navigation";
 import { ChatRoomInfoProps } from "@/lib/types";
+import PackedStyledChatrooms from "@/app/studyrooms/[id]/chatRoom/StyledChatRoomCompoents";
+const { ChatRoomContainer, ChatRoomCard, LinkContent, LinkDetails, LinkTitle } =
+  PackedStyledChatrooms;
 
-import { StyledProps } from "@/component/styled-components/styledProps";
-
-const ChatRoomContainer = styled.div`
-  display: grid;
-  gap: 1rem;
-
-  width: 100%;
-  min-width: 900px;
-`;
-
-const ChatRoomCard = styled(Link)<StyledProps>`
-  background-color: white;
-  padding: 1rem;
-  border-radius: 0.5rem;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-  transition: background-color 0.2s;
-  &:hover {
-    background-color: #f7fafc;
-  }
-`;
-
-const LinkContent = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
-
-const LinkDetails = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-`;
-
-const LinkTitle = styled.h2`
-  font-size: 1.125rem;
-  font-weight: 500;
-`;
+import PackedStyledEmpty from "@/component/styled-components/EmptyContent";
+const { EmptyStyledLink, EmptyText, EmptyTitle, EmptyCard, EmptyContainer } =
+  PackedStyledEmpty;
 
 export const ChatRoomList = ({
   chatRoomList,
 }: {
   chatRoomList: ChatRoomInfoProps[];
 }) => {
-  const params = useParams();
   const pathname = usePathname();
   //console.log("pathname?", pathname);
   return (
@@ -65,5 +31,21 @@ export const ChatRoomList = ({
         </ChatRoomCard>
       ))}
     </ChatRoomContainer>
+  );
+};
+
+// 이렇게 했더니 createChatRoom 이 활성화된 동안 NochatRoom이 길어져서 보임
+
+export const NoChatRoom = ({ roomId }: { roomId: number }) => {
+  return (
+    <EmptyContainer>
+      <EmptyCard>
+        <EmptyTitle>개설된 채팅방이 없습니다.</EmptyTitle>
+        <EmptyText>
+          아직 채팅방을 만들지 않았습니다. 채팅방을 만들어보세요!
+        </EmptyText>
+        {/* <CreateChatRoom roomId={roomId} /> */}
+      </EmptyCard>
+    </EmptyContainer>
   );
 };

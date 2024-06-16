@@ -1,5 +1,9 @@
 "use client";
+import { ChangeEvent } from "react";
+
 import styled from "styled-components";
+import { MdSearch } from "react-icons/md";
+
 import dt from "@/lib/designToken/designTokens";
 import {
   FlexBoxH,
@@ -8,11 +12,10 @@ import {
   StyledUl,
 } from "@/component/styled-components/FlexBoxes";
 import { BasicInput } from "@/component/styled-components/Forms";
-import { MdSearch } from "react-icons/md";
-import { ChangeEvent } from "react";
+
 const tokens = dt.DesignTokenVarNames;
 const mobileWidth = dt.DesignTokenExcept.media.mobile;
-import { css } from "styled-components";
+
 // nav + results/categories
 const InnerContainer = styled(FlexBoxH)`
   align-items: flex-start;
@@ -95,6 +98,39 @@ const SearchBarWarpper = styled(FlexBoxUlV)`
   }
 `;
 
+const SearchBarWarpperH = styled(FlexBoxH)`
+  height: 10vh;
+  // min-height: 30px;
+  width: 100%;
+
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+
+  //padding: 0.5rem 0 1rem 1rem;
+  margin-left: 1rem;
+  margin-right: 1rem;
+
+  //background-color: red;
+
+  > *:first-child {
+    flex: 8 1 0;
+  }
+
+  > *:nth-child(2) {
+    flex: 2 1 0;
+  }
+
+  @media only screen and (max-width: ${mobileWidth}) {
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+
+    min-width: 400px;
+  }
+  border-bottom: 1px solid rgba(128, 128, 128, 0.5);
+`;
+
 const StyledInputContainer = styled.div`
   position: relative;
   width: 100%;
@@ -145,83 +181,6 @@ const SearchIcon = styled(MdSearch)`
   pointer-events: none;
 `;
 
-interface HamburgerProp {
-  $isopen: boolean;
-}
-
-interface StudyRoomCategoriesProps {
-  $isopen: boolean;
-}
-
-const StudyRoomCategories = styled(FlexBoxUlV).attrs<StudyRoomCategoriesProps>(
-  ({ $isopen, ...rest }) => ({
-    ...rest, // 다른 속성들을 유지
-    $isopen: $isopen ?? undefined, // DOM에 직접 전달되지 않도록 필터링
-  })
-)<StudyRoomCategoriesProps>`
-  align-items: flex-start;
-  gap: 1rem;
-  width: 100%;
-  height: 100%;
-
-  > li {
-    flex: 1;
-    font-size: var(${tokens.fontSize.web.small});
-    padding: 0.5rem 0 1rem 0.5rem;
-    width: 100%;
-    &:hover {
-      background-color: var(${tokens.colors.simple.tertiarygray});
-      font-weight: 700;
-      cursor: pointer;
-    }
-  }
-
-  @media only screen and (max-width: ${mobileWidth}) {
-    width: 100%;
-    height: auto;
-    flex-direction: column;
-
-    ${(props) =>
-      props.$isopen &&
-      css`
-        > li {
-          display: block;
-        }
-      `}
-    ${(props) =>
-      !props.$isopen &&
-      css`
-        > li {
-          display: none;
-        }
-      `}
-  }
-`;
-const HamburgerIcon = styled.div`
-  display: none;
-  @media only screen and (max-width: ${mobileWidth}) {
-    display: flex;
-    cursor: pointer;
-    font-size: 1rem;
-    justify-content: center;
-    align-items: center;
-    width: 2rem;
-    height: 2rem;
-  }
-`;
-
-const HamburgerMenu = styled.div.attrs<{ $isopen: boolean }>({
-  $isopen: undefined, // DOM에 직접 전달되지 않도록 필터링
-})<{ $isopen: boolean }>`
-  @media only screen and (max-width: ${mobileWidth}) {
-    padding-top: 1rem;
-    display: ${(props) => (props.$isopen ? "flex" : "none")};
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    font-size: 2rem;
-  }
-`;
 const SearchResultContainer = styled(StyledUl)`
   width: 80%;
   display: grid;
@@ -239,16 +198,19 @@ const SearchResultContainer = styled(StyledUl)`
     grid-template-columns: 1fr;
     width: 100%;
   }
+  // 추가수정
+  flex-grow: 1;
+  width: 100%;
+  padding-bottom: 10px;
 `;
 
 const StyledStudyRoomIndex = {
   InnerContainer,
-  StudyRoomCategories,
+  //tudyRoomCategories,
   SearchResultSection,
   SearchBarWarpper,
+  SearchBarWarpperH,
   InputContainer,
   SearchResultContainer,
-  HamburgerIcon,
-  HamburgerMenu,
 };
 export default StyledStudyRoomIndex;

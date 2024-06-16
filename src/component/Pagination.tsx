@@ -33,6 +33,14 @@ const Pagination: React.FC<PaginationProps> = ({
   totalPages,
   setCurrentPage,
 }) => {
+  const startPage = Math.max(1, currentPage - 1);
+  const endPage = Math.min(totalPages, currentPage + 1);
+
+  const pageNumbers = [];
+  for (let i = startPage; i <= endPage; i++) {
+    pageNumbers.push(i);
+  }
+
   return (
     <PaginationContainer>
       <PaginationButton
@@ -41,13 +49,13 @@ const Pagination: React.FC<PaginationProps> = ({
       >
         이전
       </PaginationButton>
-      {[...Array(totalPages)].map((_, index) => (
+      {pageNumbers.map((page) => (
         <PaginationButton
-          key={index}
-          onClick={() => setCurrentPage(index + 1)}
-          disabled={currentPage === index + 1}
+          key={page}
+          onClick={() => setCurrentPage(page)}
+          disabled={currentPage === page}
         >
-          {index + 1}
+          {page}
         </PaginationButton>
       ))}
       <PaginationButton

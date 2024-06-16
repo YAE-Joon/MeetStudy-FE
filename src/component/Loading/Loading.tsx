@@ -1,9 +1,7 @@
 "use client";
-import { OuterContainer } from "@/component/styled-components/Container";
 import styled from "styled-components";
 import dt from "@/lib/designToken/designTokens";
-import { FlexBoxV } from "@/component/styled-components/FlexBoxes";
-import { Title } from "@/component/styled-components/TextBoxes";
+
 const tokens = dt.DesignTokenVarNames;
 
 const Background = styled.div`
@@ -11,9 +9,13 @@ const Background = styled.div`
   justify-content: center;
   align-items: center;
 
-  background-color: var(${tokens.colors.simple.whitebg});
-  height: 100vh;
-  width: 100vw;
+  /* background-color: var(${tokens.colors.simple.whitebg}); */
+
+  /* height: 100vh;
+  width: 100vw; */
+  background-color: transparent;
+  height: 100%;
+  width: 100%;
 `;
 
 const Spinner = styled.span`

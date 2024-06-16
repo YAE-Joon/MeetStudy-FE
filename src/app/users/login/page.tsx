@@ -89,7 +89,7 @@ export default function LoginPage() {
   }, [step, timer]);
 
   return (
-    <div className="flex flex-col justify-center px-6 lg:px-8 h-[90vh]">
+    <div className="flex flex-col justify-center px-6 lg:px-8 h-screen">
       <div className="mx-auto w-full max-w-sm">
         <div className="text-center text-2xl font-bold text-gray-600">
           회원가입

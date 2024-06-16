@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Pagination from "@/component/Pagination"; // Pagination 컴포넌트의 경로에 맞게 수정하세요.
+import axios from "axios";
 import Link from "next/link";
+import Cookies from "js-cookie";
 
 interface Post {
   id: number;
@@ -21,38 +23,80 @@ interface Categories {
 interface Props {
   title: string;
   posts: Post[];
-  popularPosts: string[];
   categories: Categories[];
 }
 
-const Board: React.FC<Props> = ({ title, posts, popularPosts, categories }) => {
+const Board: React.FC<Props> = ({ title, posts, categories }) => {
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지를 추적하는 상태
   const [searchQuery, setSearchQuery] = useState(""); // 검색어를 추적하는 상태
   const itemsPerPage = 5;
+  const [categoryPosts, setCategoryPosts] = useState<Post[]>([]);
+
+  useEffect(() => {
+    setCurrentPage(1); // 검색어나 카테고리 변경 시 페이지를 첫 번째 페이지로 초기화
+  }, [searchQuery, categoryPosts]);
+
+  // 클릭한 게시글의 조회수를 증가시키고 상세 페이지로 이동하는 함수
+  const handlePostClick = async (event: React.MouseEvent, postId: number) => {
+    event.preventDefault(); // 기본 링크 동작 방지
+    const token = Cookies.get("accessToken"); // 쿠키에서 토큰 가져오기
+
+    if (!token) {
+      console.error("토큰을 찾을 수 없습니다");
+      return;
+    }
+
+    try {
+      // 게시글 조회수 증가
+      const baseUrl = process.env.NEXT_PUBLIC_SITE_URL;
+      await axios.get(`${baseUrl}/api/post/public/${postId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      // 상세 페이지로 이동
+      window.location.href = `/community/${postId}`;
+    } catch (error) {
+      console.error("게시글 조회수 업데이트 중 오류 발생:", error);
+    }
+  };
+
+  // 카테고리를 클릭했을 때 해당 카테고리에 속하는 게시물을 가져오는 함수
+  const handleCategoryClick = async (categoryId: number) => {
+    try {
+      const baseUrl = process.env.NEXT_PUBLIC_SITE_URL;
+      const response = await axios.get(
+        `${baseUrl}/api/post/public/category/${categoryId}?page=0&size=100`
+      );
+      const data: Post[] = response.data; // 카테고리에 속하는 게시물 데이터 가져오기
+
+      setCategoryPosts(data); // 가져온 데이터로 게시물 목록 업데이트
+    } catch (error) {
+      console.error("카테고리별 게시물 가져오는 중 오류 발생:", error);
+    }
+  };
 
   // 현재 페이지에 따라 검색된 결과를 포함한 게시글 목록을 반환하는 함수
-  const filteredPosts = posts
-    .filter((post) =>
-      post.title.toLowerCase().includes(searchQuery.toLowerCase())
-    )
-    .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+  const filteredPosts = categoryPosts.length ? categoryPosts : posts;
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentPosts = filteredPosts.slice(startIndex, endIndex);
 
-  // 검색어 입력 시 상태를 업데이트하는 함수
+  // 검색어 입력 시 상태 업데이트 함수
   const handleSearchInputChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     setSearchQuery(event.target.value);
-    setCurrentPage(1); // 검색어가 변경되면 첫 번째 페이지로 초기화
   };
 
+  // 새로운 게시글 작성 클릭 시 동작 함수
   const handleNewPostClick = () => {
-    // 새로운 게시글 작성 기능을 수행하는 코드를 추가합니다.
-    // 예를 들어, 새로운 게시글 작성 페이지로 이동하는 등의 동작을 수행할 수 있습니다.
-    console.log("새로운 게시글 작성 버튼이 클릭되었습니다.");
+    window.location.href = "/community/createPost";
   };
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-screen">
       <header className="bg-gray-100 dark:bg-gray-900 py-5 px-10">
         <h1 className="text-2xl font-bold">{title}</h1>
       </header>
@@ -91,13 +135,20 @@ const Board: React.FC<Props> = ({ title, posts, popularPosts, categories }) => {
               </div>
             </div>
           </div>
-          {filteredPosts.map((post, index) => (
+          {currentPosts.map((post, index) => (
             <div
               key={index}
               className="bg-white dark:bg-gray-950 rounded-lg shadow p-4"
+              onClick={(event) => handlePostClick(event, post.id)}
             >
               <Link href={`/community/${post.id}`}>
-                <div className="grid grid-cols-[auto_1fr_auto] items-center gap-4">
+                <div
+                  className="grid grid-cols-[auto_1fr_auto] items-center gap-4"
+                  onClick={(event) => {
+                    // Capture click event here
+                    event.stopPropagation(); // Stop bubbling
+                  }}
+                >
                   <div className="font-medium text-lg">{post.title}</div>
                   <div className="text-sm text-gray-500 dark:text-gray-400">
                     <span>{post.nickname}</span>
@@ -113,29 +164,21 @@ const Board: React.FC<Props> = ({ title, posts, popularPosts, categories }) => {
           ))}
           <Pagination
             currentPage={currentPage}
-            totalPages={Math.ceil(posts.length / itemsPerPage)}
+            totalPages={Math.ceil(filteredPosts.length / itemsPerPage)}
             setCurrentPage={setCurrentPage}
           />
         </div>
         <div className="space-y-4">
           <div className="bg-white dark:bg-gray-950 rounded-lg shadow p-4">
-            <h2 className="text-lg font-medium mb-2">인기 게시글</h2>
-            <div className="space-y-2">
-              {popularPosts.map((popularPost, index) => (
-                <div key={index} className="flex items-center gap-2">
-                  <span className="font-medium">{index + 1}.</span>
-                  <a href="#" className="text-sm hover:underline">
-                    {popularPost}
-                  </a>
-                </div>
-              ))}
-            </div>
-          </div>
-          <div className="bg-white dark:bg-gray-950 rounded-lg shadow p-4">
             <h2 className="text-lg font-medium mb-2">카테고리</h2>
             <div className="space-y-2 flex flex-col">
               {categories.map((category, index) => (
-                <a key={index} href="#" className="text-sm hover:underline">
+                <a
+                  key={index}
+                  href="#"
+                  className="text-sm hover:underline"
+                  onClick={() => handleCategoryClick(category.id)}
+                >
                   {category.name}
                 </a>
               ))}

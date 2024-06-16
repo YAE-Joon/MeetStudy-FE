@@ -1,5 +1,5 @@
 import Link from "next/link";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 
 import dt from "@/lib/designToken/designTokens";
 
@@ -28,6 +28,7 @@ export const StyledLink = styled(Link)<StyledButtonProps>`
   text-align: center;
 
   width: 100%;
+  height: 100%;
 
   overflow-wrap: break-word;
   word-break: keep-all;
@@ -46,6 +47,7 @@ export const StyledButton = styled.button<StyledButtonProps>`
   text-align: center;
 
   width: 100%;
+  height: 100%;
 
   overflow-wrap: break-word;
   word-break: keep-all;
@@ -101,6 +103,8 @@ const StyledLinkColorCustomed = styled(StyledLink)`
       }}
     );
 
+  border-radius: 3px;
+  margin: auto 0;
   padding: 0.5rem;
 
   &:hover {
@@ -189,3 +193,30 @@ export const DesignCustomedyButton: React.FC<StyledButtonProps> = ({
     </StyledButtonColorCustomed>
   );
 };
+
+const bounce = keyframes`
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+`;
+
+export const StyledButtonLink = styled(Link)`
+  background-color: var(${tokens.colors.simple.primary});
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+
+  margin: 1rem;
+
+  &:hover {
+    background-color: var(${tokens.colors.simple.annotations});
+    color: black;
+    animation: ${bounce} 0.5s infinite;
+  }
+`;

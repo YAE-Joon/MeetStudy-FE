@@ -15,6 +15,8 @@ export const BasicForm = styled.form`
   align-items: center;
 
   gap: 2rem;
+
+  width: 100%;
 `;
 
 export const BasicField = styled.fieldset`
@@ -37,8 +39,15 @@ export const BasicField = styled.fieldset`
     flex: 1;
   }
 `;
+
 export const BasicFieldRow = styled(BasicField)`
   flex-direction: row;
+  flex-wrap: nowrap;
+
+  @media (max-width: 300px) {
+    flex-direction: column;
+    flex-wrap: wrap;
+  }
 `;
 
 export const BasicFieldCol = styled(BasicField)`
@@ -53,13 +62,11 @@ export const SubmitButtons = styled(BasicButton)`
   align-items: center;
   text-align: center;
 
-  height: 100%;
-
-  padding: 0 1rem;
+  padding: 0.5rem;
   margin: auto 0;
 
   background-color: var(${tokens.colors.simple.tertiarygray});
-  border: 0.5px solid var(${tokens.colors.simple.primary});
+  /* border: 0.5px solid var(${tokens.colors.simple.primary}); */
   border-radius: 3px;
 
   &:hover {

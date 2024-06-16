@@ -11,8 +11,8 @@ const buildBaseUrl = (isNextTest: boolean | null = null) => {
   if (isNextTest) {
     //Next 웹서버로 테스트를 돌릴 때
     baseUrl = "http://localhost:3000";
-    console.log("[BaseURL/테스트]:", baseUrl, isNextTest);
-    return baseUrl;
+    // console.log("[BaseURL/테스트]:", baseUrl, isNextTest);
+    // return baseUrl;
   }
 
   if (process.env.NODE_ENV === "production") {
@@ -21,7 +21,7 @@ const buildBaseUrl = (isNextTest: boolean | null = null) => {
     baseUrl = process.env.NEXT_DEV_API_URL || process.env.NEXT_PUBLIC_SITE_URL;
   }
 
-  console.log("[BaseURL/테스트]:", baseUrl, isNextTest);
+  //console.log("[BaseURL/테스트]:", baseUrl, isNextTest);
 
   return baseUrl;
 };
@@ -46,12 +46,17 @@ export interface RequestOptions {
   headers?: Record<string, string>;
   body?: Record<string, any>;
 }
-
+/**
+ *
+ * @param path
+ * @param isNextTest (옵션: next.js 웹서버용)
+ * @returns
+ */
 const getApiPath = (path: string, isNextTest: boolean | null = null) => {
   const baseUrl = buildBaseUrl(isNextTest);
   const endPoint = path;
   const res = `${baseUrl}${endPoint}`;
-  console.log("최종 API path:", res);
+  //console.log("최종 API path:", res);
   return res;
 };
 export default getApiPath;

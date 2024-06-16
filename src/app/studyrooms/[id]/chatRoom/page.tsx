@@ -1,39 +1,35 @@
 "use client";
-import { ChatRoomInfoProps } from "@/lib/types";
+// 스터디룸의 chatroom 대기실
+
+import { apiPaths } from "@/config/api";
 import useFetch from "@/hooks/useFetch";
 
-import StyledStudyRoomIndex from "@/app/studyrooms/StudyRoomIndexClientComponents";
-import { ChatRoomList } from "@/app/studyrooms/[id]/chatRoom/chatroomComponents";
-import { FlexBoxV } from "@/component/styled-components/FlexBoxes";
-import { Title } from "@/component/styled-components/TextBoxes";
-import dt from "@/lib/designToken/designTokens";
-import { apiPaths } from "@/config/api";
+import { ChatRoomInfoProps } from "@/lib/types";
 import { getRoomId } from "@/app/studyrooms/studyroomSub";
-import { Container } from "@/component/styled-components/Container";
 
-const { SearchBarWarpper } = StyledStudyRoomIndex;
+import { CreateChatRoom } from "@/app/studyrooms/[id]/chatRoom/CreateNewChatRoom";
+
+import { Title } from "@/component/styled-components/TextBoxes";
+import { FlexBoxV } from "@/component/styled-components/FlexBoxes";
+import StyledStudyRoomIndex from "@/app/studyrooms/StudyRoomIndexClientComponents";
+import {
+  ChatRoomList,
+  NoChatRoom,
+} from "@/app/studyrooms/[id]/chatRoom/chatroomComponents";
+
+import dt from "@/lib/designToken/designTokens";
+
+const { SearchBarWarpperH } = StyledStudyRoomIndex;
 
 const tokens = dt.DesignTokenVarNames;
 // studyrooms/{roomId}/chatRoom
 // 특정 스터디룸에 속한 채팅방 리스트를 불러옵니다.
 const ChatRoom = () => {
   const roomId = getRoomId();
-
-  // 임시, next.js 서버로 보내는 요청
-  // const [chatRoomList, error] = useFetch<ChatRoomInfoProps[]>(
-  //   "/api/chat/chatRoomList",
-  //   {},
-  //   false,
-  //   true
-  // );
-
   const [chatRoomList, error] = useFetch<ChatRoomInfoProps[]>(
     apiPaths.chatroom.byStudyRoom(roomId),
-    {},
-    false,
-    false
+    {}
   );
-
   if (error) {
     return <div>Error: {error.message}</div>;
   }
@@ -44,21 +40,30 @@ const ChatRoom = () => {
 
   return (
     <>
-      <Container $width={"100%"} $minWidth={"600px"}>
-        <FlexBoxV $justifyContent={"center"}>
-          <SearchBarWarpper>
-            <Title
-              $htype={3}
-              $align={"left"}
-              $color={tokens.colors.simple.blackbasic}
-              $fontSize={tokens.fontSize.web.medium}
-            >
-              채팅방입니당
-            </Title>
-          </SearchBarWarpper>
+      <SearchBarWarpperH>
+        <Title
+          $htype={2}
+          $align={"left"}
+          $color={tokens.colors.simple.blackbasic}
+          $fontSize={tokens.fontSize.web.large}
+          $padding={"0"}
+        >
+          채팅방
+        </Title>
+        {/* {chatRoomList.length !== 0 ? <CreateChatRoom roomId={roomId} /> : null} */}
+        <CreateChatRoom roomId={roomId} />
+      </SearchBarWarpperH>
+      <FlexBoxV
+        // $padding={"0.5rem 0.5rem 0 0"}
+        $width={"100%"}
+        $height={"80vh"}
+      >
+        {chatRoomList.length !== 0 ? (
           <ChatRoomList chatRoomList={chatRoomList} />
-        </FlexBoxV>
-      </Container>
+        ) : (
+          <NoChatRoom roomId={roomId} />
+        )}
+      </FlexBoxV>
     </>
   );
 };
